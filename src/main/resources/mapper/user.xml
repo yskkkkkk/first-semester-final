@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.UserMapper">
+
+	<insert id="regist">
+		insert into user 
+		(user_id, user_pw, user_name, email, user_type, join_date)
+		values 
+		(#{userId}, #{userPw}, #{userName}, #{email}, 2, now())
+	</insert>
+
+	<update id="update">
+		update user set
+		<if test="userPw != null and userPw != ''">
+			user_pw=#{userPw}, 
+		</if>
+		<if test="userName != null and userName != ''">
+			user_name=#{userName}, 
+		</if>
+		mod_date = #{modDate}
+		where id=#{id}
+	</update>
+
+	<delete id="delete">
+		delete from user
+		where user_id= #{userId}
+	</delete>
+
+	<select id="userInfo" resultType="com.ssafy.happyhouse.user.dto.userDto">
+		select 
+		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		from user
+		where user_id= #{userId}
+	</select>
+
+	<select id="userList" resultType="com.ssafy.happyhouse.user.dto.userDto">
+		select 
+		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		from user
+		where 1=1
+	</select>
+
+	<select id="login" resultType="com.ssafy.happyhouse.user.dto.userDto">
+		select 
+		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		from user
+		where user_id=#{userId} and user_pw=#{userPw}
+	</select>
+
+</mapper>

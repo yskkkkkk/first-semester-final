@@ -23,6 +23,24 @@ public class UserDto {
 	private String joinDate;
 	@ApiModelProperty(value = "데이터 수정 일시")
 	private String modifyDate;
+	
+	public UserDto() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public UserDto(int userNo, String userId, String userPw, String userName, String email, String userType,
+			String joinDate, String modifyDate) {
+		super();
+		this.userNo = userNo;
+		this.userId = userId;
+		this.userPw = userPw;
+		this.userName = userName;
+		this.email = email;
+		this.userType = userType;
+		this.joinDate = joinDate;
+		this.modifyDate = modifyDate;
+	}
+
 	public int getUserNo() {
 		return userNo;
 	}
@@ -70,5 +88,11 @@ public class UserDto {
 	}
 	public void setModifyDate(String modifyDate) {
 		this.modifyDate = modifyDate;
+	}
+	@Override
+	public String toString() {
+		return "UserDto [userNo=" + userNo + ", userId=" + userId + ", userPw=" + userPw + ", userName=" + userName
+				+ ", email=" + email + ", userType=" + userType + ", joinDate=" + joinDate + ", modifyDate="
+				+ modifyDate + "]";
 	}
 }
