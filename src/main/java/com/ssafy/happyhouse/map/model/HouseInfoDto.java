@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.apt.model;
+package com.ssafy.happyhouse.map.model;
 
 
 import io.swagger.annotations.ApiModel;
