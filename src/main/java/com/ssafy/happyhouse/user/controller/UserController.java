@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.controller;
+package com.ssafy.happyhouse.user.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @RequestMapping("/user")
 @Api("사용자 컨트롤러  API V1")
-public class MemberController {
+public class UserController {
 
 
 

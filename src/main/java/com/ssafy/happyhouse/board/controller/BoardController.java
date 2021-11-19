@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.controller;
+package com.ssafy.happyhouse.board.controller;
 
 import java.util.List;
 
