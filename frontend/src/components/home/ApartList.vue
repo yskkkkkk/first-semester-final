@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     houses: function (newVal, oldVal) {
-      console.log(newVal + " " + oldVal);
+      // console.log(newVal + " " + oldVal);
       if (newVal.length != 0 && newVal.length != oldVal.length) {
         this.loading = true;
         setTimeout(() => {
@@ -81,6 +81,7 @@ export default {
 
 <style scoped>
 table {
+  display: block;
   height: 400px;
   overflow-y: scroll;
 }

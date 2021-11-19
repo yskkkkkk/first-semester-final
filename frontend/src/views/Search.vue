@@ -1,8 +1,6 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
-    <h3 class="underline-orange">
-      <b-icon icon="house-fill"></b-icon> House Service
-    </h3>
+  <b-container class="bv-example-row mt-5">
+    <h3 class="underline-orange"><b-icon icon="search"></b-icon> 검색</h3>
     <b-row>
       <b-col>
         <house-search-bar></house-search-bar>
@@ -19,9 +17,9 @@
   </b-container>
 </template>
 <script>
-import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
-import HouseList from "@/components/house/HouseList.vue";
-import HouseDetail from "@/components/house/HouseDetail.vue";
+import HouseSearchBar from "@/components/search/HouseSearchBar.vue";
+import HouseList from "@/components/search/HouseList.vue";
+import HouseDetail from "@/components/search/HouseDetail.vue";
 
 export default {
   name: "House",

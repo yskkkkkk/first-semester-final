@@ -14,7 +14,7 @@ import BoardWrite from "@/components/board/BoardWrite.vue";
 import BoardView from "@/components/board/BoardView.vue";
 import BoardUpdate from "@/components/board/BoardUpdate.vue";
 
-import House from "@/views/House.vue";
+import Search from "@/views/Search.vue";
 
 import store from "@/store/index.js";
 
@@ -111,9 +111,9 @@ const routes = [
     ],
   },
   {
-    path: "/house",
-    name: "House",
-    component: House,
+    path: "/search",
+    name: "Search",
+    component: Search,
   },
   {
     path: "*",

@@ -37,6 +37,9 @@ const houseStore = {
     CLEAR_DONG_LIST: (state) => {
       state.dongs = [{ value: null, text: "동을 선택하세요" }];
     },
+    CLEAR_HOUSE: (state) => {
+      state.house = null;
+    },
     CLEAR_HOUSES_LIST: (state) => {
       state.houses = [];
     },
@@ -125,7 +128,7 @@ const houseStore = {
         numOfRows: 100,
         serviceKey: decodeURIComponent(SERVICE_KEY),
       };
-      console.log(payload);
+      // console.log(payload);
       houseList(
         params,
         (response) => {

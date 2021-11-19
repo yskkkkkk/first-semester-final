@@ -31,6 +31,7 @@ export default {
       customOverlay: null,
       geocoder: null,
       loading: false,
+      place: {},
     };
   },
   mounted() {
@@ -60,7 +61,7 @@ export default {
       this.customs = [];
       this.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
-      console.log(this.houses.length);
+      // console.log(this.houses.length);
       if (this.houses.length > 0) {
         try {
           this.houses.map((house) => {
@@ -72,7 +73,7 @@ export default {
                 house["도로명"] +
                 " " +
                 house["도로명건물본번호코드"];
-              console.log(address);
+              // console.log(address);
 
               let [lat, lng] = await this.addressSearch(address);
               if (lat == null) {
@@ -81,12 +82,12 @@ export default {
               } else {
                 house.lat = lat;
                 house.lng = lng;
-                house.aptCode = house["일련번호"];
+                house.aptCode = house["도로명건물본번호코드"];
                 house.aptName = house["아파트"];
                 house.dongCode = house["법정동읍면동코드"];
                 house.sidoName = "";
                 house.gugunName = "";
-                house.dongName = "";
+                house.dongName = house["법정동"].trim();
                 house.img = "";
                 house.buildYear = house["건축년도"];
                 house.jibun = house["지번"];
@@ -142,75 +143,25 @@ export default {
 
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정
           bounds.extend(placePosition);
-          (function (marker, title, code, place) {
-            // 마커를 클릭하면 세부정보가 뜸
-            kakao.maps.event.addListener(marker, "click", function () {
-              var position = new kakao.maps.LatLng(
-                marker.getPosition().getLat() + 0.00033,
-                marker.getPosition().getLng() - 0.00003
-              );
-              var lat = marker.getPosition().getLat() + 0.00033;
-              var lng = marker.getPosition().getLng() - 0.00003;
-              // const random = Math.floor(Math.random() * 13) + 1;
-              // const img = "apt" + random + ".jpg";
+          this.place = places[i];
+          console.log(this.place);
 
-              var sido = place.sidoName == null ? "" : place.sidoName;
-              var gugun = place.gugunName == null ? "" : place.gugunName;
-              var dong = place.dongName == null ? "" : place.dongName;
-              var jibun = place.jibun == null ? "" : place.jibun;
-              if (place.lat == null) return;
+          // 마커를 클릭하면 세부정보가 뜸
+          kakao.maps.event.addListener(marker, "click", () => {
+            return this.displayInfowindow(marker, this.place);
+          });
 
-              // <div class="first"><img src="${root}/img/apt/${img}" style="width:247px; height:136px;" alt=""></div>
-              var content =
-                `
-                  <div class="overlaybox">
-                    <div class="boxtitle">
-                      <span>${title}<span>
-                      <button class="btn btn-warning" onclick='javascript:closeOverlay(` +
-                lat +
-                `, ` +
-                lng +
-                `)'>X</button>
-                    </div>
+          // kakao.maps.event.addListener(this.map, "click", () => {
+          //   this.customOverlay.setMap(null);
+          // });
 
-                    <ul>
-                      <li class="up">
-                        <span class="title">건축년도</span>
-                        <span class="count">${place.buildYear}</span>
-                      </li>
-                      <li>
-                        <span class="title">주소</span>
-                        <span class="count">` +
-                sido +
-                ` ` +
-                gugun +
-                ` ` +
-                dong +
-                ` ` +
-                jibun +
-                `</span>
-                      </li>
-                      <li>
-                        <span class="title">최신거래금액</span>
-                        <span class="count">${place.recentPrice}</span>
-                      </li>
-                    </ul>
-                  </div>
-                `;
-              this.customOverlay = new kakao.maps.CustomOverlay({
-                position: position,
-                content: content,
-                xAnchor: 0.3,
-                yAnchor: 0.91,
-              });
-              this.customOverlay.setMap(this.map);
-              this.customs.push(this.customOverlay);
-            });
+          itemEl.onmouseover = () => {
+            return this.displayInfowindow(marker, this.place);
+          };
 
-            itemEl.onmouseout = function () {
-              this.customOverlay.setMap(null);
-            };
-          })(marker, places[i].aptName, places[i].aptCode, places[i]);
+          itemEl.onmouseout = () => {
+            return this.customOverlay.setMap(null);
+          };
 
           fragment.appendChild(itemEl);
         }
@@ -220,6 +171,78 @@ export default {
       // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
       this.map.setBounds(bounds);
     },
+
+    displayInfowindow(marker, place) {
+      var position = new kakao.maps.LatLng(
+        marker.getPosition().getLat() + 0.00033,
+        marker.getPosition().getLng() - 0.00003
+      );
+      var lat = marker.getPosition().getLat() + 0.00033;
+      var lng = marker.getPosition().getLng() - 0.00003;
+      const random = Math.floor(Math.random() * 13) + 1;
+      const img = "apt" + random + ".jpg";
+
+      var sido = place.sidoName == null ? "" : place.sidoName;
+      var gugun = place.gugunName == null ? "" : place.gugunName;
+      var dong = place.dongName == null ? "" : place.dongName;
+      var jibun = place.jibun == null ? "" : place.jibun;
+      if (place.lat == null) return;
+
+      var content =
+        `
+		<div class="overlaybox">
+			<div class="boxtitle">
+				<span>${place.aptName}<span>
+				<button class="btn btn-warning" onclick='this.closeOverlay(` +
+        lat +
+        `, ` +
+        lng +
+        `)'>X</button>
+			</div>
+			<div class="first"><img :src="@/assets/apt/${img}" style="width:247px; height:136px;" alt=""></div>
+			<ul>
+				<li class="up">
+					<span class="title">건축년도</span>
+					<span class="count">${place.buildYear}</span>
+				</li>
+				<li>
+					<span class="title">주소</span>
+					<span class="count">` +
+        sido +
+        ` ` +
+        gugun +
+        ` ` +
+        dong +
+        ` ` +
+        jibun +
+        `</span>
+				</li>
+				<li>
+					<span class="title">최신거래금액</span>
+					<span class="count">${place.recentPrice}</span>
+				</li>
+			</ul>
+		</div>
+	`;
+      new kakao.maps.CustomOverlay({
+        position: position,
+        content: content,
+        xAnchor: 0.3,
+        yAnchor: 0.91,
+      }).setMap(this.map);
+
+      this.customs = [
+        this.customs,
+        new kakao.maps.CustomOverlay({
+          position: position,
+          content: content,
+          xAnchor: 0.3,
+          yAnchor: 0.91,
+        }),
+      ];
+      console.log(this.customs);
+    },
+
     //마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, idx) {
       var imageSrc =
