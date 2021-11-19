@@ -43,14 +43,18 @@ public class HouseMapController {
 		logger.info("gugun - 호출");
 		return new ResponseEntity<List<SidoGugunCodeDto>>(haHouseMapService.getGugunInSido(sido), HttpStatus.OK);
 	}
-	
+
+	@ApiOperation(value = "동 정보", notes = "전국의 동을 반환한다.", response = List.class)
 	@GetMapping("/dong")
 	public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
+		logger.info("dong - 호출");
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
-	
+
+	@ApiOperation(value = "아파트 정보", notes = "전국의 아파트를 반환한다.", response = List.class)
 	@GetMapping("/apt")
 	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
+		logger.info("apt - 호출");
 		return new ResponseEntity<List<HouseInfoDto>>(haHouseMapService.getAptInDong(dong), HttpStatus.OK);
 	}
 	
