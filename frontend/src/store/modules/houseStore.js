@@ -3,9 +3,9 @@ import { sidoList, gugunList, dongList, houseList } from "@/api/house.js";
 const houseStore = {
   namespaced: true,
   state: {
-    sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
-    dongs: [{ value: null, text: "선택하세요" }],
+    sidos: [{ value: null, text: "시를 선택하세요" }],
+    guguns: [{ value: null, text: "구/군을 선택하세요" }],
+    dongs: [{ value: null, text: "동을 선택하세요" }],
     houses: [],
     house: null,
   },
@@ -29,16 +29,18 @@ const houseStore = {
       });
     },
     CLEAR_SIDO_LIST: (state) => {
-      state.sidos = [{ value: null, text: "선택하세요" }];
+      state.sidos = [{ value: null, text: "시를 선택하세요" }];
     },
     CLEAR_GUGUN_LIST: (state) => {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [{ value: null, text: "구/군을 선택하세요" }];
     },
     CLEAR_DONG_LIST: (state) => {
-      state.dongs = [{ value: null, text: "선택하세요" }];
+      state.dongs = [{ value: null, text: "동을 선택하세요" }];
+    },
+    CLEAR_HOUSES_LIST: (state) => {
+      state.houses = [];
     },
     SET_HOUSE_LIST: (state, houses) => {
-      //   console.log(houses);
       state.houses = houses;
     },
     SET_DETAIL_HOUSE: (state, house) => {
@@ -113,22 +115,24 @@ const houseStore = {
         }
       );
     },
-    getHouseListByDong: ({ commit }, gugunCode, dongName) => {
+    getHouseListByDong: ({ commit }, payload) => {
       const SERVICE_KEY = process.env.VUE_APP_APT_DEAL_API_KEY;
       //   const SERVICE_KEY =
       //     "9Xo0vlglWcOBGUDxH8PPbuKnlBwbWU6aO7%2Bk3FV4baF9GXok1yxIEF%2BIwr2%2B%2F%2F4oVLT8bekKU%2Bk9ztkJO0wsBw%3D%3D";
       const params = {
-        LAWD_CD: gugunCode,
+        LAWD_CD: payload.gugunCode,
         DEAL_YMD: "202110",
+        numOfRows: 100,
         serviceKey: decodeURIComponent(SERVICE_KEY),
       };
+      console.log(payload);
       houseList(
         params,
         (response) => {
-          var ret = response.data.response.body.items.item.map((item) => {
-            return item.dongName == dongName;
-          });
-
+          var ret = [];
+          for (let item of response.data.response.body.items.item) {
+            if (item["법정동"].trim() == payload.dongName) ret.push(item);
+          }
           commit("SET_HOUSE_LIST", ret);
         },
         (error) => {

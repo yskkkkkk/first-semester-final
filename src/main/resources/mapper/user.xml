@@ -28,21 +28,21 @@
 		where user_id= #{userId}
 	</delete>
 
-	<select id="userInfo" resultType="com.ssafy.happyhouse.user.dto.userDto">
+	<select id="userInfo" resultType="com.ssafy.happyhouse.user.model.UserDto">
 		select 
 		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
 		from user
 		where user_id= #{userId}
 	</select>
 
-	<select id="userList" resultType="com.ssafy.happyhouse.user.dto.userDto">
+	<select id="userList" resultType="com.ssafy.happyhouse.user.model.UserDto">
 		select 
 		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
 		from user
 		where 1=1
 	</select>
 
-	<select id="login" resultType="com.ssafy.happyhouse.user.dto.userDto">
+	<select id="login" resultType="com.ssafy.happyhouse.user.model.UserDto">
 		select 
 		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
 		from user

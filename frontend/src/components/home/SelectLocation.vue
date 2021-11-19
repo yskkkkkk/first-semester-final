@@ -22,23 +22,6 @@
       ></b-form-select>
     </b-col>
   </b-row>
-  <!-- <table class="table mt-2" id="resultTable">
-            <colgroup>
-              <col width="150" />
-              <col width="*" />
-              <col width="120" />
-              <col width="120" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>아파트이름</th>
-                <th class="text-center">주소</th>
-                <th>건축연도</th>
-                <th>최근거래금액</th>
-              </tr>
-            </thead>
-            <tbody id="searchResult"></tbody>
-</table> -->
 </template>
 
 <script>
@@ -52,7 +35,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
     키: 값
     memberStore: memberStore,
     houseStore: houseStore
-  }  
+  }
 */
 const houseStore = "houseStore";
 
@@ -67,14 +50,14 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["sidos", "guguns", "dongs"]),
-    // sidos() {
-    //   return this.$store.state.sidos;
-    // },
   },
   created() {
     // this.$store.dispatch("getSido");
     // this.sidoList();
     this.CLEAR_SIDO_LIST();
+    this.CLEAR_GUGUN_LIST();
+    this.CLEAR_DONG_LIST();
+    this.CLEAR_HOUSES_LIST();
     this.getSido();
   },
   methods: {
@@ -89,25 +72,35 @@ export default {
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
+      "CLEAR_HOUSES_LIST",
     ]),
     // sidoList() {
     //   this.getSido();
     // },
     gugunList() {
-      // console.log(this.sidoCode);
+      this.CLEAR_HOUSES_LIST();
       this.CLEAR_GUGUN_LIST();
+      this.CLEAR_DONG_LIST();
       this.gugunCode = null;
+      this.dongCode = null;
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     dongList() {
-      // console.log(this.sidoCode);
+      this.CLEAR_HOUSES_LIST();
       this.CLEAR_DONG_LIST();
       this.dongCode = null;
-      if (this.gugunCode) this.getDong(this.gugunCode);
+      if (this.gugunCode) {
+        this.getDong(this.gugunCode);
+        this.getHouseList(this.gugunCode);
+      }
     },
     searchApt() {
-      if (!this.dongCode) this.getHouseList(this.gugunCode);
-      else this.getHouseListByDong(this.gugunCode, this.dongCode);
+      this.CLEAR_HOUSES_LIST();
+      // if (!this.dongCode) this.getHouseList(this.gugunCode);
+      this.getHouseListByDong({
+        gugunCode: this.gugunCode,
+        dongName: this.dongCode,
+      });
     },
   },
 };
