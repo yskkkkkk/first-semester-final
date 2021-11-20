@@ -1,5 +1,4 @@
-package com.ssafy.happyhouse.reply.model;
-
+package com.ssafy.happyhouse.board.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,10 +21,12 @@ public class ReplyDto {
 	@ApiModelProperty(value = "수정 일시")
 	private String modTime;
 	
-	public ReplyDto() {
-		// TODO Auto-generated constructor stub
+	public ReplyDto() {}
+	public ReplyDto(int replyNo, int recommand) {
+		super();
+		this.replyNo = replyNo;
+		this.recommand = recommand;
 	}
-
 	public ReplyDto(int replyNo, int boardNo, String content, String writer, int recommand, String regTime,
 			String modTime) {
 		super();

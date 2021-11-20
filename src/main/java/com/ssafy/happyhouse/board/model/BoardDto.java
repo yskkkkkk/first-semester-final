@@ -24,6 +24,26 @@ public class BoardDto {
 	@ApiModelProperty(value = "수정 일시")
 	private String modTime;
 	
+	public BoardDto() {}
+	public BoardDto(int boardNo, int readCount) {
+		super();
+		this.boardNo = boardNo;
+		this.readCount = readCount;
+	}
+	public BoardDto(int boardNo, String title, String content, String writer, int readCount, String isExposing,
+			String isNotice, String regTime, String modTime) {
+		super();
+		this.boardNo = boardNo;
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+		this.readCount = readCount;
+		this.isExposing = isExposing;
+		this.isNotice = isNotice;
+		this.regTime = regTime;
+		this.modTime = modTime;
+	}
+
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -77,5 +97,11 @@ public class BoardDto {
 	}
 	public void setModTime(String modTime) {
 		this.modTime = modTime;
+	}
+	@Override
+	public String toString() {
+		return "BoardDto [boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", writer=" + writer
+				+ ", readCount=" + readCount + ", isExposing=" + isExposing + ", isNotice=" + isNotice + ", regTime="
+				+ regTime + ", modTime=" + modTime + "]";
 	}
 }

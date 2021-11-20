@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.board.dao.BoardMapper">
+
+	<select id="replyList" resultType="com.ssafy.happyhouse.board.model.ReplyDto">
+		select reply_no, board_no, content, writer,
+		recommand, reg_time, mod_time
+		from reply
+		where board_no = #{boardNo}
+	</select>
+
+	<select id="replyInfo" resultType="com.ssafy.happyhouse.board.model.ReplyDto">
+		select reply_no, board_no, content, writer,
+		recommand, reg_time, mod_time
+		from reply
+		where reply_no = #{replyNo}
+	</select>
+
+	<insert id="regist">
+		insert into reply 
+		(board_no, content, writer,	recommand, reg_time)
+		values
+		(#{boardNo}, #{content}, #{writer}, 0, now())
+	</insert>
+
+	<update id="update">
+		update reply
+		set
+		<if test="content != null and content != ''">
+			content = #{content}
+			mod_time = now()
+		</if>
+		<if test="recommand != null and recommand != ''">
+			recommand = #{recommand}
+		</if>
+		where reply_no = #{replyNo}
+	</update>
+
+	<delete id="delete">
+		delete from reply
+		where reply_no = #{replyNo}
+	</delete>
+</mapper>

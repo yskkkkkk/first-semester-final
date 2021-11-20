@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.board.dao.BoardMapper">
+
+	<select id="boardList" resultType="com.ssafy.happyhouse.board.model.BoardDto">
+		select board_no, title, content, writer, read_count, 
+		is_exposing, is_notice, reg_time, mod_time
+		from board
+		where 1 = 1
+		<if test="title != null and title != ''">
+			AND title LIKE CONCAT('%', #{title}, '%')
+		</if>
+		<if test="writer != null and writer != ''">
+			AND title LIKE CONCAT('%', #{writer}, '%')
+		</if>
+	</select>
+
+	<select id="boardInfo" resultType="com.ssafy.happyhouse.board.model.BoardDto">
+		select board_no, title, content, writer, read_count, 
+		is_exposing, is_notice, reg_time, mod_time
+		from board
+		where board_no = #{boardNo}
+	</select>
+
+	<insert id="regist">
+		insert into board 
+		(title, content, writer, read_count, 
+		is_exposing, is_notice, reg_time)
+		values
+		(#{title}, #{content}, #{writer}, 0, 
+		 0, #{isNotice}, now())
+	</insert>
+
+	<update id="update">
+		update board
+		set
+		<if test="content != null and content != ''">
+			content = #{content}
+		</if>
+		<if test="readCount != null and readCount != ''">
+			read_count = #{readCount}
+		</if>
+		<if test="isExposing != null and isExposing != ''">
+			is_exposing = #{isExposing}
+		</if>
+		mod_time = now()
+		where board_no = #{boardNo}
+	</update>
+
+	<delete id="delete">
+		delete from board
+		where board_no = #{boardNo}
+	</delete>
+</mapper>

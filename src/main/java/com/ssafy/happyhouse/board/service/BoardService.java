@@ -1,19 +1,19 @@
-package com.ssafy.happyhouse.board.dao;
+package com.ssafy.happyhouse.board.service;
+
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.ssafy.happyhouse.board.model.BoardDto;
 
-@Mapper
-public interface BoardMapper {
+public interface BoardService {
 
 	int regist(BoardDto board) throws SQLException;
 
 	int update(BoardDto board) throws SQLException;
 	
 	int delete(int boardNo) throws SQLException;
+	
+	void updateReadCount(int boardNo) throws SQLException;
 	
 	BoardDto boardInfo(int boardNo) throws SQLException;
 	
