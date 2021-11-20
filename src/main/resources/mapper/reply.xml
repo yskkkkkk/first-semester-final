@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.happyhouse.board.dao.BoardMapper">
+<mapper namespace="com.ssafy.happyhouse.board.dao.ReplyMapper">
 
 	<select id="replyList" resultType="com.ssafy.happyhouse.board.model.ReplyDto">
 		select reply_no, board_no, content, writer,

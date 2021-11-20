@@ -31,10 +31,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/board")
 @Api("게시판 및 댓글 컨트롤러  API V1")
 public class BoardController {
-
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-	private static final String SUCCESS = "success";
-	private static final String FAIL = "fail";
 
 	@Autowired
 	private BoardService boardService;
@@ -46,7 +43,7 @@ public class BoardController {
 	@GetMapping("/board")
 	public ResponseEntity<List<BoardDto>> list(@RequestBody BoardDto board) throws SQLException {
 		List<BoardDto> list = boardService.boardList(board);
-		
+		logger.debug("게시판 리스트 호출");
 		if (list!=null && !list.isEmpty()) {
 			return new ResponseEntity<List<BoardDto>>(list, HttpStatus.OK);
 		} else {
@@ -58,6 +55,7 @@ public class BoardController {
 	@ApiOperation(value = "detail", notes = "질문상세 내용을 반환합니다.")
 	public ResponseEntity<BoardDto> detail(@PathVariable int boardNo) throws SQLException {
 		BoardDto board = boardService.boardInfo(boardNo);
+		logger.debug("게시판 상세 호출 no: "+boardNo);
 		
 		if (board!=null) {
 			return new ResponseEntity<BoardDto>(board, HttpStatus.OK);
