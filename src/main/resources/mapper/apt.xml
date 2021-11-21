@@ -18,10 +18,11 @@
 	</select>
 	
 	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
-		select distinct dongName, dongCode
-		from houseinfo
+		select dongName, dongCode
+		from dongcode
 		where left(dongCode, 5) = #{gugun}
-		order by dongName
+		group by dongName
+		order by dongName;
 	</select>
 	
 	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
@@ -32,8 +33,18 @@
 		on left(h.dongcode,2) = left(si.sidocode,2)
 		left join guguncode gu
 		on left(h.dongcode,5) = left(gu.guguncode,5)
-		where dongCode = #{dong} 
+		where dongCode = ${dong} 
 		order by aptName
+	</select>
+	
+	<select id="searchList" resultType="map">
+		select hd.no, hi.dongName, hi.aptName,
+		hd.aptCode, hd.dealAmount, hi.buildYear, hd.dealYear, hd.dealMonth, hd.dealDay,
+		hd.area, hd.floor, hi.lat, hi.lng, hi.jibun, hd.`type`, hd.rentMoney, hi.img 
+		from housedeal hd join houseinfo hi 
+		on hd.aptCode = hi.aptCode
+		where hi.${key} like concat('%', #{value}, '%')
+		order by ${order};
 	</select>
 	
 </mapper>

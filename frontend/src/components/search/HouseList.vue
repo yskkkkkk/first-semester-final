@@ -33,9 +33,6 @@ export default {
   },
   computed: {
     ...mapState(houseStore, ["houses"]),
-    // houses() {
-    //   return this.$store.state.houses;
-    // },
   },
   methods: {
     ...mapMutations(houseStore, ["CLEAR_HOUSE", "CLEAR_HOUSES_LIST"]),
@@ -43,4 +40,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.container {
+  display: block;
+  max-height: 700px;
+  overflow-y: scroll;
+}
+</style>

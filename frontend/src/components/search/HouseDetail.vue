@@ -2,36 +2,40 @@
   <b-container v-if="house" class="bv-example-row">
     <b-row>
       <b-col
-        ><h3>{{ house.아파트 }}</h3></b-col
+        ><h3>{{ house.aptName }}</h3></b-col
       >
     </b-row>
     <b-row class="mb-2 mt-1">
       <b-col
-        ><b-img :src="require('@/assets/apt.png')" fluid-grow></b-img
+        ><b-img
+          :src="require('@/assets/apt/apt' + this.imgnum + '.jpg')"
+          fluid-grow
+          style="max-height: 400px"
+        ></b-img
       ></b-col>
     </b-row>
     <b-row>
       <b-col>
         <b-alert show variant="secondary"
-          >일련번호 : {{ house.일련번호 }}</b-alert
+          >일련번호 : {{ house.jibun }}-{{ house.no }}</b-alert
         >
       </b-col>
     </b-row>
     <b-row>
       <b-col>
         <b-alert show variant="primary"
-          >아파트 이름 : {{ house.아파트 }}
+          >아파트 이름 : {{ house.aptName }}
         </b-alert>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-alert show variant="info">법정동 : {{ house.법정동 }} </b-alert>
+        <b-alert show variant="info">법정동 : {{ house.dongName }} </b-alert>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-alert show variant="warning">층수 : {{ house.층 }}층</b-alert>
+        <b-alert show variant="warning">층수 : {{ house.floor }}층</b-alert>
       </b-col>
     </b-row>
     <b-row>
@@ -39,9 +43,14 @@
         <b-alert show variant="danger"
           >거래금액 :
           {{
-            (parseInt(house.거래금액.replace(",", "")) * 10000) | price
+            (parseInt(house.dealAmount.replace(",", "")) * 10000) | price
           }}원</b-alert
         >
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-alert show variant="secondary">면적 : {{ house.area }}m²</b-alert>
       </b-col>
     </b-row>
   </b-container>
@@ -59,6 +68,14 @@ export default {
     // house() {
     //   return this.$store.state.house;
     // },
+  },
+  data() {
+    return {
+      imgnum: 0,
+    };
+  },
+  updated() {
+    this.imgnum = Math.floor(Math.random() * 13) + 1;
   },
   filters: {
     price(value) {

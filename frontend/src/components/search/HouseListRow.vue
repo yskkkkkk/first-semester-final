@@ -14,7 +14,11 @@
       ></b-img>
     </b-col>
     <b-col cols="10" class="align-self-center">
-      [{{ house.일련번호 }}] {{ house.아파트 }}
+      <!-- [{{ house.jibun }}-{{ house.no }}]  -->
+      {{ house.aptName }} | {{ house.dealYear }}.{{ house.dealMonth }}.{{
+        house.dealDay
+      }}
+      | {{ house.dealAmount.trim() }}만원 | {{ house.area }} m²
     </b-col>
   </b-row>
 </template>

@@ -8,44 +8,31 @@
         <b-form-input v-model="val"></b-form-input>
       </b-col>
       <b-col cols="2">
-        <b-button @click="searchBtn">검색</b-button>
+        <b-button id="searchBtn" @click="searchBtn">검색</b-button>
       </b-col>
     </b-row>
-    <b-row class="px-3">
-      <div>
-        <span class="input-title">매매 가격</span><br />
-        0원 ~ <span class="input-value">{{ price | priceFilter }}</span> 만원
-      </div>
-      <b-form-input
-        id="priceRange"
-        type="range"
-        min="500"
-        max="50000"
-        step="500"
-        v-model="price"
-      ></b-form-input
-      ><br /><br />
-    </b-row>
-    <b-row class="px-3">
-      <div>
-        <span class="input-title">층 수</span><br />
-        1층 ~ <span class="input-value">{{ floor }}</span> 층
-      </div>
-      <b-form-input
-        id="priceRange"
-        type="range"
-        min="1"
-        max="50"
-        step="1"
-        v-model="floor"
-      ></b-form-input
-      ><br />
-    </b-row>
+
+    <b-form-group
+      v-if="houses && houses.length != 0"
+      v-slot="{ ariaDescribedby }"
+    >
+      <b-form-radio-group
+        id="search-radios"
+        v-model="selected"
+        :options="options"
+        :aria-describedby="ariaDescribedby"
+        button-variant="outline-primary"
+        name="radio-btn-outline"
+        buttons
+      ></b-form-radio-group>
+    </b-form-group>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
+const houseStore = "houseStore";
+
 export default {
   name: "HouseSearchBar",
   data() {
@@ -58,37 +45,58 @@ export default {
         { value: "dong", text: "동" },
         { value: "name", text: "아파트 이름" },
       ],
+      selected: "new",
+      options: [
+        { text: "최신순", value: "new" },
+        { text: "가격순", value: "price" },
+        { text: "면적순", value: "area" },
+      ],
       val: "",
     };
   },
-  created() {},
   methods: {
-    ...mapMutations(["setKey", "setValue"]),
+    ...mapActions(houseStore, ["getSearchList"]),
+    ...mapMutations(houseStore, ["CLEAR_HOUSE", "CLEAR_HOUSES_LIST"]),
     searchBtn() {
       if (this.key == null) {
         alert("검색 분류를 선택해주세요");
       } else if (this.val == "") {
         alert("검색어를 입력해주세요.");
       } else {
-        console.log(this.key + " " + this.val);
-        this.setKey(this.key);
-        this.setValue(this.val);
-        this.$emit("newPosts");
+        // 검색
+        this.getSearchList({
+          key: this.key,
+          value: this.val,
+          order: this.selected,
+        });
       }
     },
   },
-  computed: { ...mapGetters(["searchPost"]) },
   filters: {
     priceFilter(value) {
       if (!value) return value;
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
+  computed: {
+    ...mapState(houseStore, ["houses"]),
+  },
+  watch: {
+    selected: function () {
+      this.CLEAR_HOUSE();
+      this.CLEAR_HOUSES_LIST();
+      this.getSearchList({
+        key: this.key,
+        value: this.val,
+        order: this.selected,
+      });
+    },
+  },
 };
 </script>
 
 <style scoped>
-button {
+#searchBtn {
   width: 100%;
 }
 .input-title {
