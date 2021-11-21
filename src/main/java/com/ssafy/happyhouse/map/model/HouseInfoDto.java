@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class HouseInfoDto {
 
 	@ApiModelProperty(value = "아파트일련번호")
-	private int aptCode;
+	private String aptCode;
 	@ApiModelProperty(value = "아파트이름")
 	private String aptName;
 	@ApiModelProperty(value = "동코드")
@@ -29,14 +29,16 @@ public class HouseInfoDto {
 	private String lng;
 	@ApiModelProperty(value = "아파트이미지")
 	private String img;
+	@ApiModelProperty(value = "geocoder 검색을 위한 주소")
+	private String address;
 	@ApiModelProperty(value = "매매가격")
 	private String recentPrice;
 
-	public int getAptCode() {
+	public String getAptCode() {
 		return aptCode;
 	}
 
-	public void setAptCode(int aptCode) {
+	public void setAptCode(String aptCode) {
 		this.aptCode = aptCode;
 	}
 
@@ -127,4 +129,21 @@ public class HouseInfoDto {
 	public void setRecentPrice(String recentPrice) {
 		this.recentPrice = recentPrice;
 	}
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "HouseInfoDto [aptCode=" + aptCode + ", aptName=" + aptName + ", dongCode=" + dongCode + ", dongName="
+				+ dongName + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", buildYear=" + buildYear
+				+ ", jibun=" + jibun + ", lat=" + lat + ", lng=" + lng + ", img=" + img + ", recentPrice=" + recentPrice
+				+ "]";
+	}
+	
+	
 }

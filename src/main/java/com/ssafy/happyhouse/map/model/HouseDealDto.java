@@ -8,7 +8,7 @@ public class HouseDealDto {
 	@ApiModelProperty(value = "아파트 매매 일련번호")
 	private int dealNo;
 	@ApiModelProperty(value = "아파트일련번호")
-	private int aptCode;
+	private String aptCode;
 	@ApiModelProperty(value = "매매 가격")
 	private String dealAmount;
 	@ApiModelProperty(value = "년도")
@@ -25,16 +25,37 @@ public class HouseDealDto {
 	private String type;
 	@ApiModelProperty(value = "월세")
 	private String rentMoney;
+	
+	private HouseInfoDto houseinfo;
+	
+	public HouseDealDto(String aptCode, String dealAmount, int dealYear, String dealMonth, String dealDay, String area,
+			String floor, HouseInfoDto houseinfo) {
+		super();
+		this.aptCode = aptCode;
+		this.dealAmount = dealAmount;
+		this.dealYear = dealYear;
+		this.dealMonth = dealMonth;
+		this.dealDay = dealDay;
+		this.area = area;
+		this.floor = floor;
+		this.houseinfo = houseinfo;
+	}
+	public HouseInfoDto getHouseinfo() {
+		return houseinfo;
+	}
+	public void setHouseinfo(HouseInfoDto houseinfo) {
+		this.houseinfo = houseinfo;
+	}
 	public int getDealNo() {
 		return dealNo;
 	}
 	public void setDealNo(int dealNo) {
 		this.dealNo = dealNo;
 	}
-	public int getAptCode() {
+	public String getAptCode() {
 		return aptCode;
 	}
-	public void setAptCode(int aptCode) {
+	public void setAptCode(String aptCode) {
 		this.aptCode = aptCode;
 	}
 	public String getDealAmount() {
@@ -85,6 +106,11 @@ public class HouseDealDto {
 	public void setRentMoney(String rentMoney) {
 		this.rentMoney = rentMoney;
 	}
-	
+	@Override
+	public String toString() {
+		return "HouseDealDto [dealNo=" + dealNo + ", aptCode=" + aptCode + ", dealAmount=" + dealAmount + ", dealYear="
+				+ dealYear + ", dealMonth=" + dealMonth + ", dealDay=" + dealDay + ", area=" + area + ", floor=" + floor
+				+ ", type=" + type + ", rentMoney=" + rentMoney + ", houseinfo=" + houseinfo + "]";
+	}
 	
 }
