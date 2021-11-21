@@ -13,6 +13,7 @@
       <table v-if="houses.length > 0" class="table mt-2" id="resultTable">
         <thead>
           <tr>
+            <th>번호</th>
             <th>아파트이름</th>
             <th class="text-center">주소</th>
             <th>건축년도</th>
@@ -21,10 +22,11 @@
         </thead>
         <tbody id="searchResult">
           <tr v-for="(house, index) in houses" :key="index">
-            <td>{{ house.아파트 }}</td>
-            <td>{{ house.도로명 }} {{ house.지번 }}</td>
-            <td>{{ house.건축년도 }}</td>
-            <td>{{ house.거래금액.trim() }}</td>
+            <td>{{ index + 1 }}</td>
+            <td>{{ house.houseinfo.aptName }}</td>
+            <td>{{ house.houseinfo.dongName }} {{ house.houseinfo.jibun }}</td>
+            <td>{{ house.houseinfo.buildYear }}</td>
+            <td>{{ house.houseinfo.recentPrice.trim() }}</td>
           </tr>
         </tbody>
       </table>

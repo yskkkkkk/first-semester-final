@@ -78,6 +78,7 @@ export default {
     //   this.getSido();
     // },
     gugunList() {
+      // 시 선택했을 때
       this.CLEAR_HOUSES_LIST();
       this.CLEAR_GUGUN_LIST();
       this.CLEAR_DONG_LIST();
@@ -86,16 +87,21 @@ export default {
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     dongList() {
+      // 구/군 선택했을 때
       this.CLEAR_HOUSES_LIST();
       this.CLEAR_DONG_LIST();
       this.dongCode = null;
+      console.log(this.gugunCode + " " + this.dongCode);
+
       if (this.gugunCode) {
         this.getDong(this.gugunCode);
         this.getHouseList(this.gugunCode);
       }
     },
     searchApt() {
+      // 동 선택했을 때
       this.CLEAR_HOUSES_LIST();
+      console.log(this.gugunCode + " " + this.dongCode);
       // if (!this.dongCode) this.getHouseList(this.gugunCode);
       this.getHouseListByDong({
         gugunCode: this.gugunCode,

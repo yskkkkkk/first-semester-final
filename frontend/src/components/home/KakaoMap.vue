@@ -67,12 +67,7 @@ export default {
           this.houses.map((house) => {
             // console.log(house);
             (async () => {
-              var address =
-                house["법정동"] +
-                " " +
-                house["도로명"] +
-                " " +
-                house["도로명건물본번호코드"];
+              var address = house.houseinfo.address;
               // console.log(address);
 
               let [lat, lng] = await this.addressSearch(address);
@@ -82,16 +77,6 @@ export default {
               } else {
                 house.lat = lat;
                 house.lng = lng;
-                house.aptCode = house["도로명건물본번호코드"];
-                house.aptName = house["아파트"];
-                house.dongCode = house["법정동읍면동코드"];
-                house.sidoName = "";
-                house.gugunName = "";
-                house.dongName = house["법정동"].trim();
-                house.img = "";
-                house.buildYear = house["건축년도"];
-                house.jibun = house["지번"];
-                house.recentPrice = house["거래금액"].trim();
               }
             })();
           });
@@ -144,15 +129,12 @@ export default {
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정
           bounds.extend(placePosition);
           this.place = places[i];
-          console.log(this.place);
+          // console.log(this.place);
 
           // 마커를 클릭하면 세부정보가 뜸
-          kakao.maps.event.addListener(marker, "click", () => {
-            return this.displayInfowindow(marker, this.place);
-          });
-
-          // kakao.maps.event.addListener(this.map, "click", () => {
-          //   this.customOverlay.setMap(null);
+          // kakao.maps.event.addListener(marker, "click", () => {
+          //   // var place = places[i];
+          //   return this.displayInfowindow(marker, this.place);
           // });
 
           itemEl.onmouseover = () => {
@@ -177,36 +159,36 @@ export default {
         marker.getPosition().getLat() + 0.00033,
         marker.getPosition().getLng() - 0.00003
       );
-      var lat = marker.getPosition().getLat() + 0.00033;
-      var lng = marker.getPosition().getLng() - 0.00003;
+      // var lat = marker.getPosition().getLat() + 0.00033;
+      // var lng = marker.getPosition().getLng() - 0.00003;
       const random = Math.floor(Math.random() * 13) + 1;
       const img = "apt" + random + ".jpg";
 
-      var sido = place.sidoName == null ? "" : place.sidoName;
-      var gugun = place.gugunName == null ? "" : place.gugunName;
-      var dong = place.dongName == null ? "" : place.dongName;
-      var jibun = place.jibun == null ? "" : place.jibun;
+      var sido =
+        place.houseinfo.sidoName == null ? "" : place.houseinfo.sidoName;
+      var gugun =
+        place.houseinfo.gugunName == null ? "" : place.houseinfo.gugunName;
+      var dong =
+        place.houseinfo.dongName == null ? "" : place.houseinfo.dongName;
+      var jibun = place.houseinfo.jibun == null ? "" : place.houseinfo.jibun;
       if (place.lat == null) return;
 
       var content =
         `
-		<div class="overlaybox">
+		<div class="overlaybox" style="background-color: white; padding: 3px; border-radius:5px;">
 			<div class="boxtitle">
-				<span>${place.aptName}<span>
-				<button class="btn btn-warning" onclick='this.closeOverlay(` +
-        lat +
-        `, ` +
-        lng +
-        `)'>X</button>
+				<span>${place.houseinfo.aptName}<span>
 			</div>
-			<div class="first"><img :src="@/assets/apt/${img}" style="width:247px; height:136px;" alt=""></div>
-			<ul>
-				<li class="up">
-					<span class="title">건축년도</span>
-					<span class="count">${place.buildYear}</span>
+			<div class="first">
+      <b-img :src="require('@/assets/apt/${img}')" style="width:247px; height:136px;"</b-img>
+      </div>
+			<ul style="list-style: none; padding: 0px;">
+				<li class="up" style="list-style: none;">
+					<span class="title" style="font-weight: bolder">건축년도</span>
+					<span class="count">${place.houseinfo.buildYear}</span>
 				</li>
-				<li>
-					<span class="title">주소</span>
+				<li style="list-style: none;">
+					<span class="title" style="font-weight: bolder">주소</span>
 					<span class="count">` +
         sido +
         ` ` +
@@ -217,9 +199,9 @@ export default {
         jibun +
         `</span>
 				</li>
-				<li>
-					<span class="title">최신거래금액</span>
-					<span class="count">${place.recentPrice}</span>
+				<li style="list-style: none;">
+					<span class="title" style="font-weight: bolder">거래금액</span>
+					<span class="count">${place.houseinfo.recentPrice}</span>
 				</li>
 			</ul>
 		</div>
@@ -232,7 +214,7 @@ export default {
       }).setMap(this.map);
 
       this.customs = [
-        this.customs,
+        ...this.customs,
         new kakao.maps.CustomOverlay({
           position: position,
           content: content,
@@ -240,7 +222,6 @@ export default {
           yAnchor: 0.91,
         }),
       ];
-      console.log(this.customs);
     },
 
     //마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
@@ -261,6 +242,7 @@ export default {
         marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
           image: markerImage,
+          clickable: true,
         });
 
       marker.setMap(this.map); // 지도 위에 마커를 표출합니다
@@ -295,15 +277,20 @@ export default {
 
     //검색결과 항목을 Element로 반환하는 함수입니다
     getListItem(index, place) {
-      var sido = place.sidoName == null ? "" : place.sidoName;
-      var gugun = place.gugunName == null ? "" : place.gugunName;
-      var dong = place.dongName == null ? "" : place.dongName;
-      var jibun = place.jibun == null ? "" : place.jibun;
+      var sido =
+        place.houseinfo.sidoName == null ? "" : place.houseinfo.sidoName;
+      var gugun =
+        place.houseinfo.gugunName == null ? "" : place.houseinfo.gugunName;
+      var dong =
+        place.houseinfo.dongName == null ? "" : place.houseinfo.dongName;
+      var jibun = place.houseinfo.jibun == null ? "" : place.houseinfo.jibun;
       var el = document.createElement("li");
       var itemStr =
         `
           <span class="markerbg marker_${index + 1}></span>
-          <div class="info"><h5>${place.aptName}</h5> <button>관심등록</button>
+          <div class="info"><h5>${
+            place.houseinfo.aptName
+          }</h5> <button>관심등록</button>
           <span>` +
         sido +
         ` ` +
