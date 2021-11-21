@@ -1,7 +1,28 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand href="#">
+      <b-button pill variant="success" v-b-toggle.sidebar>실시간 문의</b-button>
+      <b-sidebar
+        id="sidebar"
+        title="실시간 문의"
+        :backdrop-variant="variant"
+        backdrop
+        shadow
+      >
+        <div class="px-3 py-2">
+          <p>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+            ac consectetur ac, vestibulum at eros.
+          </p>
+          <b-img
+            src="https://picsum.photos/500/500/?image=54"
+            fluid
+            thumbnail
+          ></b-img>
+        </div>
+      </b-sidebar>
+      <!-- <b-navbar-brand href="#">
         <router-link to="/">
           <img
             src="@/assets/ssafy_logo.png"
@@ -10,7 +31,7 @@
             alt="Kitten"
           />
         </router-link>
-      </b-navbar-brand>
+      </b-navbar-brand> -->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -22,7 +43,7 @@
             ></b-nav-item
           >
           <b-nav-item href="#"
-            ><router-link :to="{ name: 'Board' }" class="link"
+            ><router-link :to="{ name: 'BoardList' }" class="link"
               ><b-icon icon="journal" font-scale="1"></b-icon>
               게시판</router-link
             ></b-nav-item
