@@ -80,6 +80,7 @@ const routes = [
     ],
   },
   {
+    // !!!!!!!!!! 로그인 구현되면 주석 풀기 !!!!!!!!!!!!
     path: "/board",
     name: "Board",
     component: Board,
@@ -93,19 +94,19 @@ const routes = [
       {
         path: "write",
         name: "BoardWrite",
-        beforeEnter: onlyAuthUser,
+        // beforeEnter: onlyAuthUser,
         component: BoardWrite,
       },
       {
-        path: "detail/:articleno",
+        path: "detail/:boardNo",
         name: "BoardView",
-        beforeEnter: onlyAuthUser,
+        // beforeEnter: onlyAuthUser,
         component: BoardView,
       },
       {
-        path: "update/:articleno",
+        path: "update/:boardNo",
         name: "BoardUpdate",
-        beforeEnter: onlyAuthUser,
+        // beforeEnter: onlyAuthUser,
         component: BoardUpdate,
       },
     ],

@@ -17,18 +17,21 @@ public class NewsDto {
 	private String content;
 	@ApiModelProperty(value = "링크")
 	private String url;
+	@ApiModelProperty(value = "이미지")
+	private String img;
 	
 	public NewsDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NewsDto(int newsNo, String title, String media, String content, String url) {
+	public NewsDto(int newsNo, String title, String media, String content, String url, String img) {
 		super();
 		this.newsNo = newsNo;
 		this.title = title;
 		this.media = media;
 		this.content = content;
 		this.url = url;
+		this.img = img;
 	}
 
 	public int getNewsNo() {
@@ -71,9 +74,19 @@ public class NewsDto {
 		this.url = url;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	@Override
 	public String toString() {
 		return "NewsDto [newsNo=" + newsNo + ", title=" + title + ", media=" + media + ", content=" + content + ", url="
-				+ url + "]";
+				+ url + ", img=" + img + "]";
 	}
+
+	
 }

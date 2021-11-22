@@ -2,9 +2,9 @@
   <div>
     <h5>관련뉴스</h5>
     <b-carousel
-      id="carousel-1"
+      id="news-carousel"
       v-model="slide"
-      :interval="4000"
+      :interval="5000"
       controls
       indicators
       background="#ababab"
@@ -16,18 +16,39 @@
     >
       <!-- Slide with blank fluid image to maintain slide aspect ratio -->
       <a
-        :href="article.link"
+        :href="article.url"
         target="_blank"
-        v-for="(article, index) in articles"
+        v-for="(article, index) in newslist"
         :key="index"
       >
+        <b-carousel-slide :caption="article.title" v-if="article.img != ''">
+          <!-- 이미지 있을 때 -->
+          <template #img>
+            <img
+              class="d-block img-fluid w-100"
+              width="1024"
+              height="480"
+              :src="article.img"
+              alt="image slot"
+              style="opacity: 0.3"
+            />
+          </template>
+          <div>
+            <div>{{ article.media }}</div>
+            <p>
+              {{ article.content }}
+            </p>
+          </div>
+        </b-carousel-slide>
         <b-carousel-slide
+          v-else
           :caption="article.title"
           img-blank
           img-alt="Blank image"
         >
+          <!-- 이미지 없을 때 -->
           <div>
-            <div>{{ article.writer }}</div>
+            <div>{{ article.media }}</div>
             <p>
               {{ article.content }}
             </p>
@@ -39,37 +60,19 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
+const newsStore = "newsStore";
 export default {
   data() {
     return {
       slide: 0,
       sliding: null,
-      articles: [
-        {
-          title: "title1 title1 title1 title1 title1 ",
-          writer: "writer1",
-          content:
-            "content1 content1 content1 content1 content1 content1 content1 content1 content1 content1 content1 ",
-          link: "https://www.naver.com/",
-        },
-        {
-          title: "title2 title2 title2 title2 title2 ",
-          writer: "writer2",
-          content:
-            "content2 content2 content2 content2 content2 content2 content2 content2 content2 content2 content2 ",
-          link: "https://www.daum.net/",
-        },
-        {
-          title: "title3 title3 title3 title3 title3 ",
-          writer: "writer3",
-          content:
-            "content3 content3 content3 content3 content3 content3 content3 content3 content3 content3 content3 ",
-          link: "https://www.ssafy.com/ksp/jsp/swp/swpMain.jsp",
-        },
-      ],
+      articles: this.newslist,
     };
   },
   methods: {
+    ...mapActions(newsStore, ["getNewsList"]),
+    ...mapMutations(newsStore, ["CLEAR_NEWS_LIST"]),
     onSlideStart() {
       this.sliding = true;
     },
@@ -77,5 +80,27 @@ export default {
       this.sliding = false;
     },
   },
+  created() {
+    if (this.newslist.length == 0) {
+      this.CLEAR_NEWS_LIST();
+      this.getNewsList();
+    }
+  },
+  computed: {
+    ...mapState(newsStore, ["newslist"]),
+  },
 };
 </script>
+
+<style scoped>
+.image-overlay {
+  width: 100%;
+  height: 100;
+  position: absolute;
+  background-color: #f85752;
+  opacity: 0.5;
+}
+.carousel-caption div {
+  text-shadow: 2px 2px 5px black;
+}
+</style>

@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.happyhouse.board.dao.BoardMapper">
 
-	<select id="boardList" resultType="com.ssafy.happyhouse.board.model.BoardDto">
+	<select id="boardList" resultType="boardDto">
 		select board_no, title, content, writer, read_count, 
 		is_exposing, is_notice, reg_time, mod_time
 		from board
@@ -16,34 +16,29 @@
 		</if>
 	</select>
 
-	<select id="boardInfo" resultType="com.ssafy.happyhouse.board.model.BoardDto">
+	<select id="boardInfo" resultType="boardDto">
 		select board_no, title, content, writer, read_count, 
 		is_exposing, is_notice, reg_time, mod_time
 		from board
 		where board_no = #{boardNo}
 	</select>
 
-	<insert id="regist">
+	<insert id="regist" parameterType="boardDto">
 		insert into board 
 		(title, content, writer, read_count, 
 		is_exposing, is_notice, reg_time)
 		values
 		(#{title}, #{content}, #{writer}, 0, 
-		 0, #{isNotice}, now())
+		 #{isExposing}, #{isNotice}, now())
 	</insert>
 
-	<update id="update">
+	<update id="update" parameterType="boardDto">
 		update board
-		set
-		<if test="content != null and content != ''">
-			content = #{content}
-		</if>
-		<if test="readCount != null and readCount != ''">
-			read_count = #{readCount}
-		</if>
-		<if test="isExposing != null and isExposing != ''">
-			is_exposing = #{isExposing}
-		</if>
+		set 
+		title = #{title},
+		content = #{content}, 
+		read_count = #{readCount},
+		is_exposing = #{isExposing},
 		mod_time = now()
 		where board_no = #{boardNo}
 	</update>

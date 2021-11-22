@@ -25,8 +25,9 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          :header-html="`<h3>${article.boardNo}.
+          ${article.title} [${article.readCount}]</h3>
+          <div><h6>${article.writer}</div><div>${article.regTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -42,15 +43,12 @@
 
 <script>
 // import moment from "moment";
-import { getArticle, deleteArticle } from "@/api/board";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
 
 export default {
-  data() {
-    return {
-      article: {},
-    };
-  },
   computed: {
+    ...mapState(boardStore, ["article"]),
     message() {
       if (this.article.content)
         return this.article.content.split("\n").join("<br>");
@@ -63,32 +61,29 @@ export default {
     // },
   },
   created() {
-    getArticle(
-      this.$route.params.articleno,
-      (response) => {
-        this.article = response.data;
-      },
-      (error) => {
-        console.log("삭제시 에러발생!!", error);
-      }
-    );
+    this.getArticleByNo(this.$route.params.boardNo);
   },
   methods: {
+    ...mapActions(boardStore, [
+      "getArticleByNo",
+      "deleteArticleByNo",
+      "getlistArticle",
+    ]),
     listArticle() {
       this.$router.push({ name: "BoardList" });
     },
     moveModifyArticle() {
       this.$router.replace({
         name: "BoardUpdate",
-        params: { articleno: this.article.articleno },
+        params: { boardNo: this.$route.params.boardNo, type: "modify" },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     removeArticle() {
-      if (confirm("정말로 삭제?")) {
-        deleteArticle(this.article.articleno, () => {
-          this.$router.push({ name: "BoardList" });
-        });
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.deleteArticleByNo(this.$route.params.boardNo);
+        this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
+        alert("삭제 되었습니다.");
+        this.listArticle();
       }
     },
   },

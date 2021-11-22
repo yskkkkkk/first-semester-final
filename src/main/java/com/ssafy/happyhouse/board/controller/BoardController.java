@@ -40,7 +40,7 @@ public class BoardController {
 	private ReplyService replyService;
 	
 	@ApiOperation(value = "list", notes = "게시판 리스트를 반환합니다.")
-	@GetMapping("/board")
+	@PostMapping("/list")
 	public ResponseEntity<List<BoardDto>> list(@RequestBody BoardDto board) throws SQLException {
 		List<BoardDto> list = boardService.boardList(board);
 		logger.info("boarList - 호출");
@@ -51,7 +51,7 @@ public class BoardController {
 		}
 	}
 	
-	@GetMapping("/board/{boardNo}")
+	@GetMapping("/{boardNo}")
 	@ApiOperation(value = "detail", notes = "질문상세 내용을 반환합니다.")
 	public ResponseEntity<BoardDto> detail(@PathVariable int boardNo) throws SQLException {
 		BoardDto board = boardService.boardInfo(boardNo);
@@ -63,7 +63,7 @@ public class BoardController {
 		}
 	}
 	
-	@PostMapping("/board")
+	@PostMapping("/write")
 	@ApiOperation(value = "create", notes = "새 게시글을  작성합니다.")
 	public ResponseEntity<BoardDto> create(@RequestBody BoardDto board) throws SQLException {
 		boolean result = boardService.regist(board) == 1 ? true : false;
@@ -82,9 +82,10 @@ public class BoardController {
 		boardService.updateReadCount(qnaNo);
 	}
 
-	@PutMapping("/board")
+	@PutMapping("/update")
 	@ApiOperation(value = "modify", notes = "게시물을 수정합니다.")
 	public ResponseEntity<BoardDto> modifyBoard(@RequestBody BoardDto board) throws SQLException {
+		System.out.println(board);
 		boolean result = boardService.update(board) == 1 ? true : false;
 		logger.info("modifyBoard - 호출");
 		if (result) {
@@ -94,7 +95,7 @@ public class BoardController {
 		}
 	}
 	
-	@DeleteMapping("/board/{boardNo}")
+	@DeleteMapping("/{boardNo}")
 	@ApiOperation(value = "remove", notes = "게시물을 삭제합니다.")
 	public ResponseEntity<Boolean> removeBoard(@PathVariable int boardNo) throws SQLException {
 		boolean result = boardService.delete(boardNo) == 1 ? true : false;

@@ -109,6 +109,8 @@ export default {
       // });
       // 가져온 houses를 js 내부에서 정렬 - getters
       this.SET_HOUSE_LIST(this.getHouseOrder(this.selected));
+      if (this.aptName == "") this.CLEAR_HOUSES_FILTER();
+      else this.SET_HOUSE_FILTER(this.aptName);
     },
     dongcodes: function () {
       if (this.dongcodes.length > 0) {
