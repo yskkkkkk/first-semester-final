@@ -77,9 +77,9 @@ public class BoardController {
 	
 	@PutMapping("/readCount/{boardNo}")
 	@ApiOperation(value = "readCount", notes = "조회수를 증가시킵니다.")
-	public void modify(@PathVariable int qnaNo) throws SQLException {
+	public void modify(@PathVariable int boardNo) throws SQLException {
 		logger.info("readCount - 호출");
-		boardService.updateReadCount(qnaNo);
+		boardService.updateReadCount(boardNo);
 	}
 
 	@PutMapping("/update")
@@ -111,7 +111,7 @@ public class BoardController {
 	@GetMapping("/reply/{boardNo}")
 	public ResponseEntity<List<ReplyDto>> replyList(@PathVariable int boardNo) throws SQLException {
 		List<ReplyDto> list = replyService.replyList(boardNo);
-		logger.info("removeBoard - 호출");
+		logger.info("replyList - 호출");
 		if (list!=null && !list.isEmpty()) {
 			return new ResponseEntity<List<ReplyDto>>(list, HttpStatus.OK);
 		} else {

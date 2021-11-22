@@ -17,7 +17,7 @@ const newsStore = {
   actions: {
     getNewsList: ({ commit }) => {
       NewsList(({ data }) => {
-        console.log(data);
+        // console.log(data);
         commit("SET_NEWS_LIST", data);
       }),
         (error) => {

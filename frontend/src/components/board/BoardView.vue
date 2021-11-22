@@ -38,30 +38,31 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <b-card>
+          <reply-write-form type="register"></reply-write-form>
+        </b-card>
+        <reply-list></reply-list>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
 <script>
 // import moment from "moment";
+import ReplyWriteForm from "@/components/reply/child/ReplyWriteForm.vue";
+import ReplyList from "@/components/reply/ReplyList.vue";
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
 
 export default {
-  computed: {
-    ...mapState(boardStore, ["article"]),
-    message() {
-      if (this.article.content)
-        return this.article.content.split("\n").join("<br>");
-      return "";
-    },
-    // changeDateFormat() {
-    //   return moment(new Date(this.article.regtime)).format(
-    //     "YYYY.MM.DD hh:mm:ss"
-    //   );
-    // },
-  },
+  name: "BoardView",
+  components: { ReplyList, ReplyWriteForm },
   created() {
-    this.getArticleByNo(this.$route.params.boardNo);
+    setTimeout(() => {
+      this.getArticleByNo(this.$route.params.boardNo);
+    }, 100);
   },
   methods: {
     ...mapActions(boardStore, [
@@ -86,6 +87,19 @@ export default {
         this.listArticle();
       }
     },
+  },
+  computed: {
+    ...mapState(boardStore, ["article"]),
+    message() {
+      if (this.article.content)
+        return this.article.content.split("\n").join("<br>");
+      return "";
+    },
+    // changeDateFormat() {
+    //   return moment(new Date(this.article.regtime)).format(
+    //     "YYYY.MM.DD hh:mm:ss"
+    //   );
+    // },
   },
 };
 </script>

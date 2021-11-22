@@ -88,7 +88,7 @@ export default {
     };
   },
   created() {
-    console.log(this.type);
+    // console.log(this.type);
     if (this.type === "modify") {
       this.article = this.getArticle;
       this.isUserid = true;
@@ -151,7 +151,10 @@ export default {
       this.updateArticleByNo(params);
       this.getlistArticle();
       alert("글이 수정되었습니다.");
-      this.moveList();
+      this.$router.push({
+        name: "BoardView",
+        params: { boardNo: this.article.boardNo },
+      });
     },
     moveList() {
       this.$router.push({ name: "BoardList" });

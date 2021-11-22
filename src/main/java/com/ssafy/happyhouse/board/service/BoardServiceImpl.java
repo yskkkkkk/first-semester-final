@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void updateReadCount(int boardNo) throws SQLException {
 		BoardDto board = sqlSession.getMapper(BoardMapper.class).boardInfo(boardNo);
-		sqlSession.getMapper(BoardMapper.class).update(new BoardDto(boardNo, board.getReadCount()+1));
+		sqlSession.getMapper(BoardMapper.class).updateReadCount(new BoardDto(boardNo, board.getReadCount()+1));
 	}
 	
 	@Override

@@ -3,14 +3,14 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.happyhouse.board.dao.ReplyMapper">
 
-	<select id="replyList" resultType="com.ssafy.happyhouse.board.model.ReplyDto">
+	<select id="replyList" resultType="replyDto">
 		select reply_no, board_no, content, writer,
 		recommand, reg_time, mod_time
 		from reply
 		where board_no = #{boardNo}
 	</select>
 
-	<select id="replyInfo" resultType="com.ssafy.happyhouse.board.model.ReplyDto">
+	<select id="replyInfo" resultType="replyDto">
 		select reply_no, board_no, content, writer,
 		recommand, reg_time, mod_time
 		from reply
@@ -24,16 +24,12 @@
 		(#{boardNo}, #{content}, #{writer}, 0, now())
 	</insert>
 
-	<update id="update">
+	<update id="update" parameterType="replyDto">
 		update reply
 		set
-		<if test="content != null and content != ''">
-			content = #{content}
-			mod_time = now()
-		</if>
-		<if test="recommand != null and recommand != ''">
-			recommand = #{recommand}
-		</if>
+		content = #{content},
+		mod_time = now(),
+		recommand = #{recommand}
 		where reply_no = #{replyNo}
 	</update>
 

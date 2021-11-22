@@ -18,5 +18,7 @@ public interface BoardMapper {
 	BoardDto boardInfo(int boardNo) throws SQLException;
 	
 	List<BoardDto> boardList(BoardDto board) throws SQLException;
+
+	void updateReadCount(BoardDto boardDto) throws SQLException;
 	
 }

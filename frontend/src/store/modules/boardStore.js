@@ -4,6 +4,7 @@ import {
   getArticle,
   modifyArticle,
   deleteArticle,
+  increaseHit,
 } from "@/api/board.js";
 
 const boardStore = {
@@ -104,6 +105,17 @@ const boardStore = {
 
       modifyArticle(
         params,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    increaseHit: ({ commit }, articleNo) => {
+      increaseHit(
+        articleNo,
         () => {
           commit("GOOD_RESULT");
         },
