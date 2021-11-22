@@ -23,19 +23,4 @@ body {
     "Roboto", "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
     "Noto Sans KR", "Malgun Gothic", sans-serif;
 }
-
-a.link,
-a.link:hover {
-  color: white;
-}
-
-a:hover {
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a.router-link-exact-active {
-  color: #42b983;
-  font-weight: bold;
-}
 </style>

@@ -2,13 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-button pill variant="success" v-b-toggle.sidebar>실시간 문의</b-button>
-      <b-sidebar
-        id="sidebar"
-        title="실시간 문의"
-        :backdrop-variant="variant"
-        backdrop
-        shadow
-      >
+      <b-sidebar id="sidebar" title="실시간 문의" backdrop shadow>
         <div class="px-3 py-2">
           <p>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
@@ -22,21 +16,11 @@
           ></b-img>
         </div>
       </b-sidebar>
-      <!-- <b-navbar-brand href="#">
-        <router-link to="/">
-          <img
-            src="@/assets/ssafy_logo.png"
-            class="d-inline-block align-middle"
-            width="90px"
-            alt="Kitten"
-          />
-        </router-link>
-      </b-navbar-brand> -->
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
+        <b-navbar-nav id="nav-menu">
           <b-nav-item href="#"
             ><router-link :to="{ name: 'Home' }" class="link"
               ><b-icon icon="house" font-scale="1"></b-icon> HOME</router-link
@@ -48,12 +32,6 @@
               게시판</router-link
             ></b-nav-item
           >
-          <!-- <b-nav-item href="#"
-            ><router-link :to="{ name: 'Instargram' }" class="link"
-              ><b-icon icon="instagram" font-scale="1"></b-icon>
-              인별그램</router-link
-            ></b-nav-item
-          > -->
           <b-nav-item href="#"
             ><router-link :to="{ name: 'Search' }" class="link"
               ><b-icon icon="search" font-scale="1"></b-icon> 검색</router-link
@@ -61,7 +39,7 @@
           >
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto" v-if="userInfo">
+        <b-navbar-nav class="userInfo ml-auto" v-if="userInfo">
           <b-nav-item class="align-self-center"
             ><b-avatar
               variant="primary"
@@ -83,7 +61,7 @@
             >로그아웃</b-nav-item
           >
         </b-navbar-nav>
-        <b-navbar-nav class="ml-auto" v-else>
+        <b-navbar-nav class="userInfo ml-auto" v-else>
           <b-nav-item-dropdown right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
@@ -112,6 +90,11 @@ const memberStore = "memberStore";
 
 export default {
   name: "NaviBar",
+  data() {
+    return {
+      isSticky: true,
+    };
+  },
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
@@ -127,4 +110,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#nav-menu a.link,
+#nav-menu a.link:hover {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#nav-menu a.link.router-link-exact-active,
+a.router-link-exact-active {
+  color: #42b983;
+  font-weight: bold;
+}
+</style>
