@@ -1,8 +1,7 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
-    <h3 class="underline-hotpink">
-      <b-icon icon="journals"></b-icon> Board Service
-    </h3>
+  <b-container class="bv-example-row mt-5">
+    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon> 게시판</h3>
+    <div class="mb-5">자유롭게 정보를 공유할 수 있습니다.</div>
     <router-view></router-view>
   </b-container>
 </template>

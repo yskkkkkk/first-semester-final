@@ -52,15 +52,17 @@
         </b-form-checkbox>
         <b-button
           type="submit"
-          variant="primary"
+          variant="outline-primary"
           class="m-1"
           v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else
+        <b-button type="submit" variant="outline-primary" class="m-1" v-else
           >글수정</b-button
         >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-button variant="outline-danger" class="m-1" @click="moveList"
+          >취소</b-button
+        >
       </b-form>
     </b-col>
   </b-row>
@@ -88,7 +90,7 @@ export default {
     };
   },
   created() {
-    console.log(this.type);
+    // console.log(this.type);
     if (this.type === "modify") {
       this.article = this.getArticle;
       this.isUserid = true;
@@ -151,7 +153,10 @@ export default {
       this.updateArticleByNo(params);
       this.getlistArticle();
       alert("글이 수정되었습니다.");
-      this.moveList();
+      this.$router.push({
+        name: "BoardView",
+        params: { boardNo: this.article.boardNo },
+      });
     },
     moveList() {
       this.$router.push({ name: "BoardList" });

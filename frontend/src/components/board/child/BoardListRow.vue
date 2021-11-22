@@ -1,5 +1,8 @@
 <template>
-  <b-tr @click="BoardView(article)">
+  <b-tr
+    @click="BoardView(article)"
+    :variant="article.isNotice == '1' ? 'info' : 'null'"
+  >
     <b-td>{{ article.boardNo }}</b-td>
     <b-th class="text-left">
       {{ article.title }}
@@ -12,16 +15,13 @@
 
 <script>
 // import moment from "moment";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 const boardStore = "boardStore";
 
 export default {
   name: "BoardListRow",
   props: {
     article: Object,
-  },
-  created() {
-    // 들어올 때마다 조회수 증가
   },
   computed: {
     // changeDateFormat() {
@@ -30,7 +30,9 @@ export default {
   },
   methods: {
     ...mapMutations(boardStore, ["SET_ARTICLE"]),
+    ...mapActions(boardStore, ["increaseHit"]),
     BoardView(article) {
+      this.increaseHit(article.boardNo);
       this.SET_ARTICLE(article);
       this.$router.push({
         name: "BoardView",
