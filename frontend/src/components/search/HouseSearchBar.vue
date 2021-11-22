@@ -13,7 +13,7 @@
     </b-row>
 
     <b-form-group
-      v-if="houses && houses.length != 0"
+      v-if="houses && houses.length > 0"
       v-slot="{ ariaDescribedby }"
     >
       <b-form-radio-group
@@ -25,6 +25,15 @@
         name="radio-btn-outline"
         buttons
       ></b-form-radio-group>
+
+      <b-row class="pt-3">
+        <b-col cols="6">
+          <b-form-input
+            v-model="aptName"
+            placeholder="아파트 이름으로 검색해보세요!"
+          ></b-form-input>
+        </b-col>
+      </b-row>
     </b-form-group>
   </div>
 </template>
@@ -51,6 +60,7 @@ export default {
         { text: "면적순", value: "area" },
       ],
       val: "",
+      aptName: "",
     };
   },
   methods: {
@@ -64,6 +74,8 @@ export default {
       "CLEAR_HOUSES_LIST",
       "CLEAR_DONGS_CODE",
       "SET_HOUSE_LIST",
+      "CLEAR_HOUSES_FILTER",
+      "SET_HOUSE_FILTER",
     ]),
     searchBtn() {
       if (this.key == null) {
@@ -105,6 +117,10 @@ export default {
           dongName: this.val,
         });
       }
+    },
+    aptName: function () {
+      if (this.aptName == "") this.CLEAR_HOUSES_FILTER();
+      else this.SET_HOUSE_FILTER(this.aptName);
     },
   },
 };

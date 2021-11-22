@@ -109,7 +109,7 @@ public class HouseMapServiceImpl implements HouseMapService {
 	            
 	            Random rand = new Random();
 	            String img = Integer.toString(rand.nextInt(13) + 1);
-	            System.out.println(aptName);
+	            // System.out.println(aptName);
 	            
 	            HouseInfoDto houseinfo = new HouseInfoDto();
 	            houseinfo.setAptCode(aptCode);

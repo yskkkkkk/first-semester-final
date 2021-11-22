@@ -14,6 +14,7 @@ const houseStore = {
     guguns: [{ value: null, text: "구/군을 선택하세요" }],
     dongs: [{ value: null, text: "동을 선택하세요" }],
     houses: [],
+    housesfilter: [],
     house: null,
     dongcodes: [],
   },
@@ -87,6 +88,15 @@ const houseStore = {
     },
     SET_DONGS_CODE: (state, codes) => {
       state.dongcodes = codes;
+    },
+    SET_HOUSE_FILTER: (state, name) => {
+      let result = state.houses.filter((house) =>
+        house.houseinfo.aptName.includes(name)
+      );
+      state.housesfilter = result;
+    },
+    CLEAR_HOUSES_FILTER: (state) => {
+      state.housesfilter = [];
     },
   },
 
