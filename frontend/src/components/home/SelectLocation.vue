@@ -91,7 +91,7 @@ export default {
       this.CLEAR_HOUSES_LIST();
       this.CLEAR_DONG_LIST();
       this.dongCode = null;
-      console.log(this.gugunCode + " " + this.dongCode);
+      //console.log(this.gugunCode + " " + this.dongCode);
 
       if (this.gugunCode) {
         this.getDong(this.gugunCode);
@@ -101,7 +101,7 @@ export default {
     searchApt() {
       // 동 선택했을 때
       this.CLEAR_HOUSES_LIST();
-      console.log(this.gugunCode + " " + this.dongCode);
+      //console.log(this.gugunCode + " " + this.dongCode);
       // if (!this.dongCode) this.getHouseList(this.gugunCode);
       this.getHouseListByDong({
         gugunCode: this.gugunCode,

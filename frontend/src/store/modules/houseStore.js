@@ -21,7 +21,7 @@ const houseStore = {
 
   getters: {
     getHouseOrder: (state) => (order) => {
-      console.log(order);
+      //console.log(order);
       let result = [];
       if (order == "new") {
         result = state.houses.sort(function (a, b) {
@@ -165,7 +165,7 @@ const houseStore = {
       houseList(
         params,
         (response) => {
-          console.log(response);
+          //console.log(response);
           commit("SET_HOUSE_LIST", response.data);
         },
         (error) => {
@@ -185,7 +185,7 @@ const houseStore = {
             if (item.houseinfo.dongName.trim().includes(payload.dongName))
               ret.push(item);
           }
-          console.log(ret);
+          //console.log(ret);
           commit("SET_HOUSE_LIST", ret);
         },
         (error) => {
