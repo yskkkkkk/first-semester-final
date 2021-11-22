@@ -1,6 +1,8 @@
 package com.ssafy.happyhouse.config;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +22,14 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//http://localhost:9999/vue/swagger-ui.html
+//http://localhost/swagger-ui.html
 	
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
 	private String version = "V1";
-	private String title = "SSAFY VUEJS API " + version;
+	private String title = "HappyHouse " + version;
 	
 	@Bean
 	public Docket postsApi() {
@@ -37,11 +39,13 @@ public class SwaggerConfig {
 //		responseMessages.add(new ResponseMessageBuilder().code(404).message("페이지를 찾을 수 없습니다 !!!").build());
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("ssafyVueAPI")
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.ssafy.happyhouse.controller"))
+				.apis(RequestHandlerSelectors.any())
 				.paths(postPaths())
-				.build();
+				.build(); 
 //				.useDefaultResponseMessages(false)
 //				.globalResponseMessage(RequestMethod.GET,responseMessages);
 	}
@@ -53,9 +57,22 @@ public class SwaggerConfig {
 //		return regex("/admin/.*");
 	}
 
+    private Set<String> getConsumeContentTypes() {
+        Set<String> consumes = new HashSet<>();
+        consumes.add("application/json;charset=UTF-8");
+        consumes.add("application/x-www-form-urlencoded");
+        return consumes;
+    }
+
+    private Set<String> getProduceContentTypes() {
+        Set<String> produces = new HashSet<>();
+        produces.add("application/json;charset=UTF-8");
+        return produces;
+    }
+	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title(title)
-				.description("SSAFY API Reference for Developers")
+				.description("8조 FINAL PROJECT/ 김도연, 류대성")
 //				.termsOfServiceUrl("https://edu.ssafy.com")
 				.contact(new Contact("SSAFY", "https://edu.ssafy.com", "ssafy@ssafy.com"))
 				.license("SSAFY License")

@@ -43,7 +43,7 @@ public class BoardController {
 	@GetMapping("/board")
 	public ResponseEntity<List<BoardDto>> list(@RequestBody BoardDto board) throws SQLException {
 		List<BoardDto> list = boardService.boardList(board);
-		logger.debug("게시판 리스트 호출");
+		logger.info("boarList - 호출");
 		if (list!=null && !list.isEmpty()) {
 			return new ResponseEntity<List<BoardDto>>(list, HttpStatus.OK);
 		} else {
@@ -55,8 +55,7 @@ public class BoardController {
 	@ApiOperation(value = "detail", notes = "질문상세 내용을 반환합니다.")
 	public ResponseEntity<BoardDto> detail(@PathVariable int boardNo) throws SQLException {
 		BoardDto board = boardService.boardInfo(boardNo);
-		logger.debug("게시판 상세 호출 no: "+boardNo);
-		
+		logger.info("boarInfo - 호출, no: "+boardNo);
 		if (board!=null) {
 			return new ResponseEntity<BoardDto>(board, HttpStatus.OK);
 		} else {
@@ -68,7 +67,7 @@ public class BoardController {
 	@ApiOperation(value = "create", notes = "새 게시글을  작성합니다.")
 	public ResponseEntity<BoardDto> create(@RequestBody BoardDto board) throws SQLException {
 		boolean result = boardService.regist(board) == 1 ? true : false;
-		
+		logger.info("boarCreate - 호출");
 		if (result) {
 			return new ResponseEntity<BoardDto>(board, HttpStatus.OK);
 		} else {
@@ -79,14 +78,15 @@ public class BoardController {
 	@PutMapping("/readCount/{boardNo}")
 	@ApiOperation(value = "readCount", notes = "조회수를 증가시킵니다.")
 	public void modify(@PathVariable int qnaNo) throws SQLException {
+		logger.info("readCount - 호출");
 		boardService.updateReadCount(qnaNo);
 	}
 
 	@PutMapping("/board")
 	@ApiOperation(value = "modify", notes = "게시물을 수정합니다.")
-	public ResponseEntity<BoardDto> modify(@RequestBody BoardDto board) throws SQLException {
+	public ResponseEntity<BoardDto> modifyBoard(@RequestBody BoardDto board) throws SQLException {
 		boolean result = boardService.update(board) == 1 ? true : false;
-		
+		logger.info("modifyBoard - 호출");
 		if (result) {
 			return new ResponseEntity<BoardDto>(board, HttpStatus.OK);
 		} else {
@@ -96,9 +96,9 @@ public class BoardController {
 	
 	@DeleteMapping("/board/{boardNo}")
 	@ApiOperation(value = "remove", notes = "게시물을 삭제합니다.")
-	public ResponseEntity<Boolean> remove(@PathVariable int boardNo) throws SQLException {
+	public ResponseEntity<Boolean> removeBoard(@PathVariable int boardNo) throws SQLException {
 		boolean result = boardService.delete(boardNo) == 1 ? true : false;
-		
+		logger.info("removeBoard - 호출");
 		if (result) {
 			return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 		} else {
@@ -110,7 +110,7 @@ public class BoardController {
 	@GetMapping("/reply/{boardNo}")
 	public ResponseEntity<List<ReplyDto>> replyList(@PathVariable int boardNo) throws SQLException {
 		List<ReplyDto> list = replyService.replyList(boardNo);
-		
+		logger.info("removeBoard - 호출");
 		if (list!=null && !list.isEmpty()) {
 			return new ResponseEntity<List<ReplyDto>>(list, HttpStatus.OK);
 		} else {
@@ -122,7 +122,7 @@ public class BoardController {
 	@ApiOperation(value = "create", notes = "새 댓글을  작성합니다.")
 	public ResponseEntity<ReplyDto> createReply(@RequestBody ReplyDto reply) throws SQLException {
 		boolean result = replyService.regist(reply) == 1 ? true : false;
-		
+		logger.info("createBoard - 호출");
 		if (result) {
 			return new ResponseEntity<ReplyDto>(reply, HttpStatus.OK);
 		} else {
@@ -135,6 +135,7 @@ public class BoardController {
 	public void updateRecommand(@RequestBody Map<String, String> param) throws SQLException {
 		// map: { 	replyNo: int ,
 		//      	direction: "up" or "down" }
+		logger.info("updateRecommand - 호출");
 		replyService.updateRecommand(param);
 	}
 	
@@ -142,7 +143,7 @@ public class BoardController {
 	@ApiOperation(value = "modify", notes = "댓글내용을 수정합니다.")
 	public ResponseEntity<ReplyDto> modifyReply(@RequestBody ReplyDto reply) throws SQLException {
 		boolean result = replyService.update(reply) == 1 ? true : false;
-		
+		logger.info("modifyReply - 호출");
 		if (result) {
 			return new ResponseEntity<ReplyDto>(reply, HttpStatus.OK);
 		} else {
@@ -154,7 +155,7 @@ public class BoardController {
 	@ApiOperation(value = "remove", notes = "게시물을 삭제합니다.")
 	public ResponseEntity<Boolean> removeReply(@PathVariable int replyNo) throws SQLException {
 		boolean result = replyService.delete(replyNo) == 1 ? true : false;
-		
+		logger.info("removeReply - 호출");
 		if (result) {
 			return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 		} else {
