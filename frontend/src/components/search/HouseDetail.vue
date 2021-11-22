@@ -2,7 +2,7 @@
   <b-container v-if="house" class="bv-example-row">
     <b-row>
       <b-col
-        ><h3>{{ house.aptName }}</h3></b-col
+        ><h3>{{ house.houseinfo.aptName }}</h3></b-col
       >
     </b-row>
     <b-row class="mb-2 mt-1">
@@ -17,20 +17,22 @@
     <b-row>
       <b-col>
         <b-alert show variant="secondary"
-          >일련번호 : {{ house.jibun }}-{{ house.no }}</b-alert
+          >일련번호 : {{ house.aptCode }}</b-alert
         >
       </b-col>
     </b-row>
     <b-row>
       <b-col>
         <b-alert show variant="primary"
-          >아파트 이름 : {{ house.aptName }}
+          >아파트 이름 : {{ house.houseinfo.aptName }}
         </b-alert>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-alert show variant="info">법정동 : {{ house.dongName }} </b-alert>
+        <b-alert show variant="info"
+          >법정동 : {{ house.houseinfo.dongName }}
+        </b-alert>
       </b-col>
     </b-row>
     <b-row>

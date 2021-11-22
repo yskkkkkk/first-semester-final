@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.ssafy.happyhouse.map.mapper.HouseMapMapper;
+import com.ssafy.happyhouse.map.model.DongCodeDto;
 import com.ssafy.happyhouse.map.model.HouseDealDto;
 import com.ssafy.happyhouse.map.model.HouseInfoDto;
 import com.ssafy.happyhouse.map.model.SidoGugunCodeDto;
@@ -55,6 +56,11 @@ public class HouseMapServiceImpl implements HouseMapService {
 		else if (map.get("order").equals("price")) map.put("order", "hd.dealAmount");
 		else if (map.get("order").equals("area")) map.put("order", "(hd.area + 0.0) desc");
 		return sqlSession.getMapper(HouseMapMapper.class).searchList(map);
+	}
+	
+	@Override
+	public List<DongCodeDto> getDongCode(String dongName) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).getDongCode(dongName);
 	}
 
 	@Override
@@ -135,5 +141,4 @@ public class HouseMapServiceImpl implements HouseMapService {
 	      if(nValue==null) return null;
 	      return nValue.getNodeValue();
 	   }
-
 }

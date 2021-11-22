@@ -25,4 +25,8 @@ function searchList(params, success, fail) {
   api.post(`/map/search`, JSON.stringify(params)).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList, searchList };
+function dongCode(params, success, fail) {
+  api.get(`/map/dongcode`, { params: params }).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, searchList, dongCode };

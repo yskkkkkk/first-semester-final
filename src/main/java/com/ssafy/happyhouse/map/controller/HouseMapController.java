@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.map.model.DongCodeDto;
 import com.ssafy.happyhouse.map.model.HouseDealDto;
 import com.ssafy.happyhouse.map.model.HouseInfoDto;
 import com.ssafy.happyhouse.map.model.SidoGugunCodeDto;
@@ -96,5 +97,12 @@ public class HouseMapController {
 	public ResponseEntity<List<HouseDealDto>> getAllAptInfo(@RequestParam("dong") String dong) throws Exception {
 		logger.info("apt - 호출");
 		return new ResponseEntity<List<HouseDealDto>>(haHouseMapService.getAllAptInfo(dong), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "동 코드 정보", notes = "입력된 동 이름에 맞는 동 코드를 반환한다.", response = List.class)
+	@GetMapping("/dongcode")
+	public ResponseEntity<List<DongCodeDto>> getDongCode(@RequestParam("dongName") String dongName) throws Exception {
+		logger.info("apt - 호출");
+		return new ResponseEntity<List<DongCodeDto>>(haHouseMapService.getDongCode(dongName), HttpStatus.OK);
 	}
 }

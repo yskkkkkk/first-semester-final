@@ -4,6 +4,7 @@ import {
   dongList,
   houseList,
   searchList,
+  dongCode,
 } from "@/api/house.js";
 
 const houseStore = {
@@ -14,9 +15,35 @@ const houseStore = {
     dongs: [{ value: null, text: "동을 선택하세요" }],
     houses: [],
     house: null,
+    dongcodes: [],
   },
 
-  getters: {},
+  getters: {
+    getHouseOrder: (state) => (order) => {
+      console.log(order);
+      let result = [];
+      if (order == "new") {
+        result = state.houses.sort(function (a, b) {
+          return (
+            Number(b.dealMonth.concat(b.dealDay)) -
+            Number(a.dealMonth.concat(a.dealDay))
+          );
+        });
+      } else if (order == "price") {
+        result = state.houses.sort(function (a, b) {
+          return (
+            Number(a.dealAmount.trim().replace(",", "")) -
+            Number(b.dealAmount.trim().replace(",", ""))
+          );
+        });
+      } else if (order == "area") {
+        result = state.houses.sort(function (a, b) {
+          return Number(a.area.trim()) - Number(b.area.trim());
+        });
+      }
+      return result;
+    },
+  },
 
   mutations: {
     SET_SIDO_LIST: (state, sidos) => {
@@ -46,6 +73,9 @@ const houseStore = {
     CLEAR_HOUSE: (state) => {
       state.house = null;
     },
+    CLEAR_DONGS_CODE: (state) => {
+      state.dongcodes = [];
+    },
     CLEAR_HOUSES_LIST: (state) => {
       state.houses = [];
     },
@@ -54,6 +84,9 @@ const houseStore = {
     },
     SET_DETAIL_HOUSE: (state, house) => {
       state.house = house;
+    },
+    SET_DONGS_CODE: (state, codes) => {
+      state.dongcodes = codes;
     },
   },
 
@@ -101,6 +134,20 @@ const houseStore = {
         }
       );
     },
+    getDongCode: ({ commit }, dongName) => {
+      const params = {
+        dongName: dongName,
+      };
+      dongCode(
+        params,
+        (response) => {
+          commit("SET_DONGS_CODE", response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
     getHouseList: ({ commit }, gugunCode) => {
       const params = {
         dong: gugunCode + "00000",
@@ -128,6 +175,7 @@ const houseStore = {
             if (item.houseinfo.dongName.trim().includes(payload.dongName))
               ret.push(item);
           }
+          console.log(ret);
           commit("SET_HOUSE_LIST", ret);
         },
         (error) => {

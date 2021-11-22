@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.happyhouse.map.model.DongCodeDto;
 import com.ssafy.happyhouse.map.model.HouseDealDto;
 import com.ssafy.happyhouse.map.model.HouseInfoDto;
 import com.ssafy.happyhouse.map.model.SidoGugunCodeDto;
@@ -16,4 +17,5 @@ public interface HouseMapService {
 	List<HouseInfoDto> getAptInDong(String dong) throws Exception;
 	List<HouseDealDto> getAllAptInfo(String dong) throws Exception;
 	ArrayList<HouseDealDto> searchList(Map<String, String> map) throws Exception;
+	List<DongCodeDto> getDongCode(String dongName) throws Exception;
 }

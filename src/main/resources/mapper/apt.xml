@@ -47,4 +47,10 @@
 		order by ${order};
 	</select>
 	
+	<select id="getDongCode" resultType="dongCodeDto">
+		select *
+		from dongcode
+		where dongName = #{dongName}
+		group by dongName;
+	</select>
 </mapper>
