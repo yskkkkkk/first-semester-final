@@ -61,26 +61,31 @@ export default {
     // },
   },
   created() {
-    this.getArticleByNo(this.$route.params.articleno);
+    this.getArticleByNo(this.$route.params.boardNo);
   },
   methods: {
-    ...mapActions(boardStore, ["getArticleByNo"]),
+    ...mapActions(boardStore, [
+      "getArticleByNo",
+      "deleteArticleByNo",
+      "getlistArticle",
+    ]),
     listArticle() {
       this.$router.push({ name: "BoardList" });
     },
     moveModifyArticle() {
       this.$router.replace({
         name: "BoardUpdate",
-        params: { articleno: this.article.articleno },
+        params: { boardNo: this.$route.params.boardNo, type: "modify" },
       });
     },
-    // removeArticle() {
-    //   if (confirm("정말로 삭제?")) {
-    //     deleteArticle(this.article.articleno, () => {
-    //       this.$router.push({ name: "BoardList" });
-    //     });
-    //   }
-    // },
+    removeArticle() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.deleteArticleByNo(this.$route.params.boardNo);
+        this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
+        alert("삭제 되었습니다.");
+        this.listArticle();
+      }
+    },
   },
 };
 </script>

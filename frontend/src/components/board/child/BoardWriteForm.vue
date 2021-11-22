@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       article: {
-        articleno: 0,
+        boardNo: 0,
         title: "",
         writer: "",
         content: "",
@@ -84,19 +84,22 @@ export default {
         isNotice: "0", // 1이면 공지, 0이면 일반글
       },
       isUserid: false,
+      type: this.$route.params.type,
     };
   },
-  props: {
-    type: { type: String },
-  },
   created() {
+    console.log(this.type);
     if (this.type === "modify") {
-      this.article = this.getArticle();
+      this.article = this.getArticle;
       this.isUserid = true;
     }
   },
   methods: {
-    ...mapActions(boardStore, ["writeArticle"]),
+    ...mapActions(boardStore, [
+      "writeArticle",
+      "updateArticleByNo",
+      "getlistArticle",
+    ]),
     onSubmit(event) {
       event.preventDefault();
 
@@ -133,48 +136,22 @@ export default {
         writer: this.article.writer,
       };
       this.writeArticle(params);
+      this.getlistArticle();
       alert("글이 등록되었습니다.");
       this.moveList();
-      // writeArticle(
-      //   {
-      //     userid: this.article.userid,
-      //     subject: this.article.subject,
-      //     content: this.article.content,
-      //   },
-      //   ({ data }) => {
-      //     let msg = "등록 처리시 문제가 발생했습니다.";
-      //     if (data === "success") {
-      //       msg = "등록이 완료되었습니다.";
-      //     }
-      //     alert(msg);
-      //     this.moveList();
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   }
-      // );
     },
     updateArticle() {
-      // modifyArticle(
-      //   {
-      //     articleno: this.article.articleno,
-      //     userid: this.article.userid,
-      //     subject: this.article.subject,
-      //     content: this.article.content,
-      //   },
-      //   ({ data }) => {
-      //     let msg = "수정 처리시 문제가 발생했습니다.";
-      //     if (data === "success") {
-      //       msg = "수정이 완료되었습니다.";
-      //     }
-      //     alert(msg);
-      //     // 현재 route를 /list로 변경.
-      //     this.$router.push({ name: "BoardList" });
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   }
-      // );
+      const params = {
+        boardNo: this.article.boardNo,
+        content: this.article.content,
+        isExposing: this.article.isExposing,
+        isNotice: this.article.isNotice,
+        title: this.article.title,
+      };
+      this.updateArticleByNo(params);
+      this.getlistArticle();
+      alert("글이 수정되었습니다.");
+      this.moveList();
     },
     moveList() {
       this.$router.push({ name: "BoardList" });

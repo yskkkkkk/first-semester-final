@@ -1,7 +1,7 @@
 <template>
-  <b-tr>
+  <b-tr @click="BoardView(article)">
     <b-td>{{ article.boardNo }}</b-td>
-    <b-th class="text-left" @click="BoardView(article)">
+    <b-th class="text-left">
       {{ article.title }}
     </b-th>
     <b-td>{{ article.readCount }}</b-td>
@@ -34,7 +34,7 @@ export default {
       this.SET_ARTICLE(article);
       this.$router.push({
         name: "BoardView",
-        params: { articleno: article.boardNo },
+        params: { boardNo: article.boardNo },
       });
     },
   },

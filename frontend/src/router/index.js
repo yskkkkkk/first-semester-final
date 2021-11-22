@@ -98,13 +98,13 @@ const routes = [
         component: BoardWrite,
       },
       {
-        path: "detail/:articleno",
+        path: "detail/:boardNo",
         name: "BoardView",
         // beforeEnter: onlyAuthUser,
         component: BoardView,
       },
       {
-        path: "update/:articleno",
+        path: "update/:boardNo",
         name: "BoardUpdate",
         // beforeEnter: onlyAuthUser,
         component: BoardUpdate,

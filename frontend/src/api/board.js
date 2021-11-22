@@ -15,7 +15,7 @@ function getArticle(articleno, success, fail) {
 }
 
 function modifyArticle(article, success, fail) {
-  api.put(`/board`, JSON.stringify(article)).then(success).catch(fail);
+  api.put(`/board/update`, JSON.stringify(article)).then(success).catch(fail);
 }
 
 function deleteArticle(articleno, success, fail) {

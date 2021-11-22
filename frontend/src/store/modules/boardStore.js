@@ -2,8 +2,8 @@ import {
   listArticle,
   writeArticle,
   getArticle,
-  // modifyArticle,
-  // deleteArticle,
+  modifyArticle,
+  deleteArticle,
 } from "@/api/board.js";
 
 const boardStore = {
@@ -33,6 +33,9 @@ const boardStore = {
     ADD_ARTICLE: (state, article) => {
       state.articles.push(article);
     },
+    GOOD_RESULT: () => {
+      console.log("SUCCESS");
+    },
   },
   actions: {
     getlistArticle: ({ commit }) => {
@@ -54,7 +57,6 @@ const boardStore = {
       getArticle(
         boardNo,
         ({ data }) => {
-          console.log(data);
           commit("SET_ARTICLE", data);
         },
         (error) => {
@@ -72,9 +74,38 @@ const boardStore = {
       };
       writeArticle(
         params,
-        ({ data }) => {
-          console.log(data);
-          commit("ADD_ARTICLE", data);
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    deleteArticleByNo: ({ commit }, boardNo) => {
+      deleteArticle(
+        boardNo,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    updateArticleByNo: ({ commit }, article) => {
+      const params = {
+        boardNo: article.boardNo,
+        content: article.content,
+        isExposing: article.isExposing,
+        isNotice: article.isNotice,
+        title: article.title,
+      };
+
+      modifyArticle(
+        params,
+        () => {
+          commit("GOOD_RESULT");
         },
         (error) => {
           console.log(error);

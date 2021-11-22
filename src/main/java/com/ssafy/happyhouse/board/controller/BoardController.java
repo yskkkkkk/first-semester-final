@@ -66,13 +66,6 @@ public class BoardController {
 	@PostMapping("/write")
 	@ApiOperation(value = "create", notes = "새 게시글을  작성합니다.")
 	public ResponseEntity<BoardDto> create(@RequestBody BoardDto board) throws SQLException {
-//		System.out.println(map);
-//		BoardDto board = new BoardDto();
-//		board.setContent(map.get("content"));
-//		board.setIsExposing(map.get("isExposing"));
-//		board.setIsNotice(map.get("isNotice"));
-//		board.setTitle(map.get("title"));
-//		board.setWriter(map.get("writer"));
 		boolean result = boardService.regist(board) == 1 ? true : false;
 		logger.info("boarCreate - 호출");
 		if (result) {
@@ -89,9 +82,10 @@ public class BoardController {
 		boardService.updateReadCount(qnaNo);
 	}
 
-	@PutMapping("/")
+	@PutMapping("/update")
 	@ApiOperation(value = "modify", notes = "게시물을 수정합니다.")
 	public ResponseEntity<BoardDto> modifyBoard(@RequestBody BoardDto board) throws SQLException {
+		System.out.println(board);
 		boolean result = boardService.update(board) == 1 ? true : false;
 		logger.info("modifyBoard - 호출");
 		if (result) {

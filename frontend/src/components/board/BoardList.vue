@@ -55,7 +55,7 @@ export default {
   methods: {
     ...mapActions(boardStore, ["getlistArticle"]),
     moveWrite() {
-      this.$router.push({ name: "BoardWrite" });
+      this.$router.push({ name: "BoardWrite", params: { type: "register" } });
     },
   },
   computed: {
