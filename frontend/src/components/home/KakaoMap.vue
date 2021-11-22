@@ -14,11 +14,14 @@ const houseStore = "houseStore";
 export default {
   name: "KakaoMap",
   computed: {
-    ...mapState(houseStore, ["houses"]),
+    ...mapState(houseStore, ["house", "houses"]),
   },
   watch: {
     houses() {
       this.initMap();
+    },
+    house() {
+      this.displaySelectMarker(this.house);
     },
   },
   data() {
@@ -106,6 +109,99 @@ export default {
       });
     },
 
+    displaySelectMarker(place) {
+      if (place.lat && place.lat != "" && typeof place.lat != "undefined") {
+        this.removeMarker();
+        this.closeOverlay();
+        var fragment = document.createDocumentFragment();
+        var bounds = new kakao.maps.LatLngBounds();
+
+        var placePosition = new kakao.maps.LatLng(place.lat, place.lng);
+        var marker = this.addMarker(placePosition, -1);
+        var itemEl = this.getListItem(0, place);
+
+        itemEl.onmouseover = () => {
+          return this.displayInfowindow(marker, place);
+        };
+
+        itemEl.onmouseout = () => {
+          return this.customOverlay.setMap(null);
+        };
+
+        fragment.appendChild(itemEl);
+        bounds.extend(placePosition);
+        this.map.setBounds(bounds);
+
+        // ----------- 커스텀 오버레이 생성---------------
+        const random = Math.floor(Math.random() * 13) + 1;
+        const img = "apt" + random + ".jpg";
+
+        var sido =
+          place.houseinfo.sidoName == null ? "" : place.houseinfo.sidoName;
+        var gugun =
+          place.houseinfo.gugunName == null ? "" : place.houseinfo.gugunName;
+        var dong =
+          place.houseinfo.dongName == null ? "" : place.houseinfo.dongName;
+        var jibun = place.houseinfo.jibun == null ? "" : place.houseinfo.jibun;
+        if (place.lat == null) return;
+
+        var content =
+          `
+		<div class="overlaybox" style="border: 1px solid black; background-color: white; padding: 3px 10px; border-radius:5px;">
+			<div class="boxtitle pt-2">
+				<h5>${place.houseinfo.aptName}<h5>
+			</div>
+			<div class="first">
+      <b-img :src="require('@/assets/apt/${img}')" style="width:247px; height:136px;"</b-img>
+      </div>
+			<ul style="list-style: none; padding: 0px;">
+				<li class="up" style="list-style: none;">
+					<span class="title" style="font-weight: bolder">건축년도</span>
+					<span class="count">${place.houseinfo.buildYear}</span>
+				</li>
+				<li style="list-style: none;">
+					<span class="title" style="font-weight: bolder">주소</span>
+					<span class="count">` +
+          sido +
+          ` ` +
+          gugun +
+          ` ` +
+          dong +
+          ` ` +
+          jibun +
+          `</span>
+				</li>
+				<li style="list-style: none;">
+					<span class="title" style="font-weight: bolder">거래금액</span>
+					<span class="count">${place.houseinfo.recentPrice}</span>
+				</li>
+        <li style="list-style: none;">
+					<span class="title" style="font-weight: bolder">층수</span>
+					<span class="count">${place.floor} 층</span>
+				</li>
+			</ul>
+		</div>
+	`;
+        // 커스텀 오버레이가 표시될 위치
+        var position = new kakao.maps.LatLng(
+          place.lat - 0.00073,
+          place.lng - 0.00003
+        );
+
+        // 커스텀 오버레이를 생성
+        var customOverlay = new kakao.maps.CustomOverlay({
+          position: position,
+          content: content,
+          xAnchor: 0.3,
+          yAnchor: 0.91,
+        });
+
+        // 커스텀 오버레이를 지도에 표시
+        customOverlay.setMap(this.map);
+        this.customs.push(customOverlay);
+      }
+    },
+
     displayMarker(places) {
       var fragment = document.createDocumentFragment();
       var bounds = new kakao.maps.LatLngBounds();
@@ -113,6 +209,7 @@ export default {
       // 지도에 표시되고 있는 마커를 제거합니다
       this.removeMarker(); // 기존에 찍혀있던 마커 지움
       for (var i = 0; i < places.length; i++) {
+        if (i == 15) break;
         if (
           typeof places[i].lat != "undefined" &&
           places[i].lat != null &&
@@ -201,7 +298,7 @@ export default {
 				</li>
 				<li style="list-style: none;">
 					<span class="title" style="font-weight: bolder">거래금액</span>
-					<span class="count">${place.houseinfo.recentPrice}</span>
+					<span class="count">${place.houseinfo.recentPrice} 만원</span>
 				</li>
 			</ul>
 		</div>
@@ -226,29 +323,46 @@ export default {
 
     //마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, idx) {
-      var imageSrc =
-          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
-        imgOptions = {
-          spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-          spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-          offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-        },
-        markerImage = new kakao.maps.MarkerImage(
-          imageSrc,
-          imageSize,
-          imgOptions
-        ),
-        marker = new kakao.maps.Marker({
-          position: position, // 마커의 위치
-          image: markerImage,
-          clickable: true,
-        });
+      if (idx == -1) {
+        // 선택된 마커일 때
+        let imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+          imageSize = new kakao.maps.Size(24, 35),
+          markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
+          marker = new kakao.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage, // 마커 이미지
+          });
 
-      marker.setMap(this.map); // 지도 위에 마커를 표출합니다
-      this.markers.push(marker); // 배열에 생성된 마커를 추가합니다
+        marker.setMap(this.map); // 지도 위에 마커를 표출합니다
+        this.markers.push(marker); // 배열에 생성된 마커를 추가합니다
 
-      return marker;
+        return marker;
+      } else {
+        let imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+          imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+          imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+            spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+          },
+          markerImage = new kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize,
+            imgOptions
+          ),
+          marker = new kakao.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage,
+            clickable: true,
+          });
+
+        marker.setMap(this.map); // 지도 위에 마커를 표출합니다
+        this.markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+        return marker;
+      }
     },
 
     // 지도 위에 표시되고 있는 마커를 모두 제거합니다
@@ -259,20 +373,11 @@ export default {
       this.markers = [];
     },
 
-    closeOverlay(lat, lng) {
-      var findlat = (lat + "").substring(0, 5);
-      var findlng = (lng + "").substring(0, 5);
-
+    closeOverlay() {
       for (var i = 0; i < this.customs.length; i++) {
-        var cusPos = this.customs[i].getPosition();
-
-        var cuslat = (cusPos.getLat() + "").substring(0, 5);
-        var cuslng = (cusPos.getLng() + "").substring(0, 5);
-
-        if (findlat == cuslat && findlng == cuslng) {
-          this.customs[i].setMap(null);
-        }
+        this.customs[i].setMap(null);
       }
+      this.customs = [];
     },
 
     //검색결과 항목을 Element로 반환하는 함수입니다
