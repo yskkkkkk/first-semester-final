@@ -15,7 +15,13 @@
             </b-form-group>
           </b-col>
           <b-col cols="2" class="btn-group">
-            <button type="submit" v-if="this.type === 'register'">작성</button>
+            <b-button
+              type="submit"
+              variant="outline-primary"
+              size="sm"
+              v-if="this.type === 'register'"
+              >작성</b-button
+            >
             <div v-else>
               <button type="submit">수정</button>
               <button>취소</button>

@@ -1,10 +1,5 @@
 <template>
   <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
-      </b-col>
-    </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
@@ -25,9 +20,21 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.boardNo}.
-          ${article.title} [${article.readCount}]</h3>
-          <div><h6>${article.writer}</div><div>${article.regTime}</h6></div>`"
+          :header-html="`<h5 class='mt-2'>
+            [${article.boardNo}] ${article.title}
+          </h5>
+          <br/>
+          <v-row style='width: 100%; display: flex; justify-content: space-between'>
+            <v-col cols='4'>
+              <span style='font-weight: bolder; margin-right: 10px;'>작성자</span> <span>${article.writer}</span>
+            </v-col>
+            <v-col cols='4'>
+              <span style='font-weight: bolder; margin-right: 10px;'>조회수</span> <span>${article.readCount}</span>
+            </v-col>
+            <v-col cols='4'>
+              <span style='font-weight: bolder; margin-right: 10px;'>작성시간</span> <span>${article.regTime}</span>
+            </v-col>
+          </v-row>`"
           class="mb-2"
           border-variant="dark"
           no-body
@@ -104,4 +111,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

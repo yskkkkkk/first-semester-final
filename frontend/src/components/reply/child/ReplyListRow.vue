@@ -8,8 +8,16 @@
       <span>{{ replyprops.content }}</span>
     </b-row>
     <b-row class="replyBtn">
-      <button @click="convertModify">수정</button>
-      <button @click="replyRemove">삭제</button>
+      <b-button
+        variant="outline-info"
+        size="sm"
+        class="mr-2"
+        @click="convertModify"
+        >수정</b-button
+      >
+      <b-button variant="outline-danger" size="sm" @click="replyRemove"
+        >삭제</b-button
+      >
     </b-row>
   </b-card>
 
@@ -29,8 +37,16 @@
       </b-col>
       <b-col cols="2" class="btn-group">
         <div>
-          <button @click="confirmReply">수정</button>
-          <button @click="replyview">취소</button>
+          <b-button
+            variant="outline-info"
+            size="sm"
+            class="mr-2"
+            @click="confirmReply"
+            >수정</b-button
+          >
+          <b-button variant="outline-danger" size="sm" @click="replyview"
+            >취소</b-button
+          >
         </div>
       </b-col>
     </b-row>
