@@ -29,7 +29,7 @@
             <board-list-row
               v-for="(article, index) in articles"
               :key="index"
-              v-bind="article"
+              :article="article"
             />
           </tbody>
         </b-table-simple>
@@ -41,39 +41,25 @@
 
 <script>
 import BoardListRow from "@/components/board/child/BoardListRow";
-import { listArticle } from "@/api/board.js";
+import { mapActions, mapState } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   name: "BoardList",
   components: {
     BoardListRow,
   },
-  data() {
-    return {
-      articles: [],
-    };
-  },
   created() {
-    let param = {
-      pg: 1,
-      spp: 20,
-      key: null,
-      word: null,
-    };
-    listArticle(
-      param,
-      (response) => {
-        this.articles = response.data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getlistArticle();
   },
   methods: {
+    ...mapActions(boardStore, ["getlistArticle"]),
     moveWrite() {
       this.$router.push({ name: "BoardWrite" });
     },
+  },
+  computed: {
+    ...mapState(boardStore, ["articles"]),
   },
 };
 </script>

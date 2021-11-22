@@ -11,7 +11,7 @@
           <b-form-input
             id="userid"
             :disabled="isUserid"
-            v-model="article.userid"
+            v-model="article.writer"
             type="text"
             required
             placeholder="작성자 입력..."
@@ -21,12 +21,12 @@
         <b-form-group
           id="subject-group"
           label="제목:"
-          label-for="subject"
+          label-for="title"
           description="제목을 입력하세요."
         >
           <b-form-input
-            id="subject"
-            v-model="article.subject"
+            id="title"
+            v-model="article.title"
             type="text"
             required
             placeholder="제목 입력..."
@@ -43,6 +43,13 @@
           ></b-form-textarea>
         </b-form-group>
 
+        <b-form-checkbox
+          v-model="article.isExposing"
+          value="0"
+          unchecked-value="1"
+        >
+          비공개로 작성
+        </b-form-checkbox>
         <b-button
           type="submit"
           variant="primary"
@@ -60,7 +67,9 @@
 </template>
 
 <script>
-import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+// import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { mapActions, mapGetters } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   name: "BoardWriteForm",
@@ -68,9 +77,11 @@ export default {
     return {
       article: {
         articleno: 0,
-        userid: "",
-        subject: "",
+        title: "",
+        writer: "",
         content: "",
+        isExposing: "1", // 1이면 공개, 0이면 비공개
+        isNotice: "0", // 1이면 공지, 0이면 일반글
       },
       isUserid: false,
     };
@@ -80,42 +91,27 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      getArticle(
-        this.$route.params.articleno,
-        ({ data }) => {
-          // this.article.articleno = data.article.articleno;
-          // this.article.userid = data.article.userid;
-          // this.article.subject = data.article.subject;
-          // this.article.content = data.article.content;
-          this.article = data;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      this.article = this.getArticle();
       this.isUserid = true;
     }
   },
   methods: {
+    ...mapActions(boardStore, ["writeArticle"]),
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
-        ((msg = "제목 입력해주세요"),
-        (err = false),
-        this.$refs.subject.focus());
-      err &&
-        !this.article.content &&
-        ((msg = "내용 입력해주세요"),
-        (err = false),
-        this.$refs.content.focus());
+      if (!this.article.writer) {
+        msg = "작성자 입력해주세요";
+        err = false;
+      } else if (!this.article.title) {
+        msg = "제목 입력해주세요";
+        err = false;
+      } else if (!this.article.content) {
+        msg = "내용 입력해주세요";
+        err = false;
+      }
 
       if (!err) alert(msg);
       else
@@ -123,56 +119,69 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.article.articleno = 0;
-      this.article.subject = "";
+      this.article.boardNo = 0;
+      this.article.title = "";
       this.article.content = "";
       this.$router.push({ name: "BoardList" });
     },
     registArticle() {
-      writeArticle(
-        {
-          userid: this.article.userid,
-          subject: this.article.subject,
-          content: this.article.content,
-        },
-        ({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
-          }
-          alert(msg);
-          this.moveList();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      const params = {
+        content: this.article.content,
+        isExposing: this.article.isExposing,
+        isNotice: this.article.isNotice,
+        title: this.article.title,
+        writer: this.article.writer,
+      };
+      this.writeArticle(params);
+      alert("글이 등록되었습니다.");
+      this.moveList();
+      // writeArticle(
+      //   {
+      //     userid: this.article.userid,
+      //     subject: this.article.subject,
+      //     content: this.article.content,
+      //   },
+      //   ({ data }) => {
+      //     let msg = "등록 처리시 문제가 발생했습니다.";
+      //     if (data === "success") {
+      //       msg = "등록이 완료되었습니다.";
+      //     }
+      //     alert(msg);
+      //     this.moveList();
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
     },
     updateArticle() {
-      modifyArticle(
-        {
-          articleno: this.article.articleno,
-          userid: this.article.userid,
-          subject: this.article.subject,
-          content: this.article.content,
-        },
-        ({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "수정이 완료되었습니다.";
-          }
-          alert(msg);
-          // 현재 route를 /list로 변경.
-          this.$router.push({ name: "BoardList" });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      // modifyArticle(
+      //   {
+      //     articleno: this.article.articleno,
+      //     userid: this.article.userid,
+      //     subject: this.article.subject,
+      //     content: this.article.content,
+      //   },
+      //   ({ data }) => {
+      //     let msg = "수정 처리시 문제가 발생했습니다.";
+      //     if (data === "success") {
+      //       msg = "수정이 완료되었습니다.";
+      //     }
+      //     alert(msg);
+      //     // 현재 route를 /list로 변경.
+      //     this.$router.push({ name: "BoardList" });
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
     },
     moveList() {
       this.$router.push({ name: "BoardList" });
     },
+  },
+  computed: {
+    ...mapGetters(boardStore, ["getArticle"]),
   },
 };
 </script>

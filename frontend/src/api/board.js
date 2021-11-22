@@ -3,11 +3,11 @@ import { apiInstance } from "./index.js";
 const api = apiInstance();
 
 function listArticle(param, success, fail) {
-  api.get(`/board`, { params: param }).then(success).catch(fail);
+  api.post(`/board/list`, JSON.stringify(param)).then(success).catch(fail);
 }
 
 function writeArticle(article, success, fail) {
-  api.post(`/board`, JSON.stringify(article)).then(success).catch(fail);
+  api.post(`/board/write`, JSON.stringify(article)).then(success).catch(fail);
 }
 
 function getArticle(articleno, success, fail) {
