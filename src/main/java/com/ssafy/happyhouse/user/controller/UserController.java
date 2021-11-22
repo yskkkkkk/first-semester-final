@@ -206,7 +206,7 @@ public class UserController {
 			e.printStackTrace();
 			model.addAttribute("msg", "회원 정보 수정 중 문제 발생");
 			return new ResponseEntity<UserDto>(user, HttpStatus.INTERNAL_SERVER_ERROR); // 500
-		}
+		} 
 	}
 
 	@ApiOperation(value = "delete", notes = "회원탈퇴를 진행합니다.")
