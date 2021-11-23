@@ -205,20 +205,22 @@ public class UserController {
 	
 	// 임시비밀번호 발송
 	@ApiOperation(value = "임시비밀번호발송", notes = "임시비밀번호를 발송하여 비밀번호찾기를 진행시켜준다.", response = Map.class)
-	@PutMapping("/pw")
-	public ResponseEntity<String> findPw(@RequestBody UserDto user) throws IOException, SQLException {
-		logger.info("임시 비밀번호 방송 요청 발생 / 요청 email: " + user.getEmail());
+	@PostMapping("/tmpPw")
+	public ResponseEntity<String> findPw(@RequestBody String email) throws IOException, SQLException {
+		logger.info("임시 비밀번호 방송 요청 발생 / 요청 email: " + email);
 
 		// 임시 번호 만들기
 		String uuid = UUID.randomUUID().toString().replaceAll("-", ""); // - 제거
 		uuid = uuid.substring(0, 10); // uuid를 앞에서부터 10자리 잘라줌.
 
 		// 임시 비밀번호로 변경하기
+		UserDto user = new UserDto();
+		user.setUserNo(userService.findUserNo(email));
 		user.setUserPw(uuid);
 		
 		if (userService.update(user) == 1) {
 			String setFrom = "HappyHouseindustry@gmail.com"; // 보내는 사람(관리자) 이메일
-			String tomail = user.getEmail(); // 받는 사람 이메일
+			String tomail = email; // 받는 사람 이메일
 			String title = "[HappyHouse] 임시비밀번호 발송"; // 제목
 			String content =
 					System.getProperty("line.separator") + System.getProperty("line.separator")

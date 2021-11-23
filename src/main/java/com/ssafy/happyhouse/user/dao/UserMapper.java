@@ -24,4 +24,6 @@ public interface UserMapper {
 	int checkEmail(String userEmail);
 
 	int checkId(String userId);
+	
+	int findUserNo(String email);
 }

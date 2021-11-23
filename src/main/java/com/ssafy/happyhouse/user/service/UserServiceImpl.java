@@ -67,6 +67,11 @@ public class UserServiceImpl implements UserService{
 	public int checkId(String userId) {
 		return sqlSession.getMapper(UserMapper.class).checkId(userId);
 	}
+
+	@Override
+	public int findUserNo(String email) {
+		return sqlSession.getMapper(UserMapper.class).findUserNo(email);
+	}
 	
 	public String code(String pw) {
 		double cardinalNum = 62;

@@ -46,6 +46,34 @@
               @click="movePage"
               >회원가입</b-button
             >
+            <b-button
+              type="button"
+              variant="danger"
+              class="m-1"
+              v-b-modal.modal-prevent-closing
+              >비밀번호찾기</b-button
+            >
+            <b-modal
+              id="modal-prevent-closing"
+              ref="modal"
+              title="임시 비밀번호 발급"
+              @show="resetModal"
+              @hidden="resetModal"
+              @ok="tmpPW"
+            >
+              <b-form-group
+                label="가입 시 기입한 이메일을 입력해주세요."
+                label-for="useremail"
+              >
+                <b-form-input
+                  id="useremail"
+                  v-model="user.useremail"
+                  required
+                  placeholder="ex) ssafy@ssafy.com"
+                  @keyup.enter="tmpPW"
+                ></b-form-input>
+              </b-form-group>
+            </b-modal>
           </b-form>
         </b-card>
       </b-col>
@@ -66,6 +94,7 @@ export default {
       user: {
         userId: null,
         userPw: null,
+        useremail: "",
       },
     };
   },
@@ -74,7 +103,11 @@ export default {
     ...mapState(memberStore, ["isLogin", "isLoginError"]),
   },
   methods: {
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(memberStore, [
+      "userConfirm",
+      "getUserInfo",
+      "issuancePassword",
+    ]),
     async confirm() {
       await this.userConfirm(this.user);
       console.log(this.user);
@@ -90,6 +123,14 @@ export default {
     },
     movePage() {
       this.$router.push({ name: "SignUp" });
+    },
+    async tmpPW() {
+      await this.issuancePassword(this.user.useremail);
+      alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
+      this.$bvModal.hide("modal-prevent-closing");
+    },
+    resetModal() {
+      this.useremail = "";
     },
   },
 };

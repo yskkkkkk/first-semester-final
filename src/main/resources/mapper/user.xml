@@ -34,6 +34,12 @@
 		where user_id= #{userId}
 	</select>
 
+	<select id="findUserNo" resultType="int">
+		select user_no
+		from user
+		where user_email= #{userEmail}
+	</select>
+
 	<select id="userList" resultType="com.ssafy.happyhouse.user.model.UserDto">
 		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
