@@ -94,7 +94,7 @@ const memberStore = {
         userId: user.userid,
         userPw: user.userpwd,
         userName: user.username,
-        userEmail: user.useremail,
+        email: user.useremail,
       };
       join(
         params,
