@@ -93,9 +93,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["join", "userjoin"]),
+    ...mapActions(memberStore, ["userJoin"]),
     async confirm() {
-      await this.join(this.user);
+      await this.userJoin(this.user);
       this.$router.push({ name: "SignIn" });
     },
   },
