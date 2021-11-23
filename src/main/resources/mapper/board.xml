@@ -12,7 +12,7 @@
 			AND title LIKE CONCAT('%', #{title}, '%')
 		</if>
 		<if test="writer != null and writer != ''">
-			AND title LIKE CONCAT('%', #{writer}, '%')
+			AND writer LIKE CONCAT('%', #{writer}, '%')
 		</if>
 	</select>
 
