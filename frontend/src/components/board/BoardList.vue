@@ -24,8 +24,10 @@
           <tbody v-if="filterArticles == 'null'">
             <board-list-row
               v-for="(article, index) in articles"
-              :key="index"
+              :key="article.boardNo"
               :article="article"
+              :length="articles.length"
+              :index="index"
             />
           </tbody>
           <!-- 검색 후: 데이터가 있을 경우 -->
@@ -34,6 +36,8 @@
               v-for="(article, index) in filterArticles"
               :key="index"
               :article="article"
+              :length="filterArticles.length"
+              :index="index"
             />
             <b-td colspan="5">
               <b-alert variant="info" show
