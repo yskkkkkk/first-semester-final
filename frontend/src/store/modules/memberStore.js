@@ -89,6 +89,7 @@ const memberStore = {
       );
     },
     userJoin: ({ commit }, user) => {
+      console.log(user);
       const params = {
         userId: user.userid,
         userPw: user.userpwd,

@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -92,23 +92,11 @@ export default {
       },
     };
   },
-  computed: {
-    // store도 나뉘어져 있기 때문에 어떤 곳에서 가져왔는지 명시를 해줘야 함
-    ...mapState(memberStore, ["isLogin", "isJoinError"]),
-  },
   methods: {
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(memberStore, ["join", "userjoin"]),
     async confirm() {
-      await this.userConfirm(this.user);
-      // this.user = 내가 입력한 로그인 정보
-      // this.userConfirm에서 토큰을 받아온 상태
-      // 정상적으로 로그인을 했다면 isLogin이 true인 상태
-      let token = sessionStorage.getItem("access-token");
-      if (this.isLogin) {
-        await this.getUserInfo(token);
-        // 받아온 간단한 정보로 다시 getUserInfo 호출
-        this.$router.push({ name: "Home" });
-      }
+      await this.join(this.user);
+      this.$router.push({ name: "SignIn" });
     },
   },
 };
