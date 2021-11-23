@@ -36,8 +36,8 @@ async function userCheck(user, success, fail) {
   await api.post(`/user/check`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-async function temporaryPassword(user, success, fail) {
-  await api.put(`/user/pw`, JSON.stringify(user)).then(success).catch(fail);
+async function issuancePassword(useremail, success, fail) {
+  await api.post(`/user/tmpPw`, useremail).then(success).catch(fail);
 }
 
 export {
@@ -49,5 +49,5 @@ export {
   update,
   remove,
   userCheck,
-  temporaryPassword,
+  issuancePassword,
 };
