@@ -4,17 +4,16 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <!-- !!!!! 로그인 구현되면 글쓴이 아이디로 변경하기@@@ -->
-      <b-col class="text-right" v-if="article.writer == 'ssafy'">
+      <b-col class="text-right" v-if="article.writer == userInfo.userName">
         <b-button
           variant="outline-info"
           size="sm"
           @click="moveModifyArticle"
           class="mr-2"
-          >글수정</b-button
+          >글 수정</b-button
         >
         <b-button variant="outline-danger" size="sm" @click="removeArticle"
-          >글삭제</b-button
+          >글 삭제</b-button
         >
       </b-col>
     </b-row>
@@ -63,6 +62,7 @@ import ReplyWriteForm from "@/components/reply/child/ReplyWriteForm.vue";
 import ReplyList from "@/components/reply/ReplyList.vue";
 import { mapActions, mapState } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardView",
@@ -90,13 +90,16 @@ export default {
     removeArticle() {
       if (confirm("정말 삭제하시겠습니까?")) {
         this.deleteArticleByNo(this.$route.params.boardNo);
-        this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
+        setTimeout(() => {
+          this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
+        }, 100);
         alert("삭제 되었습니다.");
         this.listArticle();
       }
     },
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     ...mapState(boardStore, ["article"]),
     message() {
       if (this.article.content)

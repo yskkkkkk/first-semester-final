@@ -42,33 +42,41 @@
         <b-navbar-nav class="userInfo ml-auto" v-if="userInfo">
           <b-nav-item class="align-self-center"
             ><b-avatar variant="primary" v-text="userInfo.userId"></b-avatar
-            >{{ userInfo.userName }}({{ userInfo.userId }}) 님
-            환영합니다.</b-nav-item
-          >
-          <b-nav-item class="align-self-center"
-            ><router-link
-              :to="{ name: 'MyPage' }"
+            >{{ userInfo.userName }}({{ userInfo.userId }}) 님 환영합니다.
+          </b-nav-item>
+          <b-nav-item-dropdown right>
+            <template #button-content>
+              <b-icon icon="people" font-scale="2"></b-icon>
+            </template>
+            <b-dropdown-item class="align-self-center"
+              ><router-link
+                :to="{ name: 'MyPage' }"
+                class="link align-self-center"
+                ><b-icon icon="exclamation-circle" class="mr-1"></b-icon
+                >마이페이지</router-link
+              ></b-dropdown-item
+            >
+            <b-dropdown-item
               class="link align-self-center"
-              >마이페이지</router-link
-            ></b-nav-item
-          >
-          <b-nav-item
-            class="link align-self-center"
-            @click.prevent="onClickLogout"
-            >로그아웃</b-nav-item
-          >
+              @click.prevent="onClickLogout"
+            >
+              <b-icon icon="power" class="mr-1"></b-icon
+              >로그아웃</b-dropdown-item
+            >
+          </b-nav-item-dropdown>
         </b-navbar-nav>
+
         <b-navbar-nav class="userInfo ml-auto" v-else>
           <b-nav-item-dropdown right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
             </template>
-            <b-dropdown-item href="#"
+            <b-dropdown-item
               ><router-link :to="{ name: 'SignUp' }" class="link"
                 ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item href="#"
+            <b-dropdown-item
               ><router-link :to="{ name: 'SignIn' }" class="link"
                 ><b-icon icon="key"></b-icon> 로그인</router-link
               ></b-dropdown-item

@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService{
 
 	@Value("${config.base62.character}")
 	private String character;
+	
 	private static int min = Integer.MAX_VALUE;
 	
 	@Override

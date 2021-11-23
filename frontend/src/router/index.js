@@ -75,20 +75,17 @@ const routes = [
         path: "mypage",
         name: "MyPage",
         beforeEnter: onlyAuthUser,
-        // 들어가기 전에 로그인 했는지 확인해봐라
         component: MemberMyPage,
       },
       {
         path: "update",
         name: "Update",
         beforeEnter: onlyAuthUser,
-        // 들어가기 전에 로그인 했는지 확인해봐라
         component: MemberUpdate,
       },
     ],
   },
   {
-    // !!!!!!!!!! 로그인 구현되면 주석 풀기 !!!!!!!!!!!!
     path: "/board",
     name: "Board",
     component: Board,
@@ -102,19 +99,19 @@ const routes = [
       {
         path: "write",
         name: "BoardWrite",
-        // beforeEnter: onlyAuthUser,
+        beforeEnter: onlyAuthUser,
         component: BoardWrite,
       },
       {
         path: "detail/:boardNo",
         name: "BoardView",
-        // beforeEnter: onlyAuthUser,
+        beforeEnter: onlyAuthUser,
         component: BoardView,
       },
       {
         path: "update/:boardNo",
         name: "BoardUpdate",
-        // beforeEnter: onlyAuthUser,
+        beforeEnter: onlyAuthUser,
         component: BoardUpdate,
       },
     ],

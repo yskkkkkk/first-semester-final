@@ -5,7 +5,7 @@
         <b-row>
           <b-col cols="10">
             <!-- 로그인 구현 완료되면 유저 이름 넣기 -->
-            <b-form-group id="content-group" :label="reply.writer">
+            <b-form-group id="content-group" :label="this.userInfo.userName">
               <b-form-textarea
                 id="content"
                 v-model="reply.content"
@@ -38,6 +38,7 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 const replyStore = "replyStore";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "ReplyWriteForm",
@@ -46,8 +47,7 @@ export default {
       reply: {
         boardNo: 0,
         replyNo: 0,
-        writer: "ssafy",
-        // !!!!로그인 구현 완료되면 유저 정보 가져오기!!!
+        writer: "",
         content: "",
         recommand: 0,
       },
@@ -92,17 +92,20 @@ export default {
     registReply() {
       const params = {
         boardNo: this.article.boardNo,
-        writer: this.reply.writer,
+        writer: this.userInfo.userName,
         content: this.reply.content,
         recommand: this.reply.recommand,
       };
-      // console.log(params);
+
       alert("댓글이 등록되었습니다.");
       this.writeReply(params);
-      this.getlistReply(this.article.boardNo);
+      setTimeout(() => {
+        this.getlistReply(this.article.boardNo);
+      }, 100);
     },
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(replyStore, ["getReply"]),
     ...mapState(boardStore, ["article"]),
   },

@@ -2,16 +2,11 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group
-          id="userid-group"
-          label="작성자:"
-          label-for="userid"
-          description="작성자를 입력하세요."
-        >
+        <b-form-group id="userid-group" label="작성자:" label-for="userid">
           <b-form-input
             id="userid"
-            :disabled="isUserid"
-            v-model="article.writer"
+            disabled
+            v-model="userInfo.userName"
             type="text"
             required
             placeholder="작성자 입력..."
@@ -70,8 +65,9 @@
 
 <script>
 // import { writeArticle, getArticle, modifyArticle } from "@/api/board";
-import { mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardWriteForm",
@@ -85,7 +81,6 @@ export default {
         isExposing: "1", // 1이면 공개, 0이면 비공개
         isNotice: "0", // 1이면 공지, 0이면 일반글
       },
-      isUserid: false,
       type: this.$route.params.type,
     };
   },
@@ -93,7 +88,6 @@ export default {
     // console.log(this.type);
     if (this.type === "modify") {
       this.article = this.getArticle;
-      this.isUserid = true;
     }
   },
   methods: {
@@ -107,10 +101,7 @@ export default {
 
       let err = true;
       let msg = "";
-      if (!this.article.writer) {
-        msg = "작성자 입력해주세요";
-        err = false;
-      } else if (!this.article.title) {
+      if (!this.article.title) {
         msg = "제목 입력해주세요";
         err = false;
       } else if (!this.article.content) {
@@ -135,12 +126,15 @@ export default {
         isExposing: this.article.isExposing,
         isNotice: this.article.isNotice,
         title: this.article.title,
-        writer: this.article.writer,
+        writer: this.userInfo.userName,
       };
-      // !!!!!!! 유저가 관리자일 때 글 작성은 무조건 공지
-      // if (user.status == 1) params.isNotice = "1";
+      // 유저가 관리자일 때 글 작성은 무조건 공지
+      if (this.userInfo.userType == "1") params.isNotice = "1";
+
       this.writeArticle(params);
-      this.getlistArticle();
+      setTimeout(() => {
+        this.getlistArticle();
+      }, 100);
       alert("글이 등록되었습니다.");
       this.moveList();
     },
@@ -153,8 +147,10 @@ export default {
         title: this.article.title,
       };
       this.updateArticleByNo(params);
-      this.getlistArticle();
       alert("글이 수정되었습니다.");
+      setTimeout(() => {
+        this.getlistArticle();
+      }, 100);
       this.$router.push({
         name: "BoardView",
         params: { boardNo: this.article.boardNo },
@@ -165,6 +161,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(boardStore, ["getArticle"]),
   },
 };

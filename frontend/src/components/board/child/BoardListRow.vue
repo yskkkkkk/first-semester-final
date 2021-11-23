@@ -16,8 +16,9 @@
 
 <script>
 // import moment from "moment";
-import { mapMutations, mapActions } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardListRow",
@@ -25,6 +26,7 @@ export default {
     article: Object,
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     // changeDateFormat() {
     //   return moment(new Date(this.regtime)).format("YY.MM.DD hh:mm:ss");
     // },
@@ -33,9 +35,13 @@ export default {
     ...mapMutations(boardStore, ["SET_ARTICLE"]),
     ...mapActions(boardStore, ["increaseHit"]),
     BoardView(article) {
-      // !!!!!!! 로그인 구현되면 유저 아이디 값으로 변경 !!!!!!!!
       // 비공개 글일 때 글쓴이와 유저 정보가 다르면 글 볼 수 없음
-      if (article.isExposing == "0" && article.writer != "ssafy") {
+      // 단, 관리자는 볼 수 있음
+      if (
+        this.userInfo.userType != "1" &&
+        article.isExposing == "0" &&
+        article.writer != this.userInfo.userName
+      ) {
         alert("비공개 글입니다.");
       } else {
         this.increaseHit(article.boardNo);

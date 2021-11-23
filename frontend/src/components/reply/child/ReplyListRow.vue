@@ -7,7 +7,13 @@
     <b-row>
       <span>{{ replyprops.content }}</span>
     </b-row>
-    <b-row class="replyBtn">
+    <b-row
+      class="replyBtn"
+      v-if="
+        this.userInfo.userType == '1' ||
+        replyprops.writer == this.userInfo.userName
+      "
+    >
       <b-button
         variant="outline-info"
         size="sm"
@@ -54,8 +60,9 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 const replyStore = "replyStore";
+const memberStore = "memberStore";
 
 export default {
   name: "ReplyListRow",
@@ -96,15 +103,20 @@ export default {
       this.replyview();
       this.modifyReply(params);
       alert("댓글이 수정되었습니다.");
-      this.getlistReply(this.replyprops.boardNo);
+      setTimeout(() => {
+        this.getlistReply(this.replyprops.boardNo);
+      }, 100);
     },
     replyRemove() {
       this.removeReply(this.replyprops.replyNo);
       alert("댓글이 삭제되었습니다.");
-      this.getlistReply(this.replyprops.boardNo);
+      setTimeout(() => {
+        this.getlistReply(this.replyprops.boardNo);
+      }, 100);
     },
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     // changeDateFormat() {
     //   return moment(new Date(this.regtime)).format("YY.MM.DD hh:mm:ss");
     // },
