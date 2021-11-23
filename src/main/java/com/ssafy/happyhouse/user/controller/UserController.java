@@ -88,7 +88,7 @@ public class UserController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
-			try {
+			try { 
 				UserDto userDto = userService.userInfo(userId);
 				resultMap.put("userInfo", userDto);
 				resultMap.put("message", SUCCESS);
