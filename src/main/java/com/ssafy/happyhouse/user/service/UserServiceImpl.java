@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService{
 	private SqlSession sqlSession;
 
 	@Value("${config.base62.character}")
-	private String character;
-	
+	private static String character;
+	private static int min = Integer.MAX_VALUE;
 	@Override
 	public int regist(UserDto user) throws SQLException {
 		user.setUserPw(code(user.getUserPw()));
@@ -67,21 +67,26 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	public String code(String pw) {
-		int cardinalNum = 62;
-		int original = 1;
+		double cardinalNum = 62;
+		double original = 1;
 		for (int i = 0; i < pw.length(); i++) {
-			original *= (int)pw.charAt(i) * Math.pow(i+1, 2);
+			original *= (int)pw.charAt(i) + Math.pow(i+1, 2);
 		}
 		List<Character> output = new ArrayList<>();
 		while (original != 0) {
-			output.add(character.charAt(original % cardinalNum));
-			original /= cardinalNum;
+			if (original > min) {
+				output.add(character.charAt((int) (original % cardinalNum)));
+				original /= cardinalNum;
+			}else {
+				output.add(character.charAt( ((int)original % (int)cardinalNum)));
+				original /= cardinalNum;
+				original = (int)original;
+			}
 		}
 		Collections.reverse(output);
 		StringBuilder sb = new StringBuilder();
 	    for (char ch : output) 
 	        sb.append(ch);
-		
 		return sb.toString();
 	}
 }
