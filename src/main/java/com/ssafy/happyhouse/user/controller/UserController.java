@@ -241,6 +241,4 @@ public class UserController {
 			return new ResponseEntity<String>("NO", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
 }
