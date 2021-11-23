@@ -15,19 +15,19 @@ public class ReplyDto {
 	@ApiModelProperty(value = "작성자")
 	private String writer;
 	@ApiModelProperty(value = "추천 수")
-	private int recommand;
+	private String recommand;
 	@ApiModelProperty(value = "등록 일시")
 	private String regTime;
 	@ApiModelProperty(value = "수정 일시")
 	private String modTime;
 	
 	public ReplyDto() {}
-	public ReplyDto(int replyNo, int recommand) {
+	public ReplyDto(int replyNo, String recommand) {
 		super();
 		this.replyNo = replyNo;
 		this.recommand = recommand;
 	}
-	public ReplyDto(int replyNo, int boardNo, String content, String writer, int recommand, String regTime,
+	public ReplyDto(int replyNo, int boardNo, String content, String writer, String recommand, String regTime,
 			String modTime) {
 		super();
 		this.replyNo = replyNo;
@@ -71,11 +71,11 @@ public class ReplyDto {
 		this.writer = writer;
 	}
 
-	public int getRecommand() {
+	public String getRecommand() {
 		return recommand;
 	}
 
-	public void setRecommand(int recommand) {
+	public void setRecommand(String recommand) {
 		this.recommand = recommand;
 	}
 

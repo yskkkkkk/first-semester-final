@@ -19,5 +19,9 @@ public interface ReplyService {
 	ReplyDto replyInfo(int replyNo) throws SQLException;
 	
 	List<ReplyDto> replyList(int boardNo) throws SQLException;
+
+	Boolean isLiked(Map<String, String> map) throws SQLException;
+
+	Boolean likeChanged(Map<String, String> map) throws SQLException;
 	
 }

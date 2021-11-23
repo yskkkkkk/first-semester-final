@@ -3,6 +3,8 @@ import {
   writeReply,
   modifyReply,
   deleteReply,
+  isLiked,
+  likeChanged,
 } from "@/api/reply.js";
 
 const replyStore = {
@@ -30,7 +32,7 @@ const replyStore = {
       state.replylist = [];
     },
     GOOD_RESULT: () => {
-      console.log("SUCCESS");
+      // console.log("SUCCESS");
     },
   },
   actions: {
@@ -78,6 +80,30 @@ const replyStore = {
         replyNo,
         () => {
           commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getIsLiked({ commit }, param) {
+      return isLiked(
+        param,
+        ({ data }) => {
+          commit("GOOD_RESULT");
+          return data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    toggleLike({ commit }, param) {
+      return likeChanged(
+        param,
+        ({ data }) => {
+          commit("GOOD_RESULT");
+          return data;
         },
         (error) => {
           console.log(error);

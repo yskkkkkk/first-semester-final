@@ -18,4 +18,25 @@ function deleteReply(replyNo, success, fail) {
   api.delete(`/board/reply/${replyNo}`).then(success).catch(fail);
 }
 
-export { listReply, writeReply, modifyReply, deleteReply };
+function isLiked(param, success, fail) {
+  return api
+    .post(`/board/reply/like/`, JSON.stringify(param))
+    .then(success)
+    .catch(fail);
+}
+
+function likeChanged(param, success, fail) {
+  return api
+    .put(`/board/reply/like/`, JSON.stringify(param))
+    .then(success)
+    .catch(fail);
+}
+
+export {
+  listReply,
+  writeReply,
+  modifyReply,
+  deleteReply,
+  isLiked,
+  likeChanged,
+};

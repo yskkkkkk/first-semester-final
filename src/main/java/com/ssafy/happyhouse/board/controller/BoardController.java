@@ -131,13 +131,18 @@ public class BoardController {
 		}
 	}
 	
-	@PutMapping("/recommand")
-	@ApiOperation(value = "readCount", notes = "추천수를 변화시킵니다.")
-	public void updateRecommand(@RequestBody Map<String, String> param) throws SQLException {
-		// map: { 	replyNo: int ,
-		//      	direction: "up" or "down" }
-		logger.info("updateRecommand - 호출");
-		replyService.updateRecommand(param);
+	@PostMapping("/reply/like")
+	@ApiOperation(value = "isliked", notes = "유저가 해당 댓글에 좋아요 누른 여부를 반환합니다.")
+	public ResponseEntity<Boolean> isLiked(@RequestBody Map<String, String> map) throws SQLException {
+		Boolean result = replyService.isLiked(map);
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+	}
+	
+	@PutMapping("/reply/like")
+	@ApiOperation(value = "likeChanged", notes = "댓글의 좋아요를 토글합니다.")
+	public ResponseEntity<Boolean> likeChanged(@RequestBody Map<String, String> map) throws SQLException {
+		Boolean result = replyService.likeChanged(map);
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 	
 	@PutMapping("/reply")

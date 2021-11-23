@@ -37,4 +37,16 @@
 		delete from reply
 		where reply_no = #{replyNo}
 	</delete>
+	
+	<select id="isLiked" resultType="String">
+		select recommand
+		from reply
+		where reply_no = #{replyNo};
+	</select>
+	
+	<update id="likeChanged">
+		update reply
+		set recommand = #{recommand}
+		where reply_no = #{replyNo}
+	</update>
 </mapper>

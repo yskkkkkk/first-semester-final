@@ -7,14 +7,20 @@
     <b-row>
       <span>{{ replyprops.content }}</span>
     </b-row>
-    <b-row
-      class="replyBtn"
-      v-if="
-        this.userInfo.userType == '1' ||
-        replyprops.writer == this.userInfo.userName
-      "
-    >
+    <b-row class="replyBtn">
       <b-button
+        :variant="this.isliked ? 'info' : 'outline-info'"
+        size="sm"
+        class="mr-2"
+        @click="likeClicked"
+        ><b-icon icon="hand-thumbs-up" class="mr-1"></b-icon
+        >{{ getlikeCnt }}</b-button
+      >
+      <b-button
+        v-if="
+          this.userInfo.userType == '1' ||
+          replyprops.writer == this.userInfo.userName
+        "
         variant="outline-info"
         size="sm"
         class="mr-2"
@@ -73,10 +79,24 @@ export default {
     return {
       type: "view",
       content: "",
+      isliked: null,
     };
   },
+  created() {
+    const params = {
+      replyNo: this.replyprops.replyNo,
+      userNo: this.userInfo.userNo,
+    };
+    this.getIsLiked(params).then((ret) => (this.isliked = ret));
+  },
   methods: {
-    ...mapActions(replyStore, ["getlistReply", "modifyReply", "removeReply"]),
+    ...mapActions(replyStore, [
+      "getlistReply",
+      "modifyReply",
+      "removeReply",
+      "getIsLiked",
+      "toggleLike",
+    ]),
     convertModify() {
       this.type = "modify";
       this.content = this.replyprops.content;
@@ -114,12 +134,33 @@ export default {
         this.getlistReply(this.replyprops.boardNo);
       }, 100);
     },
+    likeClicked() {
+      const params = {
+        replyNo: this.replyprops.replyNo,
+        userNo: this.userInfo.userNo,
+      };
+      this.toggleLike(params).then((res) => (this.isliked = res));
+
+      setTimeout(() => {
+        this.getlistReply(this.replyprops.boardNo);
+      }, 100);
+    },
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
     // changeDateFormat() {
     //   return moment(new Date(this.regtime)).format("YY.MM.DD hh:mm:ss");
     // },
+    getlikeCnt: function () {
+      console.log(this.replyprops.recommand);
+      if (this.replyprops.recommand == "" || this.replyprops.recommand == 0)
+        return 0;
+      else {
+        const cnt = this.replyprops.recommand.split(",");
+        console.log(cnt);
+        return cnt.length - 1;
+      }
+    },
   },
 };
 </script>
