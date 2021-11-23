@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService{
 		for (int i = 0; i < pw.length(); i++) {
 			original *= (int)pw.charAt(i) + Math.pow(i+1, 2);
 		}
-		
 		List<Character> output = new ArrayList<>();
 		while (original != 0) {
 			if (original > min) {
