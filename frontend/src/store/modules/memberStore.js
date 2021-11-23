@@ -25,12 +25,16 @@ const memberStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
+    GOOD_RESULT: () => {
+      // console.log();
+    },
   },
   actions: {
     async userConfirm({ commit }, user) {
       await login(
         user,
         (response) => {
+          console.log(response);
           if (response.data.message === "success") {
             // 성공 시 토큰을 가져옴
             let token = response.data["access-token"];
@@ -94,7 +98,7 @@ const memberStore = {
         userId: user.userid,
         userPw: user.userpwd,
         userName: user.username,
-        userEmail: user.useremail,
+        email: user.useremail,
       };
       join(
         params,

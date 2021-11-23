@@ -16,7 +16,7 @@
             <b-form-group label="아이디:" label-for="userid">
               <b-form-input
                 id="userid"
-                v-model="user.userid"
+                v-model="user.userId"
                 required
                 placeholder="아이디 입력...."
                 @keyup.enter="confirm"
@@ -26,7 +26,7 @@
               <b-form-input
                 type="password"
                 id="userpwd"
-                v-model="user.userpwd"
+                v-model="user.userPw"
                 required
                 placeholder="비밀번호 입력...."
                 @keyup.enter="confirm"
@@ -64,8 +64,8 @@ export default {
   data() {
     return {
       user: {
-        userid: null,
-        userpwd: null,
+        userId: null,
+        userPw: null,
       },
     };
   },
@@ -77,6 +77,7 @@ export default {
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
     async confirm() {
       await this.userConfirm(this.user);
+      console.log(this.user);
       // this.user = 내가 입력한 로그인 정보
       // this.userConfirm에서 토큰을 받아온 상태
       // 정상적으로 로그인을 했다면 isLogin이 true인 상태

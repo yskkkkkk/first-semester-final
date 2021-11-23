@@ -10,9 +10,6 @@
       <b-col cols="8">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
-            <b-alert show variant="danger" v-if="isJoinError"
-              >비밀번호확인이 맞지않습니다.</b-alert
-            >
             <b-form-group label="아이디:" label-for="userid">
               <b-form-input
                 id="userid"
@@ -41,6 +38,9 @@
                 placeholder="한번 더 입력해주세요."
                 @keyup.enter="confirm"
               ></b-form-input>
+              <b-alert show variant="danger" v-if="isJoinError"
+                >비밀번호가 일치하지 않습니다.</b-alert
+              >
             </b-form-group>
             <b-form-group label="이름:" label-for="username">
               <b-form-input
@@ -89,14 +89,22 @@ export default {
         userpwd: null,
         username: null,
         useremail: null,
+        pwdcheck: null,
       },
     };
   },
   methods: {
-    ...mapActions(memberStore, ["join", "userjoin"]),
+    ...mapActions(memberStore, ["userJoin"]),
     async confirm() {
-      await this.join(this.user);
+      await this.userJoin(this.user);
+      alert("회원 가입이 되었습니다!");
       this.$router.push({ name: "SignIn" });
+    },
+  },
+  computed: {
+    isJoinError() {
+      if (this.user.pwdcheck == null) return false;
+      return this.user.userpwd == this.user.pwdcheck ? false : true;
     },
   },
 };
