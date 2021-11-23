@@ -137,6 +137,8 @@ export default {
         title: this.article.title,
         writer: this.article.writer,
       };
+      // !!!!!!! 유저가 관리자일 때 글 작성은 무조건 공지
+      // if (user.status == 1) params.isNotice = "1";
       this.writeArticle(params);
       this.getlistArticle();
       alert("글이 등록되었습니다.");

@@ -19,7 +19,7 @@
 		<if test="userName != null and userName != ''">
 			user_name=#{userName}, 
 		</if>
-		mod_date = #{modDate}
+		modify_date = #{modDate}
 		where id=#{id}
 	</update>
 
@@ -29,24 +29,21 @@
 	</delete>
 
 	<select id="userInfo" resultType="com.ssafy.happyhouse.user.model.UserDto">
-		select 
-		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
 		where user_id= #{userId}
 	</select>
 
 	<select id="userList" resultType="com.ssafy.happyhouse.user.model.UserDto">
-		select 
-		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
 		where 1=1
 	</select>
 
 	<select id="login" resultType="com.ssafy.happyhouse.user.model.UserDto">
-		select 
-		(user_no, user_id, user_pw, user_name, email, user_type, join_date, mod_date)
+		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
-		where user_id=#{userId} and user_pw=#{userPw}
+		where user_id = #{userId} and user_pw = #{userPw}
 	</select>
 
 </mapper>

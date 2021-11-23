@@ -4,7 +4,8 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right">
+      <!-- !!!!! 로그인 구현되면 글쓴이 아이디로 변경하기@@@ -->
+      <b-col class="text-right" v-if="article.writer == 'ssafy'">
         <b-button
           variant="outline-info"
           size="sm"

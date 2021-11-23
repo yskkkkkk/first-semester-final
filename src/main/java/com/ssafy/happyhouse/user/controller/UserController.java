@@ -58,6 +58,7 @@ public class UserController {
 			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+		logger.debug("로그인 실행 : {}", userDto);
 		try {
 			UserDto loginUser = userService.login(userDto);
 			if (loginUser != null) {

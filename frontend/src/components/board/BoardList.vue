@@ -13,11 +13,11 @@
         <b-table-simple hover responsive>
           <b-thead head-variant="light">
             <b-tr>
-              <b-th>글번호</b-th>
+              <b-th class="text-center" width="7%">No</b-th>
               <b-th>제목</b-th>
-              <b-th>조회수</b-th>
-              <b-th>작성자</b-th>
-              <b-th>작성일</b-th>
+              <b-th width="10%">작성자</b-th>
+              <b-th class="text-center" width="20%">작성일</b-th>
+              <b-th class="text-center" width="10%">조회수</b-th>
             </b-tr>
           </b-thead>
           <!-- 검색 전: 게시판 -->
@@ -35,6 +35,11 @@
               :key="index"
               :article="article"
             />
+            <b-td colspan="5">
+              <b-alert variant="info" show
+                >검색 결과 : {{ filterArticles.length }} 건
+              </b-alert></b-td
+            >
           </tbody>
           <tbody v-else>
             <b-td colspan="5">
