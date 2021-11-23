@@ -12,6 +12,7 @@ const boardStore = {
   state: {
     article: null,
     articles: [],
+    filterArticles: null,
   },
   getters: {
     getArticle: (state) => {
@@ -36,6 +37,12 @@ const boardStore = {
     },
     GOOD_RESULT: () => {
       console.log("SUCCESS");
+    },
+    SET_FILTER_ARTICLE: (state, res) => {
+      state.filterArticles = res;
+    },
+    CLEAR_FILTER_ARTICLE: (state) => {
+      state.filterArticles = null;
     },
   },
   actions: {
@@ -118,6 +125,18 @@ const boardStore = {
         articleNo,
         () => {
           commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    SearchArticle: ({ commit }, params) => {
+      listArticle(
+        params,
+        ({ data }) => {
+          console.log(data);
+          commit("SET_FILTER_ARTICLE", data);
         },
         (error) => {
           console.log(error);
