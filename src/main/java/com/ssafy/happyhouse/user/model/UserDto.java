@@ -24,9 +24,7 @@ public class UserDto {
 	@ApiModelProperty(value = "데이터 수정 일시")
 	private String modifyDate;
 	
-	public UserDto() {
-		// TODO Auto-generated constructor stub
-	}
+	public UserDto() {}
 	
 	public UserDto(int userNo, String userId, String userPw, String userName, String email, String userType,
 			String joinDate, String modifyDate) {
