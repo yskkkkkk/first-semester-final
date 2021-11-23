@@ -54,7 +54,7 @@
             <b-form-group label="이메일:" label-for="useremail">
               <b-form-input
                 id="useremail"
-                v-model="user.username"
+                v-model="user.useremail"
                 required
                 placeholder="ex) ssafy@ssafy.com"
                 @keyup.enter="confirm"
@@ -87,6 +87,8 @@ export default {
       user: {
         userid: null,
         userpwd: null,
+        username: null,
+        useremail: null,
       },
     };
   },
@@ -107,9 +109,6 @@ export default {
         // 받아온 간단한 정보로 다시 getUserInfo 호출
         this.$router.push({ name: "Home" });
       }
-    },
-    movePage() {
-      this.$router.push({ name: "SignUp" });
     },
   },
 };

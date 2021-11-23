@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { login } from "@/api/member.js";
+import { login, checkId, checkEmail, join } from "@/api/member.js";
 import { findById } from "../../api/member";
 
 const memberStore = {
@@ -43,7 +43,9 @@ const memberStore = {
             commit("SET_IS_LOGIN_ERROR", true);
           }
         },
-        () => {}
+        (error) => {
+          console.log(error);
+        }
       );
     },
     getUserInfo({ commit }, token) {
@@ -58,6 +60,45 @@ const memberStore = {
           } else {
             console.log("유저 정보 없음!!");
           }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    checkId: ({ commit }, userId) => {
+      checkId(
+        userId,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    checkEmail: ({ commit }, userEmail) => {
+      checkEmail(
+        userEmail,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    userJoin: ({ commit }, user) => {
+      const params = {
+        userId: user.userid,
+        userPw: user.userpwd,
+        userName: user.username,
+        userEmail: user.useremail,
+      };
+      join(
+        params,
+        () => {
+          commit("GOOD_RESULT");
         },
         (error) => {
           console.log(error);
