@@ -19,14 +19,14 @@
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">아이디</b-col
-              ><b-col cols="4" align-self="start">{{ userInfo.userid }}</b-col>
+              ><b-col cols="4" align-self="start">{{ userInfo.userId }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">이름</b-col
               ><b-col cols="4" align-self="start">{{
-                userInfo.username
+                userInfo.userName
               }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
@@ -40,15 +40,17 @@
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">가입일</b-col
               ><b-col cols="4" align-self="start">{{
-                userInfo.joindate
+                userInfo.joinDate
               }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
           </b-container>
           <hr class="my-4" />
 
-          <b-button variant="primary" href="#" class="mr-1">정보수정</b-button>
-          <b-button variant="danger" href="#">회원탈퇴</b-button>
+          <b-button variant="primary" class="mr-1" @click="moveUpdate"
+            >정보수정</b-button
+          >
+          <b-button variant="danger" @click="deleteMember">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -57,7 +59,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -66,6 +68,24 @@ export default {
   components: {},
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+  },
+  methods: {
+    ...mapActions(memberStore, ["userDelete"]),
+    ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    moveUpdate() {
+      this.$router.push({ name: "Update" });
+    },
+    deleteMember() {
+      if (confirm("정말 탈퇴하시겠습니까?")) {
+        console.log(this.userInfo.userId);
+        this.userDelete(this.userInfo.userId);
+        alert("탈퇴 되었습니다.");
+        this.SET_IS_LOGIN(false);
+        this.SET_USER_INFO(null);
+        sessionStorage.removeItem("access-token");
+        if (this.$route.path != "/") this.$router.push({ name: "Home" });
+      }
+    },
   },
 };
 </script>

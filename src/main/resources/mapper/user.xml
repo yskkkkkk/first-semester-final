@@ -19,8 +19,8 @@
 		<if test="userName != null and userName != ''">
 			user_name=#{userName}, 
 		</if>
-		modify_date = #{modDate}
-		where id=#{id}
+		modify_date = #{modifyDate}
+		where user_id=#{userId}
 	</update>
 
 	<delete id="delete">

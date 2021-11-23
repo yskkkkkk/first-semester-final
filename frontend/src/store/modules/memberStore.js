@@ -1,5 +1,12 @@
 import jwt_decode from "jwt-decode";
-import { login, checkId, checkEmail, join } from "@/api/member.js";
+import {
+  login,
+  checkId,
+  checkEmail,
+  join,
+  update,
+  remove,
+} from "@/api/member.js";
 import { findById } from "../../api/member";
 
 const memberStore = {
@@ -101,6 +108,31 @@ const memberStore = {
         email: user.useremail,
       };
       join(
+        params,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    userUpdate({ commit }, user) {
+      update(
+        user,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    userDelete({ commit }, userId) {
+      const params = {
+        userId: userId,
+      };
+      remove(
         params,
         () => {
           commit("GOOD_RESULT");
