@@ -6,6 +6,7 @@ import {
   join,
   update,
   remove,
+  issuancePassword,
 } from "@/api/member.js";
 import { findById } from "../../api/member";
 
@@ -134,6 +135,17 @@ const memberStore = {
       };
       remove(
         params,
+        () => {
+          commit("GOOD_RESULT");
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    changePassword({ commit }, email) {
+      issuancePassword(
+        email,
         () => {
           commit("GOOD_RESULT");
         },

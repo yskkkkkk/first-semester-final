@@ -37,7 +37,7 @@
 	<select id="findUserNo" resultType="int">
 		select user_no
 		from user
-		where user_email= #{userEmail}
+		where email= #{userEmail}
 	</select>
 
 	<select id="userList" resultType="com.ssafy.happyhouse.user.model.UserDto">

@@ -106,7 +106,7 @@ export default {
     ...mapActions(memberStore, [
       "userConfirm",
       "getUserInfo",
-      "issuancePassword",
+      "changePassword",
     ]),
     async confirm() {
       await this.userConfirm(this.user);
@@ -125,7 +125,7 @@ export default {
       this.$router.push({ name: "SignUp" });
     },
     async tmpPW() {
-      await this.issuancePassword(this.user.useremail);
+      await this.changePassword(this.user.useremail);
       alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
       this.$bvModal.hide("modal-prevent-closing");
     },
