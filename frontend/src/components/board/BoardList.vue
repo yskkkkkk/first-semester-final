@@ -21,7 +21,7 @@
             </b-tr>
           </b-thead>
           <!-- 검색 전: 게시판 -->
-          <tbody v-if="!filterArticles">
+          <tbody v-if="filterArticles == 'null'">
             <board-list-row
               v-for="(article, index) in articles"
               :key="index"
@@ -68,6 +68,7 @@
 import BoardListRow from "@/components/board/child/BoardListRow";
 import { mapActions, mapMutations, mapState } from "vuex";
 const boardStore = "boardStore";
+const wordStore = "wordStore";
 
 export default {
   name: "BoardList",
@@ -90,6 +91,7 @@ export default {
     this.CLEAR_FILTER_ARTICLE();
   },
   methods: {
+    ...mapActions(wordStore, ["addWord"]),
     ...mapActions(boardStore, ["getlistArticle", "SearchArticle"]),
     ...mapMutations(boardStore, ["CLEAR_FILTER_ARTICLE", "SET_FILTER_ARTICLE"]),
     moveWrite() {
@@ -101,7 +103,9 @@ export default {
       } else if (this.val == "") {
         alert("검색어를 입력해주세요.");
       } else {
-        // filter해서 보여주기
+        // 검색할 때마다 wordCloud에 단어 추가
+        this.addWord(this.val);
+
         if (this.key == "title") {
           this.SearchArticle({
             title: this.val,

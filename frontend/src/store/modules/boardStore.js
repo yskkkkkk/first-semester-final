@@ -12,7 +12,7 @@ const boardStore = {
   state: {
     article: null,
     articles: [],
-    filterArticles: null,
+    filterArticles: "null",
   },
   getters: {
     getArticle: (state) => {
@@ -42,7 +42,7 @@ const boardStore = {
       state.filterArticles = res;
     },
     CLEAR_FILTER_ARTICLE: (state) => {
-      state.filterArticles = null;
+      state.filterArticles = "null";
     },
   },
   actions: {
