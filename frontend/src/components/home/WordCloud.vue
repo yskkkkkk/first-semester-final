@@ -50,7 +50,7 @@ export default {
         .words(this.wordlist)
         .padding(1)
         .rotate(() => {
-          return ~~(Math.random() * 2) * 90;
+          return ~~(Math.random() * 2);
         })
         // .font("Impact")
         .fontSize(function (d) {
