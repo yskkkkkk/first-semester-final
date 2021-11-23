@@ -20,8 +20,9 @@ public class UserServiceImpl implements UserService{
 	private SqlSession sqlSession;
 
 	@Value("${config.base62.character}")
-	private static String character;
+	private String character;
 	private static int min = Integer.MAX_VALUE;
+	
 	@Override
 	public int regist(UserDto user) throws SQLException {
 		user.setUserPw(code(user.getUserPw()));
