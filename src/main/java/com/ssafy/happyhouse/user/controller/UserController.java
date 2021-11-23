@@ -47,7 +47,6 @@ public class UserController {
 
 	@Autowired
 	private JwtServiceImpl jwtService;
-
 	@Autowired
 	JavaMailSender mailSender; // 메일 서비스를 사용하기 위해 의존성을 주입함
 	@Autowired
@@ -139,9 +138,71 @@ public class UserController {
 		}
 	}
 
+	@ApiOperation(value = "regist", notes = "회원 정보를 받아서 회원가입합니다.")
+	@PostMapping("/")
+	public ResponseEntity<UserDto> regist(@RequestBody UserDto user, HttpSession session, Model model) {
+		System.out.println(user);
+		try {
+			userService.regist(user);
+			return new ResponseEntity<UserDto>(user, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "회원가입 중 문제 발생");
+			return new ResponseEntity<UserDto>(user, HttpStatus.INTERNAL_SERVER_ERROR); // 500
+		}
+	}
+
+	@ApiOperation(value = "update", notes = "회원정보를 수정합니다.")
+	@PutMapping("/")
+	public ResponseEntity<UserDto> update(@RequestBody UserDto user, HttpSession session, Model model) {
+		try {
+			userService.update(user);
+			session.setAttribute("userinfo", user);
+			return new ResponseEntity<UserDto>(user, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "회원 정보 수정 중 문제 발생");
+			return new ResponseEntity<UserDto>(user, HttpStatus.INTERNAL_SERVER_ERROR); // 500
+		} 
+	}
+
+	@ApiOperation(value = "delete", notes = "회원탈퇴를 진행합니다.")
+	@DeleteMapping("/")
+	public ResponseEntity<String> delete(@RequestBody String userId, HttpSession session, Model model) {
+		try {
+			userService.delete(userId);
+			session.setAttribute("userinfo", null);
+			return new ResponseEntity<String>(userId, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "회원 탈퇴 중 문제 발생");
+			return new ResponseEntity<String>(userId, HttpStatus.INTERNAL_SERVER_ERROR); // 500
+		}
+	}
+
+	@ApiOperation(value = "check", notes = "비밀번호 찾기를 위해 회원존재여부를 반환합니다.")
+	@PostMapping("/check")
+	public ResponseEntity<Integer> check(@RequestBody UserDto user, Model model) {
+		int result = 0; // 0: 메일발송 성공, 1: 이메일이 없음, 2: 서버오류
+		try {
+			String email = userService.userInfo(user.getUserId()).getEmail();
+			if (email.equals(user.getEmail())) {
+				// 여기서 이메일 발송
+			} else {
+				result = 1;
+			}
+			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			result = 2;
+			e.printStackTrace();
+			model.addAttribute("msg", "회원 조회 중 문제 발생");
+			return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	// 임시비밀번호 발송
 	@ApiOperation(value = "임시비밀번호발송", notes = "임시비밀번호를 발송하여 비밀번호찾기를 진행시켜준다.", response = Map.class)
-	@PutMapping("/password")
+	@PutMapping("/pw")
 	public ResponseEntity<String> findPw(@RequestBody UserDto user) throws IOException, SQLException {
 		logger.info("임시 비밀번호 방송 요청 발생 / 요청 email: " + user.getEmail());
 
@@ -181,79 +242,5 @@ public class UserController {
 		}
 	}
 
-	@ApiOperation(value = "regist", notes = "회원 정보를 받아서 회원가입합니다.")
-	@PostMapping("/")
-	public ResponseEntity<UserDto> regist(UserDto user, HttpSession session, Model model) {
-		System.out.println(user);
-		try {
-			userService.regist(user);
-			return new ResponseEntity<UserDto>(user, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원가입 중 문제 발생");
-			return new ResponseEntity<UserDto>(user, HttpStatus.INTERNAL_SERVER_ERROR); // 500
-		}
-	}
-
-	@ApiOperation(value = "update", notes = "회원정보를 수정합니다.")
-	@PutMapping("/")
-	public ResponseEntity<UserDto> update(UserDto user, HttpSession session, Model model) {
-		try {
-			userService.update(user);
-			session.setAttribute("userinfo", user);
-			return new ResponseEntity<UserDto>(user, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원 정보 수정 중 문제 발생");
-			return new ResponseEntity<UserDto>(user, HttpStatus.INTERNAL_SERVER_ERROR); // 500
-		} 
-	}
-
-	@ApiOperation(value = "delete", notes = "회원탈퇴를 진행합니다.")
-	@DeleteMapping("/")
-	public ResponseEntity<String> delete(UserDto user, HttpSession session, Model model) {
-		try {
-			userService.delete(user);
-			session.setAttribute("userinfo", null);
-			return new ResponseEntity<String>(user.getUserId(), HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "회원 탈퇴 중 문제 발생");
-			return new ResponseEntity<String>(user.getUserId(), HttpStatus.INTERNAL_SERVER_ERROR); // 500
-		}
-	}
-
-	@ApiOperation(value = "check", notes = "비밀번호 찾기를 위해 회원존재여부를 반환합니다.")
-	@PostMapping("/check")
-	public ResponseEntity<Integer> check(@RequestBody UserDto user, Model model) {
-		int result = 0; // 0: 메일발송 성공, 1: 이메일이 없음, 2: 서버오류
-		try {
-			String email = userService.userInfo(user.getUserId()).getEmail();
-			if (email.equals(user.getEmail())) {
-				// 여기서 이메일 발송
-			} else {
-				result = 1;
-			}
-			return new ResponseEntity<Integer>(result, HttpStatus.OK);
-		} catch (Exception e) {
-			result = 2;
-			e.printStackTrace();
-			model.addAttribute("msg", "회원 조회 중 문제 발생");
-			return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@ApiOperation(value = "findpw", notes = "비밀번호 찾기를 진행합니다. 새 비밀번호를 입력하여 수정합니다.")
-	@PutMapping("/find")
-	public ResponseEntity<Integer> findpw(@RequestBody UserDto user, Model model) {
-		try {
-			userService.update(user);
-			return new ResponseEntity<Integer>(HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("msg", "비밀번호 변경 중 문제 발생");
-			return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR); // 500
-		}
-	}
 
 }
