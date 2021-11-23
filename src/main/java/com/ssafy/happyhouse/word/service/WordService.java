@@ -7,7 +7,7 @@ import com.ssafy.happyhouse.word.model.WordDto;
 public interface WordService {
 
 	List<WordDto> listWord();
-	void registWord(List<String> concerns);
+	void registWord(String concerns);
 	void updateCount(String word);
 	
 }

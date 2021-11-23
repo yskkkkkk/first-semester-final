@@ -21,9 +21,8 @@ public class WordServiceImpl implements WordService {
 	}
 	
 	@Override
-	public void registWord(List<String> concerns) {
-		for(String concern : concerns) 
-			wordMapper.updateCount(concern);
+	public void registWord(String concern) {
+		wordMapper.updateCount(concern);
 	}
 
 	@Override

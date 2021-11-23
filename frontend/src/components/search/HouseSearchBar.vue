@@ -41,6 +41,7 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 const houseStore = "houseStore";
+const wordStore = "wordStore";
 
 export default {
   name: "HouseSearchBar",
@@ -77,6 +78,7 @@ export default {
       "CLEAR_HOUSES_FILTER",
       "SET_HOUSE_FILTER",
     ]),
+    ...mapActions(wordStore, ["addWord"]),
     searchBtn() {
       if (this.key == null) {
         alert("검색 분류를 선택해주세요");
@@ -86,6 +88,8 @@ export default {
         this.CLEAR_DONGS_CODE();
         // 해당되는 동이 있나 확인, 있다면 dongCode 반환
         this.getDongCode(this.val);
+        // 검색할 때마다 wordCloud에 단어 추가
+        this.addWord(this.val);
       }
     },
   },
