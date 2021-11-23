@@ -88,7 +88,7 @@ export default {
       });
     },
     removeArticle() {
-      if (confirm("정말로 삭제하시겠습니까?")) {
+      if (confirm("정말 삭제하시겠습니까?")) {
         this.deleteArticleByNo(this.$route.params.boardNo);
         this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
         alert("삭제 되었습니다.");

@@ -7,6 +7,7 @@ import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
 import MemberJoin from "@/components/user/MemberJoin.vue";
 import MemberMyPage from "@/components/user/MemberMyPage.vue";
+import MemberUpdate from "@/components/user/MemberUpdate.vue";
 
 import Board from "@/views/Board.vue";
 import BoardList from "@/components/board/BoardList.vue";
@@ -76,6 +77,13 @@ const routes = [
         beforeEnter: onlyAuthUser,
         // 들어가기 전에 로그인 했는지 확인해봐라
         component: MemberMyPage,
+      },
+      {
+        path: "update",
+        name: "Update",
+        beforeEnter: onlyAuthUser,
+        // 들어가기 전에 로그인 했는지 확인해봐라
+        component: MemberUpdate,
       },
     ],
   },

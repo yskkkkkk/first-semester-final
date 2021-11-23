@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.user.model.UserDto;
@@ -169,7 +170,8 @@ public class UserController {
 
 	@ApiOperation(value = "delete", notes = "회원탈퇴를 진행합니다.")
 	@DeleteMapping("/")
-	public ResponseEntity<String> delete(@RequestBody String userId, HttpSession session, Model model) {
+	public ResponseEntity<String> delete(@RequestParam(value="userId") String userId, HttpSession session, Model model) {
+		System.out.println(userId);
 		try {
 			userService.delete(userId);
 			session.setAttribute("userinfo", null);

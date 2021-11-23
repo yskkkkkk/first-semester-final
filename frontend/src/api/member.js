@@ -28,8 +28,8 @@ async function update(user, success, fail) {
   await api.put(`/user/`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-async function remove(userid, success, fail) {
-  await api.delete(`/user/`, userid).then(success).catch(fail);
+async function remove(params, success, fail) {
+  await api.delete(`/user/`, { params: params }).then(success).catch(fail);
 }
 
 async function userCheck(user, success, fail) {
