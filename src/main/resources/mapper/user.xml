@@ -19,25 +19,19 @@
 		<if test="userName != null and userName != ''">
 			user_name=#{userName}, 
 		</if>
-		modify_date = #{modifyDate}
-		where user_id=#{userId}
+		modify_date = now()
+		where user_no=#{userNo}
 	</update>
 
 	<delete id="delete">
 		delete from user
-		where user_id= #{userId}
+		where user_no= #{userNo}
 	</delete>
 
 	<select id="userInfo" resultType="com.ssafy.happyhouse.user.model.UserDto">
 		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
 		where user_id= #{userId}
-	</select>
-
-	<select id="findUserNo" resultType="int">
-		select user_no
-		from user
-		where email= #{userEmail}
 	</select>
 
 	<select id="userList" resultType="com.ssafy.happyhouse.user.model.UserDto">
@@ -50,6 +44,21 @@
 		select user_no, user_id, user_pw, user_name, email, user_type, join_date, modify_date
 		from user
 		where user_id = #{userId} and user_pw = #{userPw}
+	</select>
+	
+	<select id="checkId" resultType="int">
+		select count(*) from user 
+		where user_id=#{userId}
+	</select>
+
+	<select id="checkEmail" resultType="int">
+		select count(*) from user 
+		where email=#{email}
+	</select>
+
+	<select id="userNo" resultType="int">
+		select user_no from user
+		where email=#{email}
 	</select>
 
 </mapper>

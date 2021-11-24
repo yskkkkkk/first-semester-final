@@ -63,11 +63,11 @@
             >
               <b-form-group
                 label="가입 시 기입한 이메일을 입력해주세요."
-                label-for="useremail"
+                label-for="email"
               >
                 <b-form-input
                   id="useremail"
-                  v-model="user.useremail"
+                  v-model="user.email"
                   required
                   placeholder="ex) ssafy@ssafy.com"
                   @keyup.enter="tmpPW"
@@ -94,7 +94,7 @@ export default {
       user: {
         userId: null,
         userPw: null,
-        useremail: "",
+        email: "",
       },
     };
   },
@@ -125,12 +125,12 @@ export default {
       this.$router.push({ name: "SignUp" });
     },
     async tmpPW() {
-      await this.changePassword(this.user.useremail);
+      await this.changePassword(this.user.email);
       alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
       this.$bvModal.hide("modal-prevent-closing");
     },
     resetModal() {
-      this.useremail = "";
+      this.email = "";
     },
   },
 };

@@ -19,9 +19,9 @@ public interface UserService {
 	
 	UserDto login(UserDto user) throws SQLException;
 
-	int checkEmail(String userEmail);
-
 	int checkId(String userId);
+
+	int checkEmail(String userEmail);
 	
-	int findUserNo(String email);
+	int userNo(String email);
 }

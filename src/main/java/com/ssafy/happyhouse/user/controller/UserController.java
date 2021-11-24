@@ -215,7 +215,7 @@ public class UserController {
 
 		// 임시 비밀번호로 변경하기
 		UserDto user = new UserDto();
-		user.setUserNo(userService.findUserNo(email));
+		user.setUserNo(userService.userNo(email));
 		user.setUserPw(uuid);
 		
 		if (userService.update(user) == 1) {

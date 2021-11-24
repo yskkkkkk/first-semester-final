@@ -60,20 +60,19 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int checkEmail(String userEmail) {
-		return sqlSession.getMapper(UserMapper.class).checkEmail(userEmail);
+		return sqlSession.getMapper(UserMapper.class).checkEmail(removeMark(userEmail));
 	}
 
 	@Override
 	public int checkId(String userId) {
 		return sqlSession.getMapper(UserMapper.class).checkId(userId);
 	}
-
 	@Override
-	public int findUserNo(String email) {
-		return sqlSession.getMapper(UserMapper.class).findUserNo(email);
+	public int userNo(String email) {
+		return sqlSession.getMapper(UserMapper.class).userNo(removeMark(email));
 	}
 	
-	public String code(String pw) {
+	private String code(String pw) {
 		double cardinalNum = 62;
 		double original = 1;
 		for (int i = 0; i < pw.length(); i++) {
@@ -96,4 +95,10 @@ public class UserServiceImpl implements UserService{
 	        sb.append(ch);
 		return sb.toString();
 	}
+	
+	private String removeMark(String text) {
+		return text.replaceAll("\"", "");
+	}
+
+
 }
