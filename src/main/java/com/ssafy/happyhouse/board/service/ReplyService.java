@@ -23,5 +23,7 @@ public interface ReplyService {
 	Boolean isLiked(Map<String, String> map) throws SQLException;
 
 	Boolean likeChanged(Map<String, String> map) throws SQLException;
+
+	int getReplyCnt(String boardNo) throws SQLException;
 	
 }

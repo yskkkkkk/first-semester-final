@@ -32,6 +32,10 @@ function likeChanged(param, success, fail) {
     .catch(fail);
 }
 
+function replyCnt(boardNo, success, fail) {
+  return api.get(`/board/reply/cnt/${boardNo}`).then(success).catch(fail);
+}
+
 export {
   listReply,
   writeReply,
@@ -39,4 +43,5 @@ export {
   deleteReply,
   isLiked,
   likeChanged,
+  replyCnt,
 };

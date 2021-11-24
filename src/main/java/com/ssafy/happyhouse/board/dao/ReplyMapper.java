@@ -23,4 +23,6 @@ public interface ReplyMapper {
 	String isLiked(int replyNo) throws SQLException;
 
 	void likeChanged(Map<String, String> param) throws SQLException;
+
+	int getReplyCnt(String boardNo) throws SQLException;
 }

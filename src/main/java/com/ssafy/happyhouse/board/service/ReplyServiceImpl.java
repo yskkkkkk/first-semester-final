@@ -139,4 +139,9 @@ public class ReplyServiceImpl implements ReplyService{
 		}
 	}
 
+	@Override
+	public int getReplyCnt(String boardNo) throws SQLException {
+		return sqlSession.getMapper(ReplyMapper.class).getReplyCnt(boardNo);
+	}
+
 }

@@ -5,6 +5,7 @@ import {
   deleteReply,
   isLiked,
   likeChanged,
+  replyCnt,
 } from "@/api/reply.js";
 
 const replyStore = {
@@ -101,6 +102,18 @@ const replyStore = {
     toggleLike({ commit }, param) {
       return likeChanged(
         param,
+        ({ data }) => {
+          commit("GOOD_RESULT");
+          return data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getReplyCnt({ commit }, boardNo) {
+      return replyCnt(
+        boardNo,
         ({ data }) => {
           commit("GOOD_RESULT");
           return data;

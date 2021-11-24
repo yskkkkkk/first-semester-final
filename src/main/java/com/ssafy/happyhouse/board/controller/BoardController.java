@@ -183,5 +183,10 @@ public class BoardController {
 		}
 	}
 	
-	
+	@GetMapping("/reply/cnt/{boardNo}")
+	@ApiOperation(value="getReplyCnt", notes="댓글의 개수를 반환합니다.")
+	public ResponseEntity<Integer> getReplyCnt(@PathVariable String boardNo) throws SQLException{
+		int cnt = replyService.getReplyCnt(boardNo);
+		return new ResponseEntity<Integer>(cnt, HttpStatus.OK);
+	}
 }

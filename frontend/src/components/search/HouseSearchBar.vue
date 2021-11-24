@@ -183,13 +183,12 @@ export default {
         });
       }
     },
-    aptName: _.debounce(function (newVal, oldVal) {
+    aptName: _.debounce(function (newVal) {
       if (newVal == "") this.CLEAR_HOUSES_FILTER();
       else {
         this.addWord(this.aptName);
         this.SET_HOUSE_FILTER(this.aptName);
       }
-      console.log(newVal, oldVal);
     }, 1000),
     //   lodash_debounce 사용: 1초동안 입력 안하면 addWord 실행
   },

@@ -34,26 +34,34 @@
           :current-page="currentPage"
           :fields="fields"
           @row-clicked="confirmStatus"
+          style="text-align: center"
         >
           <template #cell(boardNo)="data">
-            <span v-if="currentPage == 1"> {{ data.index + 1 }}</span>
-            <span v-else>
+            <div v-if="currentPage == 1">
+              {{ data.index + 1 }}
+            </div>
+            <div v-else>
               {{ (currentPage - 1) * perPage + (data.index + 1) }}
-            </span>
+            </div>
           </template>
 
           <template #cell(title)="data">
-            <div v-if="data.item.isExposing == '0'">
-              <b-icon icon="lock-fill" class="mr-1"></b-icon>
-              <span>{{ data.value }}</span>
+            <div class="text-left">
+              <span v-if="data.item.isExposing == '0'">
+                <b-icon icon="lock-fill" class="mr-1"></b-icon>
+                <span>{{ data.value }}</span>
+              </span>
+              <span v-else-if="data.item.isNotice == '1'">
+                <span class="underline-hotpink"
+                  ><b-icon icon="chat-right-dots" class="mr-1"></b-icon
+                  >{{ data.value }}</span
+                >
+              </span>
+              <span v-else>
+                {{ data.value }}
+              </span>
+              <span> ({{ replyCntList[data.index] }})</span>
             </div>
-            <div v-else-if="data.item.isNotice == '1'">
-              <span class="underline-hotpink"
-                ><b-icon icon="chat-right-dots" class="mr-1"></b-icon
-                >{{ data.value }}</span
-              >
-            </div>
-            <div v-else>{{ data.value }}</div>
           </template>
         </b-table>
         <br />
@@ -84,55 +92,6 @@
         <b-button id="searchBtn" @click="searchBtn">검색</b-button>
       </b-col>
     </b-row>
-    <!-- <b-table-simple
-          hover
-          responsive
-          :items="filterArticles != 'null' ? filterArticles : articles"
-          :per-page="perPage"
-          :current-page="currentPage"
-        >
-          <b-thead head-variant="light">
-            <b-tr>
-              <b-th class="text-center" width="7%">No</b-th>
-              <b-th>제목</b-th>
-              <b-th width="10%">작성자</b-th>
-              <b-th class="text-center" width="20%">작성일</b-th>
-              <b-th class="text-center" width="10%">조회수</b-th>
-            </b-tr>
-          </b-thead>
-         검색 전: 게시판 
-          <tbody v-if="filterArticles == 'null'">
-            <board-list-row
-              v-for="(article, index) in articles"
-              :key="article.boardNo"
-              :article="article"
-              :length="articles.length"
-              :index="index"
-            />
-          </tbody>
-          검색 후: 데이터가 있을 경우
-          <tbody v-else-if="filterArticles.length > 0">
-            <board-list-row
-              v-for="(article, index) in filterArticles"
-              :key="index"
-              :article="article"
-              :length="filterArticles.length"
-              :index="index"
-            />
-            <b-td colspan="5">
-              <b-alert variant="info" show
-                >검색 결과 : {{ filterArticles.length }} 건
-              </b-alert></b-td
-            >
-          </tbody>
-          <tbody v-else>
-            <b-td colspan="5">
-              <b-alert variant="warning" show
-                >데이터가 존재하지 않습니다.
-              </b-alert></b-td
-            >
-          </tbody>
-        </b-table-simple> -->
   </b-container>
 </template>
 
@@ -142,6 +101,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 const boardStore = "boardStore";
 const wordStore = "wordStore";
 const memberStore = "memberStore";
+const replyStore = "replyStore";
 
 export default {
   name: "BoardList",
@@ -168,6 +128,7 @@ export default {
         { value: 10, text: "10개" },
         { value: 20, text: "20개" },
       ],
+      replyCntList: [],
     };
   },
   // components: {
@@ -176,6 +137,12 @@ export default {
   created() {
     this.getlistArticle();
     this.CLEAR_FILTER_ARTICLE();
+    for (var article of this.articles) {
+      this.getReplyCnt(article.boardNo).then((cnt) =>
+        this.replyCntList.push(cnt)
+      );
+    }
+    console.log(this.replyCntList);
   },
   methods: {
     ...mapActions(wordStore, ["addWord"]),
@@ -184,6 +151,7 @@ export default {
       "getlistArticle",
       "SearchArticle",
     ]),
+    ...mapActions(replyStore, ["getReplyCnt"]),
     ...mapMutations(boardStore, [
       "SET_ARTICLE",
       "CLEAR_FILTER_ARTICLE",
@@ -287,5 +255,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.text-left {
+  text-align: left;
 }
 </style>

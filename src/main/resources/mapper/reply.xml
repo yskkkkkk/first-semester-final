@@ -39,6 +39,12 @@
 		where reply_no = #{replyNo}
 	</delete>
 	
+	<select id="getReplyCnt" resultType="int">
+		select count(*) 
+		from reply 
+		where board_no = #{boardNo};
+	</select>
+	
 	<select id="isLiked" resultType="String">
 		select recommand
 		from reply
