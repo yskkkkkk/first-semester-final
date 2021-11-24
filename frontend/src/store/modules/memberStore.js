@@ -145,13 +145,15 @@ const memberStore = {
       );
     },
     changePassword({ commit }, email) {
-      issuancePassword(
+      return issuancePassword(
         email,
-        () => {
+        ({ data }) => {
           commit("GOOD_RESULT");
+          return data;
         },
         (error) => {
           console.log(error);
+          return error;
         }
       );
     },

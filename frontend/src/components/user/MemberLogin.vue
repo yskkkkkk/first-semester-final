@@ -125,8 +125,11 @@ export default {
       this.$router.push({ name: "SignUp" });
     },
     async tmpPW() {
-      await this.changePassword(this.user.email);
-      alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
+      this.changePassword(this.user.email).then(function (data) {
+        if (data == "OK")
+          alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
+        else alert("정보가 없는 이메일입니다.");
+      });
       this.$bvModal.hide("modal-prevent-closing");
     },
     resetModal() {
