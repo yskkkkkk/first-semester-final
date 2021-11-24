@@ -3,9 +3,19 @@
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
         <b-row>
+          <b-col>
+            <h5 class="fontbolder" style="display: inline">댓글</h5>
+            ({{ getReplyCnt }}개)
+          </b-col>
+        </b-row>
+        <br />
+        <b-row>
           <b-col cols="10">
+            <div class="pb-2 fontbolder">
+              {{ this.userInfo.userName }} ({{ this.userInfo.userId }})
+            </div>
             <!-- 로그인 구현 완료되면 유저 이름 넣기 -->
-            <b-form-group id="content-group" :label="this.userInfo.userName">
+            <b-form-group id="content-group">
               <b-form-textarea
                 id="content"
                 v-model="reply.content"
@@ -106,8 +116,12 @@ export default {
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+    ...mapState(replyStore, ["replylist"]),
     ...mapGetters(replyStore, ["getReply"]),
     ...mapState(boardStore, ["article"]),
+    getReplyCnt: function () {
+      return this.replylist.length;
+    },
   },
 };
 </script>
@@ -119,5 +133,8 @@ export default {
   align-items: center;
   align-content: center;
   justify-content: flex-end;
+}
+.fontbolder {
+  font-weight: bolder;
 }
 </style>

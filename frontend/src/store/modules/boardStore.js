@@ -5,6 +5,8 @@ import {
   modifyArticle,
   deleteArticle,
   increaseHit,
+  isLiked,
+  likeChanged,
 } from "@/api/board.js";
 
 const boardStore = {
@@ -36,7 +38,7 @@ const boardStore = {
       state.articles.push(article);
     },
     GOOD_RESULT: () => {
-      console.log("SUCCESS");
+      // console.log("SUCCESS");
     },
     SET_FILTER_ARTICLE: (state, res) => {
       state.filterArticles = res;
@@ -135,8 +137,32 @@ const boardStore = {
       listArticle(
         params,
         ({ data }) => {
-          console.log(data);
+          // console.log(data);
           commit("SET_FILTER_ARTICLE", data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    getIsLiked({ commit }, param) {
+      return isLiked(
+        param,
+        ({ data }) => {
+          commit("GOOD_RESULT");
+          return data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    toggleLike({ commit }, param) {
+      return likeChanged(
+        param,
+        ({ data }) => {
+          commit("GOOD_RESULT");
+          return data;
         },
         (error) => {
           console.log(error);

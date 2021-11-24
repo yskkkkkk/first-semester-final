@@ -107,6 +107,20 @@ public class BoardController {
 		}
 	}
 	
+	@PostMapping("/like")
+	@ApiOperation(value = "postIsLiked", notes = "유저가 게시물에 좋아요 누른 여부를 반환합니다.")
+	public ResponseEntity<Boolean> postIsLiked(@RequestBody Map<String, String> map) throws SQLException {
+		Boolean result = boardService.isLiked(map);
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+	}
+	
+	@PutMapping("/like")
+	@ApiOperation(value = "postLikeChanged", notes = "게시물의 좋아요를 토글합니다.")
+	public ResponseEntity<Boolean> postLikeChanged(@RequestBody Map<String, String> map) throws SQLException {
+		Boolean result = boardService.likeChanged(map);
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "list", notes = "댓글 리스트를 반환합니다.")
 	@GetMapping("/reply/{boardNo}")
 	public ResponseEntity<List<ReplyDto>> replyList(@PathVariable int boardNo) throws SQLException {

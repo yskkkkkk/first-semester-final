@@ -42,7 +42,7 @@ const memberStore = {
       await login(
         user,
         (response) => {
-          console.log(response);
+          // console.log(response);
           if (response.data.message === "success") {
             // 성공 시 토큰을 가져옴
             let token = response.data["access-token"];

@@ -13,7 +13,7 @@ const wordStore = {
       state.wordlist = [];
     },
     GOOD_RESULT: () => {
-      console.log("success");
+      // console.log("success");
     },
   },
   actions: {
@@ -40,7 +40,7 @@ const wordStore = {
       const param = {
         concerns: word,
       };
-      console.log(param);
+      // console.log(param);
       registWord(
         param,
         ({ data }) => {

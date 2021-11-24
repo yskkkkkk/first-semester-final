@@ -54,4 +54,16 @@
 		set read_count = read_count+1
 		where board_no = #{boardNo}
 	</update>
+	
+	<select id="isLiked" resultType="String">
+		select recommand
+		from board
+		where board_no = #{boardNo};
+	</select>
+	
+	<update id="likeChanged">
+		update board
+		set recommand = #{recommand}
+		where board_no = #{boardNo}
+	</update>
 </mapper>

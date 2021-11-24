@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.board.dao;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,5 +21,9 @@ public interface BoardMapper {
 	List<BoardDto> boardList(BoardDto board) throws SQLException;
 
 	void updateReadCount(BoardDto boardDto) throws SQLException;
+
+	String isLiked(int boardNo) throws SQLException;
+
+	void likeChanged(Map<String, String> param) throws SQLException;
 	
 }

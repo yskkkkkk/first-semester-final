@@ -4,7 +4,12 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right" v-if="article.writer == userInfo.userName">
+      <b-col
+        class="text-right"
+        v-if="
+          article.writer == userInfo.userName || this.userInfo.userType == '1'
+        "
+      >
         <b-button
           variant="outline-info"
           size="sm"
@@ -36,11 +41,24 @@
             </v-col>
           </v-row>`"
           class="mb-2"
-          border-variant="dark"
           no-body
         >
           <b-card-body class="text-left">
             <div v-html="message"></div>
+            <br />
+            <div class="likeBtn">
+              <b-button
+                pill
+                @click="likeClicked"
+                :variant="this.isliked ? 'info' : 'outline-info'"
+              >
+                <b-icon
+                  :icon="this.isliked ? 'heart-fill' : 'heart'"
+                  class="mr-1"
+                ></b-icon
+                >{{ getlikeCnt }}
+              </b-button>
+            </div>
           </b-card-body>
         </b-card>
       </b-col>
@@ -49,8 +67,8 @@
       <b-col>
         <b-card>
           <reply-write-form type="register"></reply-write-form>
+          <reply-list></reply-list>
         </b-card>
-        <reply-list></reply-list>
       </b-col>
     </b-row>
   </b-container>
@@ -67,9 +85,19 @@ const memberStore = "memberStore";
 export default {
   name: "BoardView",
   components: { ReplyList, ReplyWriteForm },
+  data() {
+    return {
+      isliked: null,
+    };
+  },
   created() {
     setTimeout(() => {
       this.getArticleByNo(this.$route.params.boardNo);
+      const params = {
+        boardNo: this.$route.params.boardNo,
+        userNo: this.userInfo.userNo,
+      };
+      this.getIsLiked(params).then((ret) => (this.isliked = ret));
     }, 100);
   },
   methods: {
@@ -77,6 +105,8 @@ export default {
       "getArticleByNo",
       "deleteArticleByNo",
       "getlistArticle",
+      "getIsLiked",
+      "toggleLike",
     ]),
     listArticle() {
       this.$router.push({ name: "BoardList" });
@@ -97,6 +127,17 @@ export default {
         this.listArticle();
       }
     },
+    likeClicked() {
+      const params = {
+        boardNo: this.$route.params.boardNo,
+        userNo: this.userInfo.userNo,
+      };
+      this.toggleLike(params).then((res) => (this.isliked = res));
+
+      setTimeout(() => {
+        this.getArticleByNo(this.$route.params.boardNo);
+      }, 100);
+    },
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
@@ -106,13 +147,28 @@ export default {
         return this.article.content.split("\n").join("<br>");
       return "";
     },
-    // changeDateFormat() {
-    //   return moment(new Date(this.article.regtime)).format(
-    //     "YYYY.MM.DD hh:mm:ss"
-    //   );
-    // },
+    getlikeCnt: function () {
+      if (
+        this.article.recommand == null ||
+        this.article.recommand == "" ||
+        this.article.recommand == 0
+      )
+        return 0;
+      else {
+        const cnt = this.article.recommand.split(",");
+        return cnt.length - 1;
+      }
+    },
+    getContentBr: function () {
+      return this.article.content.replace("\n", "<br />");
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.likeBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

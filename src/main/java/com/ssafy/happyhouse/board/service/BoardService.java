@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.board.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.happyhouse.board.model.BoardDto;
 
@@ -18,5 +19,9 @@ public interface BoardService {
 	BoardDto boardInfo(int boardNo) throws SQLException;
 	
 	List<BoardDto> boardList(BoardDto board) throws SQLException;
+
+	Boolean isLiked(Map<String, String> map) throws SQLException;
+
+	Boolean likeChanged(Map<String, String> map) throws SQLException;
 	
 }
