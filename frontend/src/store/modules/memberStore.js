@@ -120,8 +120,15 @@ const memberStore = {
       );
     },
     userUpdate({ commit }, user) {
+      const params = {
+        userNo: user.userNo,
+        userId: user.userid,
+        userPw: user.userpwd,
+        userName: user.username,
+        email: user.useremail,
+      };
       update(
-        user,
+        params,
         () => {
           commit("GOOD_RESULT");
         },
