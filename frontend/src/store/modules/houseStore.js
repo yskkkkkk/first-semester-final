@@ -23,23 +23,47 @@ const houseStore = {
     getHouseOrder: (state) => (order) => {
       //console.log(order);
       let result = [];
-      if (order == "new") {
+      if (order == "newDesc") {
+        // newDesc : 최신순
         result = state.houses.sort(function (a, b) {
           return (
             Number(b.dealMonth.concat(b.dealDay)) -
             Number(a.dealMonth.concat(a.dealDay))
           );
         });
-      } else if (order == "price") {
+      } else if (order == "newAsc") {
+        // newDesc : 최신순
+        result = state.houses.sort(function (a, b) {
+          return (
+            Number(a.dealMonth.concat(a.dealDay)) -
+            Number(b.dealMonth.concat(b.dealDay))
+          );
+        });
+      } else if (order == "priceDesc") {
+        // priceAsc : 가격 낮은 순
         result = state.houses.sort(function (a, b) {
           return (
             Number(a.dealAmount.trim().replace(",", "")) -
             Number(b.dealAmount.trim().replace(",", ""))
           );
         });
-      } else if (order == "area") {
+      } else if (order == "priceAsc") {
+        // priceAsc : 가격 낮은 순
+        result = state.houses.sort(function (a, b) {
+          return (
+            Number(b.dealAmount.trim().replace(",", "")) -
+            Number(a.dealAmount.trim().replace(",", ""))
+          );
+        });
+      } else if (order == "areaDesc") {
+        // areaDesc : 면적 큰 순
         result = state.houses.sort(function (a, b) {
           return Number(a.area.trim()) - Number(b.area.trim());
+        });
+      } else if (order == "areaAsc") {
+        // areaAsc : 면적 작은 순
+        result = state.houses.sort(function (a, b) {
+          return Number(b.area.trim()) - Number(a.area.trim());
         });
       }
       return result;

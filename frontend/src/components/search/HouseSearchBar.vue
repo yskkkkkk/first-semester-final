@@ -19,12 +19,59 @@
       <b-form-radio-group
         id="search-radios"
         v-model="selected"
-        :options="options"
         :aria-describedby="ariaDescribedby"
-        button-variant="outline-primary"
         name="radio-btn-outline"
         buttons
-      ></b-form-radio-group>
+      >
+        <b-form-radio
+          v-show="newOrder"
+          value="newDesc"
+          :button-variant="
+            selected == 'newAsc' ? 'secondary' : 'outline-secondary'
+          "
+          >최신순↓</b-form-radio
+        >
+        <b-form-radio
+          v-show="!newOrder"
+          value="newAsc"
+          :button-variant="
+            selected == 'newDesc' ? 'secondary' : 'outline-secondary'
+          "
+          >최신순↑</b-form-radio
+        >
+        <b-form-radio
+          v-show="priceOrder"
+          value="priceDesc"
+          :button-variant="
+            selected == 'priceAsc' ? 'secondary' : 'outline-secondary'
+          "
+          >가격순↓</b-form-radio
+        >
+        <b-form-radio
+          v-show="!priceOrder"
+          value="priceAsc"
+          :button-variant="
+            selected == 'priceDesc' ? 'secondary' : 'outline-secondary'
+          "
+          >가격순↑</b-form-radio
+        >
+        <b-form-radio
+          v-show="areaOrder"
+          value="areaDesc"
+          :button-variant="
+            selected == 'areaAsc' ? 'secondary' : 'outline-secondary'
+          "
+          >면적순↓</b-form-radio
+        >
+        <b-form-radio
+          v-show="!areaOrder"
+          value="areaAsc"
+          :button-variant="
+            selected == 'areaDesc' ? 'secondary' : 'outline-secondary'
+          "
+          >면적순↑</b-form-radio
+        >
+      </b-form-radio-group>
 
       <b-row class="pt-3">
         <b-col cols="6">
@@ -39,6 +86,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 const houseStore = "houseStore";
 const wordStore = "wordStore";
@@ -54,12 +102,10 @@ export default {
         { value: "dong", text: "동" },
         // { value: "name", text: "아파트 이름" },
       ],
-      selected: "new",
-      options: [
-        { text: "최신순", value: "new" },
-        { text: "가격순", value: "price" },
-        { text: "면적순", value: "area" },
-      ],
+      selected: "newAsc",
+      newOrder: false, // true이면 내림차순, false이면 오름차순
+      priceOrder: true,
+      areaOrder: true,
       val: "",
       aptName: "",
     };
@@ -92,6 +138,10 @@ export default {
         this.addWord(this.val);
       }
     },
+    apartSearch() {
+      this.addWord(this.aptName);
+      // 아파트 검색 창에서 엔터 누르면 워드 클라우드에 추가
+    },
   },
   filters: {
     priceFilter(value) {
@@ -105,12 +155,21 @@ export default {
   },
   watch: {
     selected: function () {
+      switch (this.selected) {
+        case "newDesc":
+        case "newAsc":
+          this.newOrder = !this.newOrder;
+          break;
+        case "priceDesc":
+        case "priceAsc":
+          this.priceOrder = !this.priceOrder;
+          break;
+        case "areaDesc":
+        case "areaAsc":
+          this.areaOrder = !this.areaOrder;
+          break;
+      }
       this.CLEAR_HOUSE();
-      // this.getSearchList({
-      //   key: this.key,
-      //   value: this.val,
-      //   order: this.selected,
-      // });
       // 가져온 houses를 js 내부에서 정렬 - getters
       this.SET_HOUSE_LIST(this.getHouseOrder(this.selected));
       if (this.aptName == "") this.CLEAR_HOUSES_FILTER();
@@ -124,10 +183,14 @@ export default {
         });
       }
     },
-    aptName: function () {
-      if (this.aptName == "") this.CLEAR_HOUSES_FILTER();
-      else this.SET_HOUSE_FILTER(this.aptName);
-    },
+    aptName: _.debounce(function (newVal, oldVal) {
+      if (newVal == "") this.CLEAR_HOUSES_FILTER();
+      else {
+        this.addWord(this.aptName);
+      }
+      console.log(newVal, oldVal);
+    }, 1000),
+    //   lodash_debounce 사용: 1초동안 입력 안하면 addWord 실행
   },
 };
 </script>

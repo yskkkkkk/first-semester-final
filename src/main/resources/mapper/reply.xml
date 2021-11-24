@@ -8,6 +8,7 @@
 		recommand, reg_time, mod_time
 		from reply
 		where board_no = #{boardNo}
+		order by reg_time desc;
 	</select>
 
 	<select id="replyInfo" resultType="replyDto">
