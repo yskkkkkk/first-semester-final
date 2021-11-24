@@ -127,9 +127,11 @@ export default {
     ...mapActions(wordStore, ["addWord"]),
     searchBtn() {
       if (this.key == null) {
-        alert("검색 분류를 선택해주세요");
+        this.makeToast("앗!", "검색 분류를 선택해주세요", "warning");
+        // alert("검색 분류를 선택해주세요");
       } else if (this.val == "") {
-        alert("검색어를 입력해주세요.");
+        this.makeToast("앗!", "검색어를 입력해주세요.", "warning");
+        // alert("검색어를 입력해주세요.");
       } else {
         this.CLEAR_DONGS_CODE();
         // 해당되는 동이 있나 확인, 있다면 dongCode 반환
@@ -141,6 +143,13 @@ export default {
     apartSearch() {
       this.addWord(this.aptName);
       // 아파트 검색 창에서 엔터 누르면 워드 클라우드에 추가
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
+      });
     },
   },
   filters: {

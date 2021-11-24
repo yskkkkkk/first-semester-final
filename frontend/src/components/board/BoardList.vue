@@ -161,9 +161,9 @@ export default {
     },
     searchBtn() {
       if (this.key == null) {
-        alert("검색 분류를 선택해주세요");
+        this.makeToast("앗!", "검색 분류를 선택해주세요.", "info");
       } else if (this.val == "") {
-        alert("검색어를 입력해주세요.");
+        this.makeToast("앗!", "검색어를 입력해주세요.", "info");
       } else {
         // 검색할 때마다 wordCloud에 단어 추가
         this.addWord(this.val);
@@ -184,12 +184,9 @@ export default {
     confirmStatus(article) {
       if (this.userInfo == null) {
         // 비회원일 경우
-        if (article.isExposing == "1") {
-          // 공개글일 경우
-          this.BoardView(article);
-        } else {
-          alert("로그인이 필요합니다."); // 비공개글일 경우
-        }
+        // this.makeToast("로그인이 필요한 페이징입니다.", "danger");
+        // this.$router.push({ name: "SignIn" });
+        this.BoardView(article); //index.js에서 처리됨
       } else if (this.userInfo.userType == "1") {
         // 관리자일 경우
         this.BoardView(article);
@@ -203,7 +200,8 @@ export default {
           if (article.writer == this.userInfo.userName) {
             this.BoardView(article);
           } else {
-            alert("비공개 글입니다.");
+            this.makeToast("앗!", "비공개 글입니다.", "warning");
+            //alert("비공개 글입니다.");
           }
         }
       }
@@ -214,6 +212,13 @@ export default {
       this.$router.push({
         name: "BoardView",
         params: { boardNo: article.boardNo },
+      });
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
       });
     },
   },

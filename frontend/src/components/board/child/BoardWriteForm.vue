@@ -23,7 +23,6 @@
             id="title"
             v-model="article.title"
             type="text"
-            required
             placeholder="제목 입력..."
           ></b-form-input>
         </b-form-group>
@@ -65,6 +64,7 @@
 
 <script>
 // import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { app } from "@/main";
 import { mapState, mapActions, mapGetters } from "vuex";
 const boardStore = "boardStore";
 const memberStore = "memberStore";
@@ -102,14 +102,14 @@ export default {
       let err = true;
       let msg = "";
       if (!this.article.title) {
-        msg = "제목 입력해주세요";
+        msg = "제목을 입력해주세요";
         err = false;
       } else if (!this.article.content) {
-        msg = "내용 입력해주세요";
+        msg = "내용을 입력해주세요";
         err = false;
       }
 
-      if (!err) alert(msg);
+      if (!err) this.makeToast("앗!", msg, "warning");
       else
         this.type === "register" ? this.registArticle() : this.updateArticle();
     },
@@ -135,7 +135,12 @@ export default {
       setTimeout(() => {
         this.getlistArticle();
       }, 100);
-      alert("글이 등록되었습니다.");
+      app.$bvToast.toast("글이 등록되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("글이 등록되었습니다.");
       this.moveList();
     },
     updateArticle() {
@@ -147,7 +152,12 @@ export default {
         title: this.article.title,
       };
       this.updateArticleByNo(params);
-      alert("글이 수정되었습니다.");
+      app.$bvToast.toast("글이 수정되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("글이 수정되었습니다.");
       setTimeout(() => {
         this.getlistArticle();
       }, 100);
@@ -158,6 +168,13 @@ export default {
     },
     moveList() {
       this.$router.push({ name: "BoardList" });
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
+      });
     },
   },
   computed: {

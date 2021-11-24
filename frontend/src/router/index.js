@@ -19,6 +19,8 @@ import Search from "@/views/Search.vue";
 
 import store from "@/store/index.js";
 
+import { app } from "@/main";
+
 Vue.use(VueRouter);
 
 // https://router.vuejs.org/kr/guide/advanced/navigation-guards.html
@@ -36,7 +38,12 @@ const onlyAuthUser = async (to, from, next) => {
   }
   if (checkUserInfo === null) {
     // 근데 아직도 userInfo가 null이라면 로그인 안했다는 뜻
-    alert("로그인이 필요한 페이지입니다..");
+    app.$bvToast.toast("로그인이 필요한 페이지입니다.", {
+      title: `앗!`,
+      variant: "danger",
+      solid: true,
+    });
+
     // next({ name: "SignIn" });
     router.push({ name: "SignIn" });
   } else {

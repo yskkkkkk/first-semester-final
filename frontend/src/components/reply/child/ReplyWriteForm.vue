@@ -45,6 +45,7 @@
 
 <script>
 // import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { app } from "@/main";
 import { mapState, mapActions, mapGetters } from "vuex";
 const replyStore = "replyStore";
 const boardStore = "boardStore";
@@ -106,8 +107,12 @@ export default {
         content: this.reply.content,
         recommand: this.reply.recommand,
       };
-
-      alert("댓글이 등록되었습니다.");
+      app.$bvToast.toast("댓글이 등록되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("댓글이 등록되었습니다.");
       this.writeReply(params);
       setTimeout(() => {
         this.getlistReply(this.article.boardNo);

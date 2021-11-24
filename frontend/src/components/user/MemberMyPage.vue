@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { app } from "@/main";
 import { mapState, mapActions, mapMutations } from "vuex";
 
 const memberStore = "memberStore";
@@ -79,7 +80,12 @@ export default {
       if (confirm("정말 탈퇴하시겠습니까?")) {
         console.log(this.userInfo.userId);
         this.userDelete(this.userInfo.userId);
-        alert("탈퇴 되었습니다.");
+        app.$bvToast.toast("탈퇴 되었습니다.", {
+          title: "안내",
+          variant: "info",
+          solid: true,
+        });
+        // alert("탈퇴 되었습니다.");
         this.SET_IS_LOGIN(false);
         this.SET_USER_INFO(null);
         sessionStorage.removeItem("access-token");

@@ -76,6 +76,7 @@
 
 <script>
 // import moment from "moment";
+import { app } from "@/main";
 import ReplyWriteForm from "@/components/reply/child/ReplyWriteForm.vue";
 import ReplyList from "@/components/reply/ReplyList.vue";
 import { mapActions, mapState } from "vuex";
@@ -123,7 +124,12 @@ export default {
         setTimeout(() => {
           this.getlistArticle(); // 삭제하고 리스트 새로 받아오기
         }, 100);
-        alert("삭제 되었습니다.");
+        app.$bvToast.toast("삭제 되었습니다.", {
+          title: "안내",
+          variant: "info",
+          solid: true,
+        });
+        // alert("삭제 되었습니다.");
         this.listArticle();
       }
     },

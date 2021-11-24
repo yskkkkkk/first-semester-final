@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { app } from "@/main";
 import { mapState, mapActions } from "vuex";
 const replyStore = "replyStore";
 const memberStore = "memberStore";
@@ -124,7 +125,7 @@ export default {
         msg = "내용을 입력해주세요";
         err = false;
       }
-      if (!err) alert(msg);
+      if (!err) this.makeToast("앗!", msg, "warning");
       else this.replyUpdate();
     },
     replyUpdate() {
@@ -135,14 +136,24 @@ export default {
       };
       this.replyview();
       this.modifyReply(params);
-      alert("댓글이 수정되었습니다.");
+      app.$bvToast.toast("댓글이 수정되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("댓글이 수정되었습니다.");
       setTimeout(() => {
         this.getlistReply(this.replyprops.boardNo);
       }, 100);
     },
     replyRemove() {
       this.removeReply(this.replyprops.replyNo);
-      alert("댓글이 삭제되었습니다.");
+      app.$bvToast.toast("댓글이 삭제되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("댓글이 삭제되었습니다.");
       setTimeout(() => {
         this.getlistReply(this.replyprops.boardNo);
       }, 100);
@@ -157,6 +168,13 @@ export default {
       setTimeout(() => {
         this.getlistReply(this.replyprops.boardNo);
       }, 100);
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
+      });
     },
   },
   computed: {

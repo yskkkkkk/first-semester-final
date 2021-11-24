@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { app } from "@/main";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
@@ -103,20 +104,42 @@ export default {
   methods: {
     ...mapActions(memberStore, ["userUpdate"]),
     confirm() {
+      let err = true;
+      let msg = "";
+
       if (this.user.userPw == "") {
-        alert("비밀번호를 입력해주세요");
+        msg = "비밀번호를 입력해주세요";
+        err = false;
       } else if (this.isJoinError) {
-        alert("비밀번호가 일치하지 않습니다.");
+        msg = "비밀번호가 일치하지 않습니다.";
+        err = false;
       } else if (this.userName == "") {
-        alert("이름을 입력해주세요");
+        msg = "이름을 입력해주세요";
+        err = false;
       } else if (this.user.email == "") {
-        alert("이메일을 입력해주세요");
-      } else {
+        msg = "이메일을 입력해주세요";
+        err = false;
+      }
+
+      if (!err) this.makeToast("앗!", msg, "warning");
+      else {
         this.user.userName = this.userName;
         this.userUpdate(this.user);
-        alert("정보가 변경되었습니다.");
+        app.$bvToast.toast("정보가 변경되었습니다.", {
+          title: "안내",
+          variant: "info",
+          solid: true,
+        });
+        // alert("정보가 변경되었습니다.");
         this.$router.push({ name: "MyPage" });
       }
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
+      });
     },
   },
   computed: {

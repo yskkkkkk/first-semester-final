@@ -92,8 +92,8 @@ export default {
   data() {
     return {
       user: {
-        userId: null,
-        userPw: null,
+        userId: "",
+        userPw: "",
         email: "",
       },
     };
@@ -109,31 +109,62 @@ export default {
       "changePassword",
     ]),
     async confirm() {
-      await this.userConfirm(this.user);
-      console.log(this.user);
-      // this.user = 내가 입력한 로그인 정보
-      // this.userConfirm에서 토큰을 받아온 상태
-      // 정상적으로 로그인을 했다면 isLogin이 true인 상태
-      let token = sessionStorage.getItem("access-token");
-      if (this.isLogin) {
-        await this.getUserInfo(token);
-        // 받아온 간단한 정보로 다시 getUserInfo 호출
-        this.$router.push({ name: "Home" });
+      let err = true;
+      let msg = "";
+
+      if (this.user.userId == "") {
+        msg = "아이디를 입력해주세요.";
+        err = false;
+      } else if (this.user.userPw == "") {
+        msg = "비밀번호를 입력해주세요.";
+        err = false;
+      }
+
+      if (!err) this.makeToast("앗!", msg, "warning");
+      else {
+        await this.userConfirm(this.user);
+        console.log(this.user);
+        // this.user = 내가 입력한 로그인 정보
+        // this.userConfirm에서 토큰을 받아온 상태
+        // 정상적으로 로그인을 했다면 isLogin이 true인 상태
+        let token = sessionStorage.getItem("access-token");
+        if (this.isLogin) {
+          await this.getUserInfo(token);
+          // 받아온 간단한 정보로 다시 getUserInfo 호출
+          this.$router.push({ name: "Home" });
+        }
       }
     },
     movePage() {
       this.$router.push({ name: "SignUp" });
     },
     async tmpPW() {
-      this.changePassword(this.user.email).then(function (data) {
-        if (data == "OK")
-          alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
-        else alert("정보가 없는 이메일입니다.");
-      });
+      this.changePassword(this.user.email)
+        .then(function (data) {
+          if (data == "OK")
+            this.makeToast(
+              "안내",
+              "임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.",
+              "info"
+            );
+          // alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
+          else this.makeToast("앗", "정보가 없는 이메일입니다.", "warning");
+          // alert("정보가 없는 이메일입니다.");
+        })
+        .catch(() => {
+          this.makeToast("앗", "정보가 없는 이메일입니다.", "warning");
+        });
       this.$bvModal.hide("modal-prevent-closing");
     },
     resetModal() {
       this.email = "";
+    },
+    makeToast(title, msg, variant) {
+      this.$bvToast.toast(msg, {
+        title: title,
+        variant: variant,
+        solid: true,
+      });
     },
   },
 };

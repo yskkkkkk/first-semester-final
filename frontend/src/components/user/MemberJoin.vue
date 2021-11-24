@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { app } from "@/main";
 import { mapActions } from "vuex";
 
 const memberStore = "memberStore";
@@ -107,7 +108,12 @@ export default {
     ]),
     async confirm() {
       await this.userJoin(this.user);
-      alert("회원 가입이 되었습니다!");
+      app.$bvToast.toast("회원 가입이 되었습니다!", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("회원 가입이 되었습니다!");
       this.$router.push({ name: "SignIn" });
     },
     checkId() {
