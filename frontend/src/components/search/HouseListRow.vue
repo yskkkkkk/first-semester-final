@@ -9,16 +9,20 @@
     <b-col cols="2" class="text-center align-self-center">
       <b-img
         thumbnail
-        src="https://picsum.photos/250/250/?image=58"
-        alt="Image 1"
+        rounded
+        fluid
+        :src="require('@/assets/apt/apt' + house.houseinfo.img + '.jpg')"
       ></b-img>
     </b-col>
     <b-col cols="10" class="align-self-center">
-      <!-- [{{ house.jibun }}-{{ house.no }}]  -->
-      {{ house.houseinfo.aptName }} | {{ house.dealYear }}.{{
-        house.dealMonth
-      }}.{{ house.dealDay }} | {{ house.dealAmount.trim() }}만원 |
-      {{ house.area }} m²
+      <b-row>
+        <b-col cols="12"> {{ house.houseinfo.aptName }}</b-col>
+        <b-col cols="4"
+          >{{ house.dealYear }}.{{ house.dealMonth }}.{{ house.dealDay }}
+        </b-col>
+        <b-col cols="4">{{ house.dealAmount.trim() }}만원</b-col>
+        <b-col cols="4">{{ house.area }} m²</b-col>
+      </b-row>
     </b-col>
   </b-row>
 </template>

@@ -8,8 +8,9 @@
     <b-row class="mb-2 mt-1">
       <b-col
         ><b-img
-          :src="require('@/assets/apt/apt' + this.imgnum + '.jpg')"
+          :src="require('@/assets/apt/apt' + house.houseinfo.img + '.jpg')"
           fluid-grow
+          rounded
           style="max-height: 400px"
         ></b-img
       ></b-col>
@@ -70,14 +71,6 @@ export default {
     // house() {
     //   return this.$store.state.house;
     // },
-  },
-  data() {
-    return {
-      imgnum: 0,
-    };
-  },
-  updated() {
-    this.imgnum = Math.floor(Math.random() * 13) + 1;
   },
   filters: {
     price(value) {
