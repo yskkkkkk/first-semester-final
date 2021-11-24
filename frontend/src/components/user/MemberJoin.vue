@@ -18,6 +18,9 @@
                 placeholder="아이디를 입력해주세요."
                 @keyup="checkId"
               ></b-form-input>
+              <b-alert show variant="danger" v-if="duplicatedId"
+                >이미 사용중인 아이디입니다.</b-alert
+              >
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userpwd">
               <b-form-input
@@ -49,6 +52,9 @@
                 placeholder="ex) ssafy@ssafy.com"
                 @keyup="checkEmail"
               ></b-form-input>
+              <b-alert show variant="danger" v-if="duplicatedEmail"
+                >이미 사용중인 이메일입니다.</b-alert
+              >
               <b-form-group label="이름:" label-for="username">
                 <b-form-input
                   id="username"
@@ -90,6 +96,7 @@ export default {
         useremail: null,
         pwdcheck: null,
       },
+      chkId: false,
     };
   },
   methods: {
@@ -104,17 +111,25 @@ export default {
       this.$router.push({ name: "SignIn" });
     },
     checkId() {
-      this.isDuplicatedId(this.user.userid).then(function (success) {
-        console.log(success);
+      this.isDuplicatedId(this.user.userid).then(function (data) {
+        if (data != "OK") {
+          console.log("중복된 아이디입니다.");
+        }
       });
     },
     async checkEmail() {
-      this.isDuplicatedEmail(this.user.useremail).then(function (success) {
-        console.log(success);
+      this.isDuplicatedEmail(this.user.useremail).then(function (data) {
+        if (data != "OK") console.log("중복된 이메일입니다.");
       });
     },
   },
   computed: {
+    duplicatedId() {
+      return false;
+    },
+    duplicatedEmail() {
+      return false;
+    },
     isJoinError() {
       if (this.user.pwdcheck == null) return false;
       return this.user.userpwd == this.user.pwdcheck ? false : true;

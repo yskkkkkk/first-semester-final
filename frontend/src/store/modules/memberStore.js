@@ -79,30 +79,30 @@ const memberStore = {
       );
     },
     isDuplicatedId: ({ commit }, userId) => {
-      checkId(
+      return checkId(
         userId,
-        () => {
+        ({ data }) => {
           commit("GOOD_RESULT");
+          return data;
         },
-        (error) => {
-          console.log("dd");
-          console.log(error);
+        ({ data }) => {
+          return data;
         }
       );
     },
     isDuplicatedEmail: ({ commit }, userEmail) => {
-      checkEmail(
+      return checkEmail(
         userEmail,
-        () => {
+        ({ data }) => {
           commit("GOOD_RESULT");
+          return data;
         },
-        (error) => {
-          console.log(error);
+        ({ data }) => {
+          return data;
         }
       );
     },
     userJoin: ({ commit }, user) => {
-      console.log(user);
       const params = {
         userId: user.userid,
         userPw: user.userpwd,

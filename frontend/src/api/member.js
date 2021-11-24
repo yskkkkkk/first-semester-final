@@ -12,12 +12,12 @@ async function findById(userid, success, fail) {
   // !!!!!! 헤더에 토큰 가져가고, path-variable로 아이디 가져감!!!!!!!!!!!
 }
 
-async function checkId(userid, success, fail) {
-  await api.post(`/user/id`, userid).then(success).catch(fail);
+function checkId(userid, success, fail) {
+  return api.post(`/user/id`, userid).then(success).catch(fail);
 }
 
-async function checkEmail(useremail, success, fail) {
-  await api.post(`/user/email`, useremail).then(success).catch(fail);
+function checkEmail(useremail, success, fail) {
+  return api.post(`/user/email`, useremail).then(success).catch(fail);
 }
 
 async function join(user, success, fail) {
