@@ -141,6 +141,7 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 const boardStore = "boardStore";
 const wordStore = "wordStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardList",
@@ -256,6 +257,7 @@ export default {
   },
   computed: {
     ...mapState(boardStore, ["articles", "filterArticles"]),
+    ...mapState(memberStore, ["userInfo"]),
     rows() {
       if (this.filterArticles != "null") return this.filterArticles.length;
       return this.articles.length;

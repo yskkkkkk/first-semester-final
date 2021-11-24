@@ -137,7 +137,7 @@ const boardStore = {
       listArticle(
         params,
         ({ data }) => {
-          console.log(data);
+          // console.log(data);
           commit("SET_FILTER_ARTICLE", data);
         },
         (error) => {

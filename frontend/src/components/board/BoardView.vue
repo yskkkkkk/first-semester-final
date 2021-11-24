@@ -4,7 +4,12 @@
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
-      <b-col class="text-right" v-if="article.writer == userInfo.userName">
+      <b-col
+        class="text-right"
+        v-if="
+          article.writer == userInfo.userName || this.userInfo.userType == '1'
+        "
+      >
         <b-button
           variant="outline-info"
           size="sm"
