@@ -1,6 +1,6 @@
 <template>
   <b-tr
-    @click="BoardView(article)"
+    @click="confirmStatus(article)"
     :variant="article.isNotice == '1' ? 'info' : 'null'"
   >
     <b-td v-if="article.isNotice == '0'" class="text-center">
@@ -44,23 +44,40 @@ export default {
   methods: {
     ...mapMutations(boardStore, ["SET_ARTICLE"]),
     ...mapActions(boardStore, ["increaseHit"]),
-    BoardView(article) {
-      // 비공개 글일 때 글쓴이와 유저 정보가 다르면 글 볼 수 없음
-      // 단, 관리자는 볼 수 있음
-      if (
-        this.userInfo.userType != "1" &&
-        article.isExposing == "0" &&
-        article.writer != this.userInfo.userName
-      ) {
-        alert("비공개 글입니다.");
+    confirmStatus(article) {
+      if (this.userInfo == null) {
+        // 비회원일 경우
+        if (article.isExposing == "1") {
+          // 공개글일 경우
+          this.BoardView(article);
+        } else {
+          alert("로그인이 필요합니다."); // 비공개글일 경우
+        }
+      } else if (this.userInfo.userType == "1") {
+        // 관리자일 경우
+        this.BoardView(article);
       } else {
-        this.increaseHit(article.boardNo);
-        this.SET_ARTICLE(article);
-        this.$router.push({
-          name: "BoardView",
-          params: { boardNo: article.boardNo },
-        });
+        // 일반 회원일 경우
+        if (article.isExposing == "1") {
+          // 공개글일 경우
+          this.BoardView(article);
+        } else {
+          // 비공개글일 경우
+          if (article.writer == this.userInfo.userName) {
+            this.BoardView(article);
+          } else {
+            alert("비공개 글입니다.");
+          }
+        }
       }
+    },
+    BoardView(article) {
+      this.increaseHit(article.boardNo);
+      this.SET_ARTICLE(article);
+      this.$router.push({
+        name: "BoardView",
+        params: { boardNo: article.boardNo },
+      });
     },
   },
 };
