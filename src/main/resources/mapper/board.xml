@@ -4,8 +4,8 @@
 <mapper namespace="com.ssafy.happyhouse.board.dao.BoardMapper">
 
 	<select id="boardList" resultType="boardDto">
-		select board_no, title, content, writer, read_count, 
-		is_exposing, is_notice, reg_time, mod_time
+		select board_no, title, content, writer, read_count,
+		recommand, is_exposing, is_notice, reg_time, mod_time
 		from board
 		where 1 = 1
 		<if test="title != null and title != ''">
@@ -19,7 +19,7 @@
 
 	<select id="boardInfo" resultType="boardDto">
 		select board_no, title, content, writer, read_count, 
-		is_exposing, is_notice, reg_time, mod_time
+		recommand, is_exposing, is_notice, reg_time, mod_time
 		from board
 		where board_no = #{boardNo}
 	</select>

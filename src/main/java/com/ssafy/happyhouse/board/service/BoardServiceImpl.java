@@ -15,7 +15,6 @@ public class BoardServiceImpl implements BoardService{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
 
 	@Override
 	public int regist(BoardDto board) throws SQLException {
@@ -47,8 +46,5 @@ public class BoardServiceImpl implements BoardService{
 	public List<BoardDto> boardList(BoardDto board) throws SQLException {
 		return sqlSession.getMapper(BoardMapper.class).boardList(board);
 	}
-
-
-
 
 }

@@ -15,6 +15,8 @@ public class BoardDto {
 	private String writer;
 	@ApiModelProperty(value = "조회수")
 	private int readCount;
+	@ApiModelProperty(value = "추천 수")
+	private String recommand;
 	@ApiModelProperty(value = "공개여부")
 	private String isExposing;
 	@ApiModelProperty(value = "공지사항 여부")
@@ -30,20 +32,20 @@ public class BoardDto {
 		this.boardNo = boardNo;
 		this.readCount = readCount;
 	}
-	public BoardDto(int boardNo, String title, String content, String writer, int readCount, String isExposing,
-			String isNotice, String regTime, String modTime) {
+	public BoardDto(int boardNo, String title, String content, String writer, int readCount, String recommand,
+			String isExposing, String isNotice, String regTime, String modTime) {
 		super();
 		this.boardNo = boardNo;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
 		this.readCount = readCount;
+		this.recommand = recommand;
 		this.isExposing = isExposing;
 		this.isNotice = isNotice;
 		this.regTime = regTime;
 		this.modTime = modTime;
 	}
-
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -74,6 +76,12 @@ public class BoardDto {
 	public void setReadCount(int readCount) {
 		this.readCount = readCount;
 	}
+	public String getRecommand() {
+		return recommand;
+	}
+	public void setRecommand(String recommand) {
+		this.recommand = recommand;
+	}
 	public String getIsExposing() {
 		return isExposing;
 	}
@@ -101,7 +109,7 @@ public class BoardDto {
 	@Override
 	public String toString() {
 		return "BoardDto [boardNo=" + boardNo + ", title=" + title + ", content=" + content + ", writer=" + writer
-				+ ", readCount=" + readCount + ", isExposing=" + isExposing + ", isNotice=" + isNotice + ", regTime="
-				+ regTime + ", modTime=" + modTime + "]";
+				+ ", readCount=" + readCount + ", recommand=" + recommand + ", isExposing=" + isExposing + ", isNotice="
+				+ isNotice + ", regTime=" + regTime + ", modTime=" + modTime + "]";
 	}
 }
