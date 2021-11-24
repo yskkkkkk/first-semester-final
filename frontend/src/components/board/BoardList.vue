@@ -142,7 +142,6 @@ export default {
         this.replyCntList.push(cnt)
       );
     }
-    console.log(this.replyCntList);
   },
   methods: {
     ...mapActions(wordStore, ["addWord"]),
