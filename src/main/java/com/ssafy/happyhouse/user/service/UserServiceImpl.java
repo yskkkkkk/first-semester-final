@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int checkId(String userId) {
-		return sqlSession.getMapper(UserMapper.class).checkId(userId);
+		return sqlSession.getMapper(UserMapper.class).checkId(removeMark(userId));
 	}
 	@Override
 	public int userNo(String email) {

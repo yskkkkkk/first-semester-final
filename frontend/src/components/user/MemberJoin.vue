@@ -16,7 +16,7 @@
                 v-model="user.userid"
                 required
                 placeholder="아이디를 입력해주세요."
-                @keyup.enter="confirm"
+                @keyup="checkId"
               ></b-form-input>
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userpwd">
@@ -26,7 +26,6 @@
                 v-model="user.userpwd"
                 required
                 placeholder="영어와 숫자를 조합하여 6자리 이상"
-                @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
             <b-form-group label="비밀번호 확인:" label-for="pwdcheck">
@@ -42,23 +41,23 @@
                 >비밀번호가 일치하지 않습니다.</b-alert
               >
             </b-form-group>
-            <b-form-group label="이름:" label-for="username">
-              <b-form-input
-                id="username"
-                v-model="user.username"
-                required
-                placeholder="happyhouse에서 사용할 이름"
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
             <b-form-group label="이메일:" label-for="useremail">
               <b-form-input
                 id="useremail"
                 v-model="user.useremail"
                 required
                 placeholder="ex) ssafy@ssafy.com"
-                @keyup.enter="confirm"
+                @keyup="checkEmail"
               ></b-form-input>
+              <b-form-group label="이름:" label-for="username">
+                <b-form-input
+                  id="username"
+                  v-model="user.username"
+                  required
+                  placeholder="happyhouse에서 사용할 이름"
+                  @keyup.enter="confirm"
+                ></b-form-input>
+              </b-form-group>
             </b-form-group>
             <b-button
               type="button"
@@ -94,11 +93,25 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["userJoin"]),
+    ...mapActions(memberStore, [
+      "userJoin",
+      "isDuplicatedId",
+      "isDuplicatedEmail",
+    ]),
     async confirm() {
       await this.userJoin(this.user);
       alert("회원 가입이 되었습니다!");
       this.$router.push({ name: "SignIn" });
+    },
+    checkId() {
+      this.isDuplicatedId(this.user.userid).then(function (success) {
+        console.log(success);
+      });
+    },
+    async checkEmail() {
+      this.isDuplicatedEmail(this.user.useremail).then(function (success) {
+        console.log(success);
+      });
     },
   },
   computed: {

@@ -78,18 +78,19 @@ const memberStore = {
         }
       );
     },
-    checkId: ({ commit }, userId) => {
+    isDuplicatedId: ({ commit }, userId) => {
       checkId(
         userId,
         () => {
           commit("GOOD_RESULT");
         },
         (error) => {
+          console.log("dd");
           console.log(error);
         }
       );
     },
-    checkEmail: ({ commit }, userEmail) => {
+    isDuplicatedEmail: ({ commit }, userEmail) => {
       checkEmail(
         userEmail,
         () => {
