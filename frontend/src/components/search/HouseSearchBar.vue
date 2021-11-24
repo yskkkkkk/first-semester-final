@@ -187,6 +187,7 @@ export default {
       if (newVal == "") this.CLEAR_HOUSES_FILTER();
       else {
         this.addWord(this.aptName);
+        this.SET_HOUSE_FILTER(this.aptName);
       }
       console.log(newVal, oldVal);
     }, 1000),

@@ -41,7 +41,11 @@
 
         <b-navbar-nav class="userInfo ml-auto" v-if="userInfo">
           <b-nav-item class="align-self-center"
-            ><b-avatar variant="primary" v-text="userInfo.userId"></b-avatar
+            ><b-avatar
+              variant="primary"
+              v-text="userInfo.userId.charAt(0).toUpperCase()"
+              class="mr-1"
+            ></b-avatar
             >{{ userInfo.userName }}({{ userInfo.userId }}) 님 환영합니다.
           </b-nav-item>
           <b-nav-item-dropdown right>
