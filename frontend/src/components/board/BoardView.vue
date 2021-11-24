@@ -62,8 +62,8 @@
       <b-col>
         <b-card>
           <reply-write-form type="register"></reply-write-form>
+          <reply-list></reply-list>
         </b-card>
-        <reply-list></reply-list>
       </b-col>
     </b-row>
   </b-container>
