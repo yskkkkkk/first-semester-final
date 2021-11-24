@@ -1,35 +1,48 @@
 <template>
   <b-card class="reply" v-if="this.type == 'view'">
     <b-row>
-      <span style="font-weight: bold">{{ replyprops.writer }}</span>
-      <span>( {{ replyprops.regTime }} )</span>
-    </b-row>
-    <b-row>
-      <span>{{ replyprops.content }}</span>
-    </b-row>
-    <b-row class="replyBtn">
-      <b-button
-        :variant="this.isliked ? 'info' : 'outline-info'"
-        size="sm"
-        class="mr-2"
-        @click="likeClicked"
-        ><b-icon icon="hand-thumbs-up" class="mr-1"></b-icon
-        >{{ getlikeCnt }}</b-button
-      >
-      <b-button
-        v-if="
-          this.userInfo.userType == '1' ||
-          replyprops.writer == this.userInfo.userName
-        "
-        variant="outline-info"
-        size="sm"
-        class="mr-2"
-        @click="convertModify"
-        >수정</b-button
-      >
-      <b-button variant="outline-danger" size="sm" @click="replyRemove"
-        >삭제</b-button
-      >
+      <b-col>
+        <b-row>
+          <span style="font-weight: bold">{{ replyprops.writer }}</span>
+          <span>( {{ replyprops.regTime }} )</span>
+          <b-button
+            :variant="this.isliked ? 'info' : 'outline-info'"
+            size="sm"
+            class="mr-2"
+            @click="likeClicked"
+            ><b-icon icon="hand-thumbs-up" class="mr-1"></b-icon
+            >{{ getlikeCnt }}</b-button
+          >
+        </b-row>
+        <b-row>
+          <span v-html="getContentBr"></span>
+        </b-row>
+      </b-col>
+      <b-col>
+        <b-row class="replyBtn">
+          <b-button
+            v-if="
+              this.userInfo.userType == '1' ||
+              replyprops.writer == this.userInfo.userName
+            "
+            variant="outline-info"
+            size="sm"
+            class="mr-2"
+            @click="convertModify"
+            >수정</b-button
+          >
+          <b-button
+            v-if="
+              this.userInfo.userType == '1' ||
+              replyprops.writer == this.userInfo.userName
+            "
+            variant="outline-danger"
+            size="sm"
+            @click="replyRemove"
+            >삭제</b-button
+          >
+        </b-row>
+      </b-col>
     </b-row>
   </b-card>
 
@@ -152,14 +165,15 @@ export default {
     //   return moment(new Date(this.regtime)).format("YY.MM.DD hh:mm:ss");
     // },
     getlikeCnt: function () {
-      console.log(this.replyprops.recommand);
       if (this.replyprops.recommand == "" || this.replyprops.recommand == 0)
         return 0;
       else {
         const cnt = this.replyprops.recommand.split(",");
-        console.log(cnt);
         return cnt.length - 1;
       }
+    },
+    getContentBr: function () {
+      return this.replyprops.content.replace("\n", "<br />");
     },
   },
 };

@@ -26,6 +26,20 @@ function increaseHit(boardNo, success, fail) {
   api.put(`/board/readCount/${boardNo}`).then(success).catch(fail);
 }
 
+function isLiked(param, success, fail) {
+  return api
+    .post(`/board/like/`, JSON.stringify(param))
+    .then(success)
+    .catch(fail);
+}
+
+function likeChanged(param, success, fail) {
+  return api
+    .put(`/board/like/`, JSON.stringify(param))
+    .then(success)
+    .catch(fail);
+}
+
 export {
   listArticle,
   writeArticle,
@@ -33,4 +47,6 @@ export {
   modifyArticle,
   deleteArticle,
   increaseHit,
+  isLiked,
+  likeChanged,
 };
