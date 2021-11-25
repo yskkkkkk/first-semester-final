@@ -1,11 +1,6 @@
 <template>
   <b-container class="mt-4" v-if="userInfo">
     <b-row>
-      <b-col>
-        <b-alert variant="secondary" show><h3>내정보</h3></b-alert>
-      </b-col>
-    </b-row>
-    <b-row>
       <b-col></b-col>
       <b-col cols="8">
         <b-jumbotron>
@@ -15,7 +10,7 @@
 
           <hr class="my-4" />
 
-          <b-container class="mt-4">
+          <b-container class="mt-4" id="mypage-wrapper">
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">아이디</b-col
@@ -50,7 +45,8 @@
           <b-button variant="primary" class="mr-1" @click="moveUpdate"
             >정보수정</b-button
           >
-          <b-button variant="danger" @click="deleteMember">회원탈퇴</b-button>
+          <!-- <b-button variant="danger" @click="deleteMember">회원탈퇴</b-button> -->
+          <b-button variant="danger" @click="confirmDelete">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -66,7 +62,11 @@ const memberStore = "memberStore";
 
 export default {
   name: "MemberMyPage",
-  components: {},
+  data() {
+    return {
+      deleteResult: false,
+    };
+  },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
   },
@@ -76,24 +76,38 @@ export default {
     moveUpdate() {
       this.$router.push({ name: "Update" });
     },
+    confirmDelete() {
+      this.deleteResult = "";
+      this.$bvModal.msgBoxConfirm("정말 탈퇴하시겠습니까?").then((value) => {
+        this.deleteResult = value;
+      });
+    },
     deleteMember() {
-      if (confirm("정말 탈퇴하시겠습니까?")) {
-        console.log(this.userInfo.userId);
-        this.userDelete(this.userInfo.userId);
-        app.$bvToast.toast("탈퇴 되었습니다.", {
-          title: "안내",
-          variant: "info",
-          solid: true,
-        });
-        // alert("탈퇴 되었습니다.");
-        this.SET_IS_LOGIN(false);
-        this.SET_USER_INFO(null);
-        sessionStorage.removeItem("access-token");
-        if (this.$route.path != "/") this.$router.push({ name: "Home" });
+      this.userDelete(this.userInfo.userNo);
+      app.$bvToast.toast("탈퇴 되었습니다.", {
+        title: "안내",
+        variant: "info",
+        solid: true,
+      });
+      // alert("탈퇴 되었습니다.");
+      this.SET_IS_LOGIN(false);
+      this.SET_USER_INFO(null);
+      sessionStorage.removeItem("access-token");
+      if (this.$route.path != "/") this.$router.push({ name: "Home" });
+    },
+  },
+  watch: {
+    deleteResult: function (val) {
+      if (val == true) {
+        this.deleteMember();
       }
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+#mypage-wrapper div.row {
+  padding-bottom: 10px;
+}
+</style>

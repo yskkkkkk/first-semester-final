@@ -130,7 +130,13 @@ a:hover {
   font-weight: bold;
 }
 
+a.dropdown-item,
+a.link {
+  color: #212529;
+}
+
 #nav-menu a.link.router-link-exact-active,
+a.link.align-self-center.router-link-exact-active.router-link-active,
 a.router-link-exact-active {
   color: #42b983;
   font-weight: bold;
