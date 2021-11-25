@@ -5,7 +5,32 @@
       <b-sidebar id="sidebar" title="chat" backdrop shadow>
         <div id="app">
           <div v-for="(item, idx) in recvList" :key="idx">
-            <h3>{{ item.userName }}: {{ item.content }}</h3>
+            <div
+              v-if="item.userName == userInfo.userName"
+              style="
+                background-color: green;
+                border-radius: 10px;
+                margin: 5px 10px;
+                padding: 5px 10px;
+                font-size: 18px;
+                color: white;
+              "
+            >
+              <span>{{ item.userName }}: {{ item.content }}</span>
+            </div>
+            <div
+              v-else
+              style="
+                background-color: gray;
+                border-radius: 10px;
+                margin: 5px 10px;
+                padding: 5px 10px;
+                font-size: 18px;
+                color: white;
+              "
+            >
+              <span>{{ item.userName }}: {{ item.content }}</span>
+            </div>
           </div>
           <div class="text-input">
             +
@@ -123,6 +148,14 @@ export default {
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
+  watch: {
+    recvList: function () {
+      if (this.recvList.length >= 20) {
+        // this.recvList = this.recvList.shift();
+        this.recvList.shift();
+      }
+    },
+  },
   methods: {
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     onClickLogout() {
@@ -159,7 +192,7 @@ export default {
       const serverURL = "http://localhost:8080";
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
-      //console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
+      // console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
       this.stompClient.connect(
         {},
         (frame) => {

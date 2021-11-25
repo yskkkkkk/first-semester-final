@@ -123,7 +123,7 @@ export default {
       if (!err) this.makeToast("앗!", msg, "warning");
       else {
         await this.userConfirm(this.user);
-        console.log(this.user);
+        //console.log(this.user);
         // this.user = 내가 입력한 로그인 정보
         // this.userConfirm에서 토큰을 받아온 상태
         // 정상적으로 로그인을 했다면 isLogin이 true인 상태
@@ -140,7 +140,7 @@ export default {
     },
     async tmpPW() {
       this.changePassword(this.user.email).then((data) => {
-        console.log(data);
+        //console.log(data);
         if (data == "OK")
           this.makeToast(
             "안내",

@@ -11,7 +11,7 @@
   </b-container>
   <b-container
     v-else-if="houses && houses.length != 0 && housesfilter.length == 0"
-    class="bv-example-row mt-3"
+    class="bv-example-row my-3"
   >
     <house-list-row
       v-for="(house, index) in houses"
@@ -19,7 +19,7 @@
       :house="house"
     />
   </b-container>
-  <b-container v-else class="bv-example-row mt-3">
+  <b-container v-else class="bv-example-row my-3">
     <b-row>
       <b-col><b-alert show>데이터가 존재하지 않습니다.</b-alert></b-col>
     </b-row>
