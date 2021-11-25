@@ -7,7 +7,7 @@
     </b-row>
     <b-row>
       <b-col></b-col>
-      <b-col cols="8">
+      <b-col cols="6">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
             <b-alert show variant="danger" v-if="isLoginError"
@@ -139,21 +139,19 @@ export default {
       this.$router.push({ name: "SignUp" });
     },
     async tmpPW() {
-      this.changePassword(this.user.email)
-        .then(function (data) {
-          if (data == "OK")
-            this.makeToast(
-              "안내",
-              "임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.",
-              "info"
-            );
-          // alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
-          else this.makeToast("앗", "정보가 없는 이메일입니다.", "warning");
-          // alert("정보가 없는 이메일입니다.");
-        })
-        .catch(() => {
-          this.makeToast("앗", "정보가 없는 이메일입니다.", "warning");
-        });
+      this.changePassword(this.user.email).then((data) => {
+        console.log(data);
+        if (data == "OK")
+          this.makeToast(
+            "안내",
+            `임시비밀번호가 발송되었습니다.
+            로그인 후 꼭 변경해주세요.`,
+            "info"
+          );
+        // alert("임시비밀번호가 발송되었습니다. 로그인 후 꼭 변경해주세요.");
+        else this.makeToast("앗", "정보가 없는 이메일입니다.", "warning");
+        // alert("정보가 없는 이메일입니다.");
+      });
       this.$bvModal.hide("modal-prevent-closing");
     },
     resetModal() {

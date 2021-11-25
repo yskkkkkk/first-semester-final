@@ -1,7 +1,7 @@
 <template>
   <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
+    <b-row style="display: flex; justify-content: center">
+      <b-col cols="8">
         <b-alert variant="secondary" show><h3>정보 수정</h3></b-alert>
       </b-col>
     </b-row>
