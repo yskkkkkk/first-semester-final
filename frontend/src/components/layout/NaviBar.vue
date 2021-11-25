@@ -2,14 +2,12 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-button pill variant="success" v-b-toggle.sidebar>실시간 문의</b-button>
-      <b-sidebar id="sidebar" title="실시간 문의" backdrop shadow>
+      <b-sidebar id="sidebar" title="유저 소통" backdrop shadow>
         <div id="app">
-          유저이름:
-          <input v-model="userName" type="text" /><br />
-          내용: <input v-model="message" type="text" @keyup="sendMessage" />
           <div v-for="(item, idx) in recvList" :key="idx">
             <h3>{{ item.userName }}: {{ item.content }}</h3>
           </div>
+          내용: <input v-model="message" type="text" @keyup="sendMessage" />
         </div>
       </b-sidebar>
 
@@ -92,6 +90,7 @@
 import { mapState, mapMutations } from "vuex";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
+import { app } from "@/main";
 
 const memberStore = "memberStore";
 
@@ -120,16 +119,24 @@ export default {
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
     },
     sendMessage(e) {
-      if (e.keyCode === 13 && this.userName !== "" && this.message !== "") {
-        this.send();
+      if (e.keyCode === 13 && this.message !== "") {
         this.message = "";
+        this.send();
       }
     },
     send() {
+      if (this.userInfo == null) {
+        app.$bvToast.toast("채팅을 위해서는 로그인이 필요합니다.", {
+          title: `앗!`,
+          variant: "danger",
+          solid: true,
+        });
+        return;
+      }
       console.log("Send message:" + this.message);
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
-          userName: this.userName,
+          userName: this.userInfo.userName,
           content: this.message,
         };
         this.stompClient.send("/receive", JSON.stringify(msg), {});
