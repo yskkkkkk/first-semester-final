@@ -29,4 +29,9 @@ export default {
 div {
   font-family: "Pretendard-Regular";
 }
+
+#App,
+html {
+  width: 100vw;
+}
 </style>
