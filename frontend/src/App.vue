@@ -5,7 +5,7 @@
     <b-navbar toggleable type="dark" variant="dark">
       <b-navbar-brand>Happy House</b-navbar-brand>
 
-      <b-button @click="moveToTop">
+      <b-button @click="moveToTop" class="mr-3">
         <b-icon icon="chevron-bar-up"></b-icon>
       </b-button>
     </b-navbar>
@@ -44,6 +44,6 @@ div {
 
 #App,
 html {
-  width: 100vw;
+  width: 100%;
 }
 </style>
