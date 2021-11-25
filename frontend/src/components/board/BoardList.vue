@@ -241,7 +241,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .tdClass {
   width: 50px;
   text-align: center;
@@ -265,5 +265,8 @@ export default {
 }
 .text-left {
   text-align: left;
+}
+.container {
+  min-height: 1000px;
 }
 </style>

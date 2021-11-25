@@ -10,7 +10,7 @@
 
           <hr class="my-4" />
 
-          <b-container class="mt-4" id="mypage-wrapper">
+          <div class="mt-4" id="mypage-wrapper">
             <b-row>
               <b-col cols="2"></b-col>
               <b-col cols="2" align-self="end">아이디</b-col
@@ -39,7 +39,7 @@
               }}</b-col>
               <b-col cols="2"></b-col>
             </b-row>
-          </b-container>
+          </div>
           <hr class="my-4" />
 
           <b-button variant="primary" class="mr-1" @click="moveUpdate"
@@ -109,5 +109,8 @@ export default {
 <style scoped>
 #mypage-wrapper div.row {
   padding-bottom: 10px;
+}
+.container {
+  min-height: 800px;
 }
 </style>

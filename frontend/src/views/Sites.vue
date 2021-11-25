@@ -216,11 +216,4 @@ export default {
     rgba(56, 233, 40, 0.3) 30%
   );
 }
-.container {
-  height: 100%;
-}
-
-#search-radios {
-  z-index: 0;
-}
 </style>
