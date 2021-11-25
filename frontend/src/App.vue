@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navi-bar />
-    <router-view style="height: 100%" />
+    <router-view />
     <b-navbar toggleable type="dark" variant="dark">
       <b-navbar-brand>Happy House</b-navbar-brand>
 
@@ -45,5 +45,6 @@ div {
 #App,
 html {
   width: 100%;
+  min-height: 100vh;
 }
 </style>

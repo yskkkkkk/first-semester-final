@@ -15,7 +15,6 @@ public class OpenGraphController {
 	@ResponseBody
 	@GetMapping("/getOpenGraph")
 	public OpenGraphVO getOpenGraph(@RequestParam("param") String param) {
-		System.out.println(param);
 		OpenGraphVO ogVO = null;
 		
 		try {
@@ -41,7 +40,7 @@ public class OpenGraphController {
 		try {
 			return page.getContent(propertyName);
 		} catch (NullPointerException e) {
-			return "태그 없음";
+			return "";
 		}
 	}
 }
