@@ -137,11 +137,13 @@ export default {
   created() {
     this.getlistArticle();
     this.CLEAR_FILTER_ARTICLE();
-    for (var article of this.articles) {
-      this.getReplyCnt(article.boardNo).then((cnt) =>
-        this.replyCntList.push(cnt)
-      );
-    }
+    setTimeout(() => {
+      for (var article of this.articles) {
+        this.getReplyCnt(article.boardNo).then((cnt) =>
+          this.replyCntList.push(cnt)
+        );
+      }
+    }, 200);
   },
   methods: {
     ...mapActions(wordStore, ["addWord"]),
