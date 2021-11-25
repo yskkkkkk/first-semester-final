@@ -17,7 +17,10 @@
                 required
                 placeholder="아이디를 입력해주세요."
               ></b-form-input>
-              <b-alert show variant="danger" v-if="!validId"
+              <b-alert
+                show
+                variant="danger"
+                v-if="!validId && this.userId != ''"
                 >5~20자의 영문 대.소문자, 숫자를 이용하여 만들어주세요.</b-alert
               >
               <b-alert show variant="danger" v-if="validId && this.duplicatedId"

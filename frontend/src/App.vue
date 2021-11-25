@@ -2,13 +2,13 @@
   <div id="app">
     <navi-bar />
     <router-view />
-    <b-navbar toggleable type="dark" variant="dark">
+    <!-- <b-navbar toggleable type="dark" variant="dark">
       <b-navbar-brand>Happy House</b-navbar-brand>
 
       <b-button @click="moveToTop" class="mr-3">
         <b-icon icon="chevron-bar-up"></b-icon>
       </b-button>
-    </b-navbar>
+    </b-navbar> -->
   </div>
 </template>
 
@@ -20,11 +20,11 @@ export default {
   components: {
     NaviBar,
   },
-  methods: {
-    moveToTop() {
-      window.scrollTo(0, 0);
-    },
-  },
+  // methods: {
+  //   moveToTop() {
+  //     window.scrollTo(0, 0);
+  //   },
+  // },
 };
 </script>
 
@@ -45,6 +45,5 @@ div {
 #App,
 html {
   width: 100%;
-  min-height: 100vh;
 }
 </style>

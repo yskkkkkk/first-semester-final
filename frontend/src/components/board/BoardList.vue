@@ -241,7 +241,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .tdClass {
   width: 50px;
   text-align: center;

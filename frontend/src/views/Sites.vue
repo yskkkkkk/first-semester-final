@@ -216,7 +216,4 @@ export default {
     rgba(56, 233, 40, 0.3) 30%
   );
 }
-.container {
-  min-height: 1000px;
-}
 </style>
