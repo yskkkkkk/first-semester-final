@@ -3,17 +3,13 @@
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-button pill variant="success" v-b-toggle.sidebar>실시간 문의</b-button>
       <b-sidebar id="sidebar" title="실시간 문의" backdrop shadow>
-        <div class="px-3 py-2">
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </p>
-          <b-img
-            src="https://picsum.photos/500/500/?image=54"
-            fluid
-            thumbnail
-          ></b-img>
+        <div id="app">
+          유저이름:
+          <input v-model="userName" type="text" /><br />
+          내용: <input v-model="message" type="text" @keyup="sendMessage" />
+          <div v-for="(item, idx) in recvList" :key="idx">
+            <h3>{{ item.userName }}: {{ item.content }}</h3>
+          </div>
         </div>
       </b-sidebar>
 
@@ -94,6 +90,8 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import Stomp from "webstomp-client";
+import SockJS from "sockjs-client";
 
 const memberStore = "memberStore";
 
@@ -102,7 +100,13 @@ export default {
   data() {
     return {
       isSticky: true,
+      userName: "",
+      message: "",
+      recvList: [],
     };
+  },
+  created() {
+    this.connect();
   },
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
@@ -114,6 +118,49 @@ export default {
       this.SET_USER_INFO(null);
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
+    },
+    sendMessage(e) {
+      if (e.keyCode === 13 && this.userName !== "" && this.message !== "") {
+        this.send();
+        this.message = "";
+      }
+    },
+    send() {
+      console.log("Send message:" + this.message);
+      if (this.stompClient && this.stompClient.connected) {
+        const msg = {
+          userName: this.userName,
+          content: this.message,
+        };
+        this.stompClient.send("/receive", JSON.stringify(msg), {});
+      }
+    },
+    connect() {
+      const serverURL = "http://localhost:8080";
+      let socket = new SockJS(serverURL);
+      this.stompClient = Stomp.over(socket);
+      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
+      this.stompClient.connect(
+        {},
+        (frame) => {
+          // 소켓 연결 성공
+          this.connected = true;
+          console.log("소켓 연결 성공", frame);
+          // 서버의 메시지 전송 endpoint를 구독합니다.
+          // 이런형태를 pub sub 구조라고 합니다.
+          this.stompClient.subscribe("/send", (res) => {
+            console.log("구독으로 받은 메시지 입니다.", res.body);
+
+            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+            this.recvList.push(JSON.parse(res.body));
+          });
+        },
+        (error) => {
+          // 소켓 연결 실패
+          console.log("소켓 연결 실패", error);
+          this.connected = false;
+        }
+      );
     },
   },
 };
