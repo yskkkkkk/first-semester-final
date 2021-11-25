@@ -11,7 +11,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
-	// endpoint를 정의
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/send");
 	}
