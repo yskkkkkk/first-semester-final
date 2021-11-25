@@ -217,6 +217,6 @@ export default {
   );
 }
 .container {
-  height: 100%;
+  min-height: 1000px;
 }
 </style>

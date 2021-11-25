@@ -266,4 +266,7 @@ export default {
 .text-left {
   text-align: left;
 }
+.container {
+  min-height: 1000px;
+}
 </style>
