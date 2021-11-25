@@ -31,6 +31,11 @@
               ><b-icon icon="search" font-scale="1"></b-icon> 검색</router-link
             ></b-nav-item
           >
+          <b-nav-item href="#"
+            ><router-link :to="{ name: 'Site' }" class="link"
+              ><b-icon icon="link45deg"></b-icon> 관련 사이트</router-link
+            ></b-nav-item
+          >
         </b-navbar-nav>
 
         <b-navbar-nav class="userInfo ml-auto" v-if="userInfo">

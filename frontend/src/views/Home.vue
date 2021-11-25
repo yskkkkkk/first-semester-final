@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Jumbotron></Jumbotron>
-    <div style="padding: 20px">
+    <div style="padding: 20px" id="home-contents">
       <select-location></select-location>
       <b-row style="justify-content: center">
         <b-col><kakao-map></kakao-map></b-col>
@@ -9,7 +9,7 @@
       </b-row>
       <br />
       <b-row style="justify-content: center">
-        <b-col><news-carousel></news-carousel></b-col>
+        <b-col><news-carousel></news-carousel><br /></b-col>
         <b-col><word-cloud></word-cloud></b-col>
       </b-row>
     </div>
@@ -35,3 +35,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@media screen and (min-width: 1200px) {
+  #home-contents {
+    margin: 0 auto;
+    max-width: 1300px;
+  }
+}
+</style>

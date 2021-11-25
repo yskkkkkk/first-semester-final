@@ -7,7 +7,7 @@
     </b-row>
     <b-row>
       <b-col></b-col>
-      <b-col cols="6">
+      <b-col cols="8">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
             <b-alert show variant="danger" v-if="isLoginError"

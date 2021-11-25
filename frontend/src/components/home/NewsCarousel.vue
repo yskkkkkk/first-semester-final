@@ -9,7 +9,8 @@
       indicators
       background="#ababab"
       img-width="1024"
-      img-height="480"
+      max-height="400"
+      img-height="400"
       style="text-shadow: 1px 1px 2px #333"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
@@ -102,5 +103,9 @@ export default {
 }
 .carousel-caption div {
   text-shadow: 2px 2px 5px black;
+}
+#news-carousel {
+  min-width: 400px;
+  max-width: 615px;
 }
 </style>
