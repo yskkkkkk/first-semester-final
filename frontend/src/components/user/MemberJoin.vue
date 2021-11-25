@@ -17,16 +17,13 @@
                 required
                 placeholder="아이디를 입력해주세요."
               ></b-form-input>
-              <b-alert
-                show
-                variant="danger"
-                v-if="this.duplicatedId && this.userId != ''"
+              <b-alert show variant="danger" v-if="!validId"
+                >5~20자의 영문 대.소문자, 숫자를 이용하여 만들어주세요.</b-alert
+              >
+              <b-alert show variant="danger" v-if="validId && this.duplicatedId"
                 >이미 사용중인 아이디입니다.</b-alert
               >
-              <b-alert
-                show
-                variant="info"
-                v-if="!this.duplicatedId && this.userId != ''"
+              <b-alert show variant="info" v-if="validId && !this.duplicatedId"
                 >사용 가능한 아이디입니다.</b-alert
               >
             </b-form-group>
@@ -157,8 +154,10 @@ export default {
     checkId() {
       this.isDuplicatedId(this.userId).then((data) => {
         if (data != "OK") {
+          console.log("중첩");
           this.duplicatedId = true;
         } else {
+          console.log("안중첩");
           this.duplicatedId = false;
         }
       });
@@ -174,17 +173,28 @@ export default {
     },
   },
   computed: {
+    validId() {
+      const chk1 = /^[0-9a-z]{5,}$/i;
+      const chk2 = /[a-z]/i;
+      const chk3 = /\d/;
+
+      return (
+        chk1.test(this.userId) &&
+        chk2.test(this.userId) &&
+        chk3.test(this.userId)
+      );
+    },
     validEmail() {
-      var regExp =
+      const regExp =
         /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
       if (this.email.match(regExp) != null) return true;
       return false;
     },
     validPw() {
-      var chk1 = /^[a-z\d]{6,}$/i; //a-z와 0-9이외의 문자가 있는지 확인
-      var chk2 = /[a-z]/i; //적어도 한개의 a-z 확인
-      var chk3 = /\d/; //적어도 한개의 0-9 확인
+      const chk1 = /^[a-z\d]{6,}$/i; //a-z와 0-9이외의 문자가 있는지 확인
+      const chk2 = /[a-z]/i; //적어도 한개의 a-z 확인
+      const chk3 = /\d/; //적어도 한개의 0-9 확인
       return (
         chk1.test(this.userPw) &&
         chk2.test(this.userPw) &&
