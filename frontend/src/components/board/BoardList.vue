@@ -17,7 +17,7 @@
     </b-row>
 
     <!-- 테이블 -->
-    <b-row>
+    <b-row class="mb-5">
       <!-- 게시판에 글이 있거나 검색 결과가 존재할 때 -->
       <b-col
         v-if="
@@ -72,6 +72,7 @@
           :total-rows="rows"
           :per-page="perPage"
           aria-controls="my-table"
+          class="my-5"
         ></b-pagination>
       </b-col>
       <!-- 게시판에 글이 없을 때 -->

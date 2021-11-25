@@ -19,4 +19,7 @@ export default {
     rgba(231, 27, 139, 0.3) 30%
   );
 }
+.container {
+  height: 100vh;
+}
 </style>

@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <navi-bar />
-    <router-view />
+    <router-view style="height: 100%" />
+    <b-navbar toggleable type="dark" variant="dark">
+      <b-navbar-brand>Happy House</b-navbar-brand>
+
+      <b-button @click="moveToTop">
+        <b-icon icon="chevron-bar-up"></b-icon>
+      </b-button>
+    </b-navbar>
   </div>
 </template>
 
@@ -12,6 +19,11 @@ export default {
   name: "App",
   components: {
     NaviBar,
+  },
+  methods: {
+    moveToTop() {
+      window.scrollTo(0, 0);
+    },
   },
 };
 </script>
