@@ -5,7 +5,32 @@
       <b-sidebar id="sidebar" title="chat" backdrop shadow>
         <div id="app">
           <div v-for="(item, idx) in recvList" :key="idx">
-            <h3>{{ item.userName }}: {{ item.content }}</h3>
+            <div
+              v-if="item.userName == userInfo.userName"
+              style="
+                background-color: green;
+                border-radius: 10px;
+                margin: 5px 10px;
+                padding: 5px 10px;
+                font-size: 18px;
+                color: white;
+              "
+            >
+              <span>{{ item.userName }}: {{ item.content }}</span>
+            </div>
+            <div
+              v-else
+              style="
+                background-color: gray;
+                border-radius: 10px;
+                margin: 5px 10px;
+                padding: 5px 10px;
+                font-size: 18px;
+                color: white;
+              "
+            >
+              <span>{{ item.userName }}: {{ item.content }}</span>
+            </div>
           </div>
           <div class="text-input">
             +
@@ -123,6 +148,14 @@ export default {
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
+  watch: {
+    recvList: function () {
+      if (this.recvList.length >= 20) {
+        // this.recvList = this.recvList.shift();
+        this.recvList.shift();
+      }
+    },
+  },
   methods: {
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     onClickLogout() {
@@ -160,7 +193,7 @@ export default {
       const serverURL = "http://localhost:8080";
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
+      // console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
       this.stompClient.connect(
         {},
         (frame) => {
@@ -170,7 +203,7 @@ export default {
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
           this.stompClient.subscribe("/send", (res) => {
-            console.log("구독으로 받은 메시지 입니다.", res.body);
+            //console.log("구독으로 받은 메시지 입니다.", res.body);
 
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             this.recvList.push(JSON.parse(res.body));

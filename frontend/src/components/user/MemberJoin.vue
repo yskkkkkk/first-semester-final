@@ -154,10 +154,10 @@ export default {
     checkId() {
       this.isDuplicatedId(this.userId).then((data) => {
         if (data != "OK") {
-          console.log("중첩");
+          //console.log("중첩");
           this.duplicatedId = true;
         } else {
-          console.log("안중첩");
+          //console.log("안중첩");
           this.duplicatedId = false;
         }
       });

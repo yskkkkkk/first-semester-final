@@ -124,8 +124,8 @@ export default {
       if (!err) this.makeToast("앗!", msg, "warning");
       else {
         this.user.userName = this.userName;
-        console.log(this.user);
-        console.log(this.user.userpwd);
+        //console.log(this.user);
+        //console.log(this.user.userpwd);
         this.userUpdate(this.user);
         app.$bvToast.toast("정보가 변경되었습니다.", {
           title: "안내",
