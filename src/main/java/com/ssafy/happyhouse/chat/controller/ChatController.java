@@ -14,7 +14,6 @@ import com.ssafy.happyhouse.chat.service.ChatService;
 @Controller
 @CrossOrigin("*")
 public class ChatController {
-
 	public static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
 	@Autowired
