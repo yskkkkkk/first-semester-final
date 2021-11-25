@@ -7,7 +7,12 @@
       class="my-3"
     >
       <div class="crop-wrapper">
-        <b-img :src="image"></b-img>
+        <b-skeleton-img
+          width="150px"
+          height="150px"
+          v-if="this.image == ''"
+        ></b-skeleton-img>
+        <b-img v-else :src="image"></b-img>
       </div>
       <br />
       <div>{{ site.dsc }}</div>

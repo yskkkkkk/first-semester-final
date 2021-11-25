@@ -1,8 +1,11 @@
 <template>
   <b-container class="bv-example-row mt-5">
-    <h3 class="underline-green mb-5">
-      <b-icon icon="link45deg"></b-icon> 관련 사이트
-    </h3>
+    <div class="mb-5">
+      <h3 class="underline-green">
+        <b-icon icon="link45deg"></b-icon> 관련 사이트
+      </h3>
+      <div>카드를 클릭하면 해당 웹사이트로 이동할 수 있습니다.</div>
+    </div>
     <b-row>
       <b-col lg="4" md="6" sm="12" v-for="(site, index) in sites" :key="index">
         <site-preview :site="site"></site-preview>
