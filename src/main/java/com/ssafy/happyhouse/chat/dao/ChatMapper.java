@@ -6,6 +6,5 @@ import com.ssafy.happyhouse.chat.model.ChatDto;
 
 @Mapper
 public interface ChatMapper {
-
 	int saveChat(ChatDto chatDto);
 }
