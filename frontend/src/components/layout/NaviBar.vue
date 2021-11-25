@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="top-nav">
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-button pill variant="success" v-b-toggle.sidebar>실시간 채팅</b-button>
       <b-sidebar id="sidebar" title="chat" backdrop shadow>
@@ -237,6 +237,28 @@ a.link.align-self-center.router-link-exact-active.router-link-active,
 a.router-link-exact-active {
   color: #42b983;
   font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  .top-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 67px;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 992px) {
+  .top-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 67px;
+    z-index: 1;
+  }
 }
 
 .text-input {

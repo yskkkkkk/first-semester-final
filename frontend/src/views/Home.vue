@@ -43,4 +43,7 @@ export default {
     max-width: 1300px;
   }
 }
+#home-contents {
+  z-index: 0;
+}
 </style>

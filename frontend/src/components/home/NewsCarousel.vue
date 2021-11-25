@@ -107,5 +107,6 @@ export default {
 #news-carousel {
   min-width: 400px;
   max-width: 615px;
+  z-index: 0 !important;
 }
 </style>

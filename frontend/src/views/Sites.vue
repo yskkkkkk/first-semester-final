@@ -219,4 +219,8 @@ export default {
 .container {
   height: 100%;
 }
+
+#search-radios {
+  z-index: 0;
+}
 </style>

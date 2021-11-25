@@ -490,5 +490,6 @@ export default {
 #map {
   min-width: 400px;
   height: 400px;
+  z-index: -1;
 }
 </style>

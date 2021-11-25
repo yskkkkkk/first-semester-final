@@ -2,7 +2,7 @@
   <div id="app">
     <navi-bar />
     <router-view />
-    <b-navbar toggleable type="dark" variant="dark">
+    <b-navbar class="bottom-nav" toggleable type="dark" variant="dark">
       <b-navbar-brand>Happy House</b-navbar-brand>
 
       <b-button @click="moveToTop" class="mr-3">
@@ -46,5 +46,19 @@ div {
 html {
   width: 100%;
   min-height: 100vh;
+}
+
+@media (max-width: 992px) {
+  .body {
+    padding-top: 56px;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .body {
+    padding-top: 67px;
+    z-index: 0;
+  }
 }
 </style>
