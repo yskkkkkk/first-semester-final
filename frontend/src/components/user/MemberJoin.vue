@@ -156,10 +156,8 @@ export default {
     },
     checkId() {
       this.isDuplicatedId(this.userId).then((data) => {
-        console.log(data);
         if (data != "OK") {
           this.duplicatedId = true;
-          console.log("중복된 아이디입니다.");
         } else {
           this.duplicatedId = false;
         }
@@ -169,7 +167,6 @@ export default {
       this.isDuplicatedEmail(this.email).then((data) => {
         if (data != "OK") {
           this.duplicatedEmail = true;
-          console.log("중복된 이메일입니다.");
         } else {
           this.duplicatedEmail = false;
         }

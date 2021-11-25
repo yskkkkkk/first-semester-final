@@ -1,13 +1,21 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-button pill variant="success" v-b-toggle.sidebar>실시간 문의</b-button>
-      <b-sidebar id="sidebar" title="유저 소통" backdrop shadow>
+      <b-button pill variant="success" v-b-toggle.sidebar>실시간 채팅</b-button>
+      <b-sidebar id="sidebar" title="chat" backdrop shadow>
         <div id="app">
           <div v-for="(item, idx) in recvList" :key="idx">
             <h3>{{ item.userName }}: {{ item.content }}</h3>
           </div>
-          내용: <input v-model="message" type="text" @keyup="sendMessage" />
+          <div class="text-input">
+            +
+            <input
+              v-model="message"
+              type="text"
+              placeholder="message"
+              @keyup="sendMessage"
+            />
+          </div>
         </div>
       </b-sidebar>
 
@@ -125,8 +133,8 @@ export default {
     },
     sendMessage(e) {
       if (e.keyCode === 13 && this.message !== "") {
-        this.message = "";
         this.send();
+        this.message = "";
       }
     },
     send() {
@@ -199,5 +207,11 @@ a.link.align-self-center.router-link-exact-active.router-link-active,
 a.router-link-exact-active {
   color: #42b983;
   font-weight: bold;
+}
+
+.text-input {
+  position: fixed;
+  left: 10%;
+  bottom: 3%;
 }
 </style>
